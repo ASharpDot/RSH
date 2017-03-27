@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RedShowHomeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="RedShowHomeModelStoreContainer">
+    <EntitySet Name="Collection" EntityType="RedShowHomeModel.Store.Collection" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.Store.DesignCompany_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Store.Designer_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EnjoyStyle" EntityType="RedShowHomeModel.Store.EnjoyStyle" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseOwner" EntityType="RedShowHomeModel.Store.HouseOwner" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Normal_User" EntityType="RedShowHomeModel.Store.Normal_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.Store.RSH_House" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.Store.RSH_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Store.Seller_User" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Collection">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="CollectUserID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="CollectUserID" Type="varchar" Nullable="false" MaxLength="36" />
+  </EntityType>
+  <EntityType Name="DesignCompany_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="FansQuantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Designer_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="Sex" Type="nchar" Nullable="false" MaxLength="1" />
+    <Property Name="StartWorkTime" Type="date" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="DesignConcept" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="FansQuantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EnjoyStyle">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="StyleType" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="StyleType" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HouseOwner">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="HouseID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
+  </EntityType>
+  <EntityType Name="Normal_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="Sex" Type="nchar" Nullable="false" MaxLength="1" />
+    <Property Name="Phone" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="RSH_House">
+    <Key>
+      <PropertyRef Name="HouseID" />
+    </Key>
+    <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Status" Type="int" />
+    <Property Name="Area" Type="float" Nullable="false" />
+    <Property Name="HouseType" Type="int" Nullable="false" />
+    <Property Name="DecorationWay" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+    <Property Name="Ichnography" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="RSH_User">
+    <Key>
+      <PropertyRef Name="LoginEmail" />
+    </Key>
+    <Property Name="LoginEmail" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="LoginPassword" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Seller_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="FansQuantity" Type="int" Nullable="false" />
+  </EntityType>
+</Schema>

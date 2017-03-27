@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "基本信息";
+}
+
+<div class="easyui-panel" title="基本信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+<div style="margin-bottom: 20px">
+    <label for="phone" class="label-top">电话:</label>
+    <input id="phone" class="easyui-validatebox tb" data-options="required:true">
+</div>
+<div style="margin-bottom: 20px">
+    <label for="address" class="label-top">地址:</label>
+    <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+</div>
+<div style="margin-bottom: 20px">
+    <label for="description" class="label-top">描述:</label>
+    <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+</div>
+<div style="padding: 5px 0;">
+    <a id="btnSubmit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">提交 </a>
+</div>
+</div>
+<script>
+    $(function () {
+        $("#btnSubmit").bind('click', function () {
+                var parameter = {
+                    "Phone": $("#phone").val(),
+                    "Address": $("#address").val(),
+                    "Description": $("#description").val()
+                };
+                $.post("/User/SetNormalUserInfo", parameter, function (data) {
+                    if (!data) {
+                        $.messager.alert(RSH.Common.AlertTitle, RSH.SetInfo.SetFail);
+                    } else {
+                        window.location.href = "/Home/Index";
+                    }
+                });
+        });
+    })
+</script>
+

@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "基本信息";
+}
+
+<div class="easyui-panel" title="基本信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+<div style="margin-bottom: 20px">
+    <label for="phone" class="label-top">电话:</label>
+    <input id="phone" class="easyui-validatebox tb" data-options="required:true">
+</div>
+<div style="margin-bottom: 20px">
+<select class="easyui-combobox" id="sex" label="性别:" labelposition="top" style="width: 100%;" panelheight="90">
+    <option value="男">男</option>
+    <option value="女">女</option>
+</select>
+</div>
+<div style="padding: 5px 0;">
+    <a id="btnSubmit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">提交 </a>
+</div>
+</div>
+<script>
+    $(function () {
+        $("#btnSubmit").bind('click', function () {
+                var parameter = {
+                    "Phone": $("#phone").val(),
+                    "Sex":$("#sex").combobox('getValue')
+                };
+                $.post("/User/SetNormalUserInfo", parameter, function (data) {
+                    if (!data) {
+                        $.messager.alert(RSH.Common.AlertTitle, RSH.SetInfo.SetFail);
+                    } else {
+                        window.location.href = "/Home/Index";
+                    }
+                });
+        });
+    })
+</script>

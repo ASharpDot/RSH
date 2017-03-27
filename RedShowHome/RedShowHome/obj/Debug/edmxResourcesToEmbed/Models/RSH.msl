@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RedShowHomeModelStoreContainer" CdmEntityContainer="RedShowHomeEntities">
+    <EntitySetMapping Name="Collection">
+      <EntityTypeMapping TypeName="RedShowHomeModel.Collection">
+        <MappingFragment StoreEntitySet="Collection">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="CollectUserID" ColumnName="CollectUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DesignCompany_User">
+      <EntityTypeMapping TypeName="RedShowHomeModel.DesignCompany_User">
+        <MappingFragment StoreEntitySet="DesignCompany_User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Designer_User">
+      <EntityTypeMapping TypeName="RedShowHomeModel.Designer_User">
+        <MappingFragment StoreEntitySet="Designer_User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="StartWorkTime" ColumnName="StartWorkTime" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="DesignConcept" ColumnName="DesignConcept" />
+          <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EnjoyStyle">
+      <EntityTypeMapping TypeName="RedShowHomeModel.EnjoyStyle">
+        <MappingFragment StoreEntitySet="EnjoyStyle">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="StyleType" ColumnName="StyleType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseOwner">
+      <EntityTypeMapping TypeName="RedShowHomeModel.HouseOwner">
+        <MappingFragment StoreEntitySet="HouseOwner">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Normal_User">
+      <EntityTypeMapping TypeName="RedShowHomeModel.Normal_User">
+        <MappingFragment StoreEntitySet="Normal_User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RSH_House">
+      <EntityTypeMapping TypeName="RedShowHomeModel.RSH_House">
+        <MappingFragment StoreEntitySet="RSH_House">
+          <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Area" ColumnName="Area" />
+          <ScalarProperty Name="HouseType" ColumnName="HouseType" />
+          <ScalarProperty Name="DecorationWay" ColumnName="DecorationWay" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Ichnography" ColumnName="Ichnography" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RSH_User">
+      <EntityTypeMapping TypeName="RedShowHomeModel.RSH_User">
+        <MappingFragment StoreEntitySet="RSH_User">
+          <ScalarProperty Name="LoginEmail" ColumnName="LoginEmail" />
+          <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Seller_User">
+      <EntityTypeMapping TypeName="RedShowHomeModel.Seller_User">
+        <MappingFragment StoreEntitySet="Seller_User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RedShowHomeModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="RedShowHomeEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Collection" EntityType="RedShowHomeModel.Collection" />
+    <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.DesignCompany_User" />
+    <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Designer_User" />
+    <EntitySet Name="EnjoyStyle" EntityType="RedShowHomeModel.EnjoyStyle" />
+    <EntitySet Name="HouseOwner" EntityType="RedShowHomeModel.HouseOwner" />
+    <EntitySet Name="Normal_User" EntityType="RedShowHomeModel.Normal_User" />
+    <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
+    <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.RSH_User" />
+    <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Seller_User" />
+  </EntityContainer>
+  <EntityType Name="Collection">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="CollectUserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="CollectUserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="DesignCompany_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="FansQuantity" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Designer_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="StartWorkTime" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="DesignConcept" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="FansQuantity" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EnjoyStyle">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="StyleType" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="StyleType" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HouseOwner">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="HouseID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="HouseID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Normal_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="Phone" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="RSH_House">
+    <Key>
+      <PropertyRef Name="HouseID" />
+    </Key>
+    <Property Name="HouseID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="Area" Type="Double" Nullable="false" />
+    <Property Name="HouseType" Type="Int32" Nullable="false" />
+    <Property Name="DecorationWay" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Ichnography" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="RSH_User">
+    <Key>
+      <PropertyRef Name="LoginEmail" />
+    </Key>
+    <Property Name="LoginEmail" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Seller_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="FansQuantity" Type="Int32" Nullable="false" />
+  </EntityType>
+</Schema>
