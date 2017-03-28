@@ -8,3 +8,52 @@
         </div>
     </section>
 }
+    <div style="margin: 20px 0;">
+    <input class="easyui-searchbox" data-options="prompt:'请输入...',menu:'#mm',searcher:doSearch" style="width: 400px; height: 40px;"></input>
+    <div id="mm">
+        <div data-options="name:'all',iconCls:'icon-ok'">全部</div>
+        <div data-options="name:'designer'">设计师</div>
+        <div data-options="name:'designcompany'">家装公司</div>
+        <div data-options="name:'seller'">商家</div>
+    </div>
+    </div>
+    <div id="allmap"></div>
+    <div id="r-result"></div>
+
+<script type="text/javascript">
+    var map = new BMap.Map("allmap");
+    window.map = map;
+    var point = new BMap.Point(126.646749, 45.729233);
+
+    map.addControl(new BMap.NavigationControl());
+// 添加平移缩放控件
+    map.addControl(new BMap.ScaleControl());
+// 添加比例尺控件
+    map.addControl(new BMap.OverviewMapControl());
+//添加缩略地图控件
+    map.enableScrollWheelZoom();
+//启用滚轮放大缩小
+    map.addControl(new BMap.MapTypeControl());
+//添加地图类型控件
+    map.disable3DBuilding();
+    map.centerAndZoom(point, 15);
+    map.setMapStyle({ style: 'midnight' });
+
+    function doSearch(value, name) {
+        var local = new BMap.LocalSearch(map, { renderOptions: { map: map, panel: "r-result" } });
+        local.search(value);
+    }
+
+    function doSearchWithPoint(value,name) {
+        map.clearOverlays();
+        var localSearch = new BMap.LocalSearch(map);
+        localSearch.enableAutoViewport();
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            map.centerAndZoom(poi.point, 16);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地址对应的经纬度
+            map.addOverlay(marker);
+        });
+        localSearch.search(value);
+    }
+</script>

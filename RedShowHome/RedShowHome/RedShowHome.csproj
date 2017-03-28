@@ -1168,7 +1168,6 @@
     <Content Include="Views\User\DesignCompanyUserInfo.cshtml" />
     <Content Include="Views\User\NormalUserInfo.cshtml" />
     <Content Include="Views\User\DesignerUserInfo.cshtml" />
-    <Content Include="Views\Home\Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
