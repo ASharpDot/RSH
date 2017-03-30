@@ -9,12 +9,12 @@
     </section>
 }
     <div style="margin: 20px 0;">
-    <input class="easyui-searchbox" data-options="prompt:'请输入...',menu:'#mm',searcher:doSearch" style="width: 400px; height: 40px;"></input>
+    <input class="easyui-searchbox" data-options="prompt:'请输入...',menu:'#mm',searcher:doSearchFromDB" style="width: 400px; height: 40px;"></input>
     <div id="mm">
-        <div data-options="name:'all',iconCls:'icon-ok'">全部</div>
-        <div data-options="name:'designer'">设计师</div>
-        <div data-options="name:'designcompany'">家装公司</div>
-        <div data-options="name:'seller'">商家</div>
+        <div data-options="name:'All',iconCls:'icon-ok'">全部</div>
+        <div data-options="name:'Designer'">设计师</div>
+        <div data-options="name:'DesignCompany'">家装公司</div>
+        <div data-options="name:'Seller'">商家</div>
     </div>
     </div>
     <div id="allmap"></div>
@@ -43,7 +43,37 @@
         var local = new BMap.LocalSearch(map, { renderOptions: { map: map, panel: "r-result" } });
         local.search(value);
     }
-
+    function doSearchFromDB(value, name) {
+        var url = "";
+        switch (name) {
+            case RSH.Control.All:
+                url = "/Home/GetAllUsersExceptNormal"; break;
+            case RSH.Control.Designer:
+                url = "/Home/GetAllDesigner"; break;
+            case RSH.Control.DesignCompany:
+                url = "/Home/GetAllDesignCompany"; break;
+            case RSH.Control.Seller:
+                url = "/Home/GetAllSeller"; break;
+        }
+        if (url == "") {
+            doSearch(value, name);
+            return;
+        }
+        $.post(url, null, function(data) {
+            if (data) {
+                if (data.length) {
+                } else {
+                    $.messager.show({
+                        title: RSH.Common.AlertTitle,
+                        msg: RSH.Search.SearchEmpty,
+                        timeout: 3000,
+                        showType: 'show'
+                    });
+                }
+            }
+        });
+    }
+    
     function doSearchWithPoint(value,name) {
         map.clearOverlays();
         var localSearch = new BMap.LocalSearch(map);

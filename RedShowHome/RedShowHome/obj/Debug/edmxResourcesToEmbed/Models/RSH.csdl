@@ -33,7 +33,7 @@
     <Key>
       <PropertyRef Name="UserID" />
     </Key>
-    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
+    <Property Name="UserID" Type="String" Nullable="false" />
     <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
     <Property Name="StartWorkTime" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />

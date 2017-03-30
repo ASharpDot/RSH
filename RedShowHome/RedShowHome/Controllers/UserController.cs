@@ -9,9 +9,8 @@ using Context = System.Runtime.Remoting.Contexts.Context;
 
 namespace RedShowHome.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
-        private RedShowHomeEntities rshe = new RedShowHomeEntities();
 
         public ActionResult Login()
         {
@@ -56,8 +55,8 @@ namespace RedShowHome.Controllers
                 nu.UserID = Session["UserID"].ToString();
                 nu.Sex = Request.Params.Get("Sex");
                 nu.Phone = Request.Params.Get("Phone");
-                rshe.Normal_User.Add(nu);
-                rshe.SaveChanges();
+                rshEntities.Normal_User.Add(nu);
+                rshEntities.SaveChanges();
                 return Json(new {UserID = nu.UserID});
 
             }
@@ -79,8 +78,8 @@ namespace RedShowHome.Controllers
                 du.Address = Request.Params.Get("Address");
                 du.DesignConcept = Request.Params.Get("DesignConcept");
                 du.FansQuantity = 0;
-                rshe.Designer_User.Add(du);
-                rshe.SaveChanges();
+                rshEntities.Designer_User.Add(du);
+                rshEntities.SaveChanges();
                 return Json(new {UserID = du.UserID});
 
             }
@@ -100,8 +99,8 @@ namespace RedShowHome.Controllers
                 dcu.Phone = Request.Params.Get("Phone");
                 dcu.Description = Request.Params.Get("Description");
                 dcu.FansQuantity = 0;
-                rshe.DesignCompany_User.Add(dcu);
-                rshe.SaveChanges();
+                rshEntities.DesignCompany_User.Add(dcu);
+                rshEntities.SaveChanges();
                 return Json(new {UserID = dcu.UserID});
 
             }
@@ -121,8 +120,8 @@ namespace RedShowHome.Controllers
                 su.Phone = Request.Params.Get("Phone");
                 su.Description = Request.Params.Get("Description");
                 su.FansQuantity = 0;
-                rshe.Seller_User.Add(su);
-                rshe.SaveChanges();
+                rshEntities.Seller_User.Add(su);
+                rshEntities.SaveChanges();
                 return Json(new {UserID = su.UserID});
 
             }
@@ -143,8 +142,8 @@ namespace RedShowHome.Controllers
                 ru.UserID = Guid.NewGuid().ToString();
                 Session["UserID"] = ru.UserID;
                 ru.UserType = int.Parse(Request.Params.Get("UserType"));
-                rshe.RSH_User.Add(ru);
-                rshe.SaveChanges();
+                rshEntities.RSH_User.Add(ru);
+                rshEntities.SaveChanges();
                 return Json(new {UserType = ru.UserType});
             }
             catch (Exception ex)
