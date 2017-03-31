@@ -10,6 +10,7 @@
     <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
     <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.RSH_User" />
     <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Seller_User" />
+    <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
   </EntityContainer>
   <EntityType Name="Collection">
     <Key>
@@ -33,7 +34,7 @@
     <Key>
       <PropertyRef Name="UserID" />
     </Key>
-    <Property Name="UserID" Type="String" Nullable="false" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
     <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
     <Property Name="StartWorkTime" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
@@ -83,7 +84,7 @@
       <PropertyRef Name="LoginEmail" />
     </Key>
     <Property Name="LoginEmail" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
-    <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
     <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="UserType" Type="Int32" Nullable="false" />
@@ -97,5 +98,14 @@
     <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
     <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
     <Property Name="FansQuantity" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AddressPoint">
+    <Key>
+      <PropertyRef Name="Uid" />
+    </Key>
+    <Property Type="Int32" Name="Uid" Nullable="false" />
+    <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Longitute" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Latitude" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

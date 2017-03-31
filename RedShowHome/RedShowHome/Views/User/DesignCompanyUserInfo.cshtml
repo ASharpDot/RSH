@@ -3,37 +3,62 @@
 }
 
 <div class="easyui-panel" title="基本信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
-<div style="margin-bottom: 20px">
-    <label for="phone" class="label-top">电话:</label>
-    <input id="phone" class="easyui-validatebox tb" data-options="required:true">
-</div>
-<div style="margin-bottom: 20px">
-    <label for="address" class="label-top">地址:</label>
-    <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
-</div>
-<div style="margin-bottom: 20px">
-    <label for="description" class="label-top">描述:</label>
-    <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px;height:100px">
-</div>
-<div style="padding: 5px 0;">
-    <a id="btnSubmit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">提交 </a>
-</div>
+    <div style="margin-bottom: 20px">
+        <label for="phone" class="label-top">电话:</label>
+        <input id="phone" class="easyui-validatebox tb" data-options="required:true">
+    </div>
+    <div style="margin-bottom: 20px">
+        <label for="address" class="label-top">地址:</label>
+        <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+        <div id="smallmap"></div>
+    </div>
+    <div style="margin-bottom: 20px">
+        <label for="description" class="label-top">描述:</label>
+        <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px;height:100px">
+    </div>
+    <div style="padding: 5px 0;">
+        <a id="btnSubmit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">提交 </a>
+    </div>
 </div>
 <script>
-    $(function () {
-        $("#btnSubmit").bind('click', function () {
-                var parameter = {
-                    "Phone": $("#phone").val(),
-                    "Address": $("#address").val(),
-                    "Description": $("#description").val()
-                };
-                $.post("/User/SetNormalUserInfo", parameter, function (data) {
-                    if (!data) {
-                        $.messager.alert(RSH.Common.AlertTitle, RSH.SetInfo.SetFail);
-                    } else {
-                        window.location.href = "/Home/Index";
-                    }
-                });
+    $(function() {
+        var map = new BMap.Map("smallmap");
+        var point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+        InitMap(map, point);
+
+        $("#address").textbox('textbox').bind({ blur: searchAddressPoint });
+
+        $("#btnSubmit").bind('click', function() {
+            var parameter = {
+                "Phone": $("#phone").val(),
+                "Address": $("#address").val(),
+                "Description": $("#description").val(),
+                "Longitude": $("#address").data("Longitude"),
+                "Latitude": $("#address").data("Latitude")
+            };
+            $.post("/User/SetDesignCompanyUserInfo", parameter, function (data) {
+                if (!data) {
+                    $.messager.alert(RSH.Common.AlertTitle, RSH.SetInfo.SetFail);
+                } else {
+                    window.location.href = "/Home/Index";
+                }
+            });
         });
-    })
+    });
+    
+    function searchAddressPoint() {
+        map.clearOverlays();
+        var localSearch = new BMap.LocalSearch(map);
+        localSearch.enableAutoViewport();
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            if(searchResult!=null){
+            var poi = searchResult.getPoi(0);
+            map.centerAndZoom(poi.point, 16);
+            $("#address").data("Longitude", poi.point.lng);
+            $("#address").data("Latitude", poi.point.lat);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));
+            map.addOverlay(marker);}
+        });
+        localSearch.search($("#address").val());
+    }
 </script>

@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="RedShowHomeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="RedShowHomeModelStoreContainer">
+          <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.Store.AddressPoint" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Collection" EntityType="RedShowHomeModel.Store.Collection" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.Store.DesignCompany_User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Store.Designer_User" store:Type="Tables" Schema="dbo" />
@@ -16,6 +17,15 @@
           <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.Store.RSH_User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Store.Seller_User" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
+        <EntityType Name="AddressPoint">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Longitute" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="Latitude" Type="varchar" Nullable="false" MaxLength="30" />
+        </EntityType>
         <EntityType Name="Collection">
           <Key>
             <PropertyRef Name="UserID" />
@@ -88,7 +98,7 @@
             <PropertyRef Name="LoginEmail" />
           </Key>
           <Property Name="LoginEmail" Type="varchar" Nullable="false" MaxLength="30" />
-          <Property Name="LoginPassword" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="LoginPassword" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
           <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="30" />
           <Property Name="UserType" Type="int" Nullable="false" />
@@ -117,6 +127,7 @@
           <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
           <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.RSH_User" />
           <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Seller_User" />
+          <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
         </EntityContainer>
         <EntityType Name="Collection">
           <Key>
@@ -140,7 +151,7 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
           <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
           <Property Name="StartWorkTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
@@ -190,7 +201,7 @@
             <PropertyRef Name="LoginEmail" />
           </Key>
           <Property Name="LoginEmail" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
-          <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
           <Property Name="UserType" Type="Int32" Nullable="false" />
@@ -204,6 +215,15 @@
           <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="FansQuantity" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AddressPoint">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Type="Int32" Name="Uid" Nullable="false" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Longitute" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Latitude" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -301,6 +321,16 @@
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AddressPoint">
+            <EntityTypeMapping TypeName="RedShowHomeModel.AddressPoint">
+              <MappingFragment StoreEntitySet="AddressPoint">
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitute" ColumnName="Longitute" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

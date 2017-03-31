@@ -34,5 +34,6 @@ namespace RedShowHome.Models
         public DbSet<RSH_House> RSH_House { get; set; }
         public DbSet<RSH_User> RSH_User { get; set; }
         public DbSet<Seller_User> Seller_User { get; set; }
+        public DbSet<AddressPoint> AddressPoint { get; set; }
     }
 }

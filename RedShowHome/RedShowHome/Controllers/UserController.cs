@@ -4,13 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using Microsoft.Web.Infrastructure;
 using RedShowHome.Models;
+using WebGrease.Css.Ast.Selectors;
 using Context = System.Runtime.Remoting.Contexts.Context;
+using System.Web.Security;
 
 namespace RedShowHome.Controllers
 {
     public class UserController : BaseController
     {
+        public string Encrypt(string prime)
+        {
+            return FormsAuthentication.HashPasswordForStoringInConfigFile(prime, "MD5");
+        }
 
         public ActionResult Login()
         {
@@ -24,7 +31,26 @@ namespace RedShowHome.Controllers
 
         public ActionResult Check()
         {
-            return RedirectToAction("Register");
+            try
+            {
+                var loginEmail = HttpContext.Request.Params.Get("LoginEmail");
+                var loginPassword = Encrypt(Request.Params.Get("LoginPassword"));
+                var query = (from user in rshEntities.RSH_User
+                    where user.LoginEmail == loginEmail && user.LoginPassword == loginPassword
+                    select user).FirstOrDefault();
+                if (query != null)
+                {
+                    return Json("/Home/Index");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         public ActionResult NormalUserInfo()
@@ -66,6 +92,16 @@ namespace RedShowHome.Controllers
             }
         }
 
+        private void CreateAddressPoint(string address,string longitude,string latitude)
+        {
+            AddressPoint ap=new AddressPoint();
+            ap.Address = address;
+            ap.Longitute = longitude;
+            ap.Latitude = latitude;
+            rshEntities.AddressPoint.Add(ap);
+            rshEntities.SaveChanges();
+        }
+
         public ActionResult SetDesignerUserInfo()
         {
             try
@@ -78,6 +114,7 @@ namespace RedShowHome.Controllers
                 du.Address = Request.Params.Get("Address");
                 du.DesignConcept = Request.Params.Get("DesignConcept");
                 du.FansQuantity = 0;
+                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"), Request.Params.Get("Latitude"));
                 rshEntities.Designer_User.Add(du);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = du.UserID});
@@ -99,6 +136,7 @@ namespace RedShowHome.Controllers
                 dcu.Phone = Request.Params.Get("Phone");
                 dcu.Description = Request.Params.Get("Description");
                 dcu.FansQuantity = 0;
+                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"), Request.Params.Get("Latitude"));
                 rshEntities.DesignCompany_User.Add(dcu);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = dcu.UserID});
@@ -120,6 +158,7 @@ namespace RedShowHome.Controllers
                 su.Phone = Request.Params.Get("Phone");
                 su.Description = Request.Params.Get("Description");
                 su.FansQuantity = 0;
+                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"), Request.Params.Get("Latitude"));
                 rshEntities.Seller_User.Add(su);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = su.UserID});
@@ -138,7 +177,7 @@ namespace RedShowHome.Controllers
                 RSH_User ru = new RSH_User();
                 ru.LoginEmail = Request.Params.Get("LoginEmail");
                 ru.UserName = Request.Params.Get("UserName");
-                ru.LoginPassword = Request.Params.Get("LoginPassword");
+                ru.LoginPassword = Encrypt(Request.Params.Get("LoginPassword"));
                 ru.UserID = Guid.NewGuid().ToString();
                 Session["UserID"] = ru.UserID;
                 ru.UserType = int.Parse(Request.Params.Get("UserType"));

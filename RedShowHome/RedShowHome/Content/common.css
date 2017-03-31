@@ -6,4 +6,5 @@
     box-sizing: border-box;
 }
 
+#smallmap{height:300px;width:300px;}
 #allmap{height:500px;width:100%;}

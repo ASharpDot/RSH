@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="RedShowHomeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="RedShowHomeModelStoreContainer">
+    <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.Store.AddressPoint" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Collection" EntityType="RedShowHomeModel.Store.Collection" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.Store.DesignCompany_User" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Store.Designer_User" store:Type="Tables" Schema="dbo" />
@@ -11,6 +12,15 @@
     <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.Store.RSH_User" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Store.Seller_User" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
+  <EntityType Name="AddressPoint">
+    <Key>
+      <PropertyRef Name="Uid" />
+    </Key>
+    <Property Name="Uid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Longitute" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="Latitude" Type="varchar" Nullable="false" MaxLength="30" />
+  </EntityType>
   <EntityType Name="Collection">
     <Key>
       <PropertyRef Name="UserID" />
@@ -83,7 +93,7 @@
       <PropertyRef Name="LoginEmail" />
     </Key>
     <Property Name="LoginEmail" Type="varchar" Nullable="false" MaxLength="30" />
-    <Property Name="LoginPassword" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="LoginPassword" Type="varchar" Nullable="false" MaxLength="50" />
     <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
     <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="30" />
     <Property Name="UserType" Type="int" Nullable="false" />

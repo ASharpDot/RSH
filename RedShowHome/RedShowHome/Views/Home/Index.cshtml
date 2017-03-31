@@ -21,48 +21,46 @@
     <div id="r-result"></div>
 
 <script type="text/javascript">
-    var map = new BMap.Map("allmap");
-    window.map = map;
-    var point = new BMap.Point(126.646749, 45.729233);
+    $(function () {
+        //map:地图对象，point：中心点对象
+        var map = new BMap.Map("allmap");
+        var point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+        InitMap(map, point);
+    });
 
-    map.addControl(new BMap.NavigationControl());
-// 添加平移缩放控件
-    map.addControl(new BMap.ScaleControl());
-// 添加比例尺控件
-    map.addControl(new BMap.OverviewMapControl());
-//添加缩略地图控件
-    map.enableScrollWheelZoom();
-//启用滚轮放大缩小
-    map.addControl(new BMap.MapTypeControl());
-//添加地图类型控件
-    map.disable3DBuilding();
-    map.centerAndZoom(point, 15);
-    map.setMapStyle({ style: 'midnight' });
-
+    //网络搜索
     function doSearch(value, name) {
         var local = new BMap.LocalSearch(map, { renderOptions: { map: map, panel: "r-result" } });
         local.search(value);
     }
+    
+    //从数据读出数据并设置点
     function doSearchFromDB(value, name) {
         var url = "";
         switch (name) {
-            case RSH.Control.All:
-                url = "/Home/GetAllUsersExceptNormal"; break;
-            case RSH.Control.Designer:
-                url = "/Home/GetAllDesigner"; break;
-            case RSH.Control.DesignCompany:
-                url = "/Home/GetAllDesignCompany"; break;
-            case RSH.Control.Seller:
-                url = "/Home/GetAllSeller"; break;
+        case RSH.Control.All:
+            url = "/Home/GetAllUsersExceptNormal"; break;
+        case RSH.Control.Designer:
+            url = "/Home/GetAllDesigner"; break;
+        case RSH.Control.DesignCompany:
+            url = "/Home/GetAllDesignCompany"; break;
+        case RSH.Control.Seller:
+            url = "/Home/GetAllSeller"; break;
         }
         if (url == "") {
             doSearch(value, name);
             return;
         }
-        $.post(url, null, function(data) {
+        $.post(url, {SearchText:value}, function(data) {
             if (data) {
                 if (data.length) {
+                    var centerPoint = new BMap.Point(data[0].Longitude, data[0].Latitude);
+                    map.centerAndZoom(centerPoint, 15);
+                    for(var i in data) {
+                        SetPoint(data[i]);
+                    }
                 } else {
+                    SetDefaultPoint(point);
                     $.messager.show({
                         title: RSH.Common.AlertTitle,
                         msg: RSH.Search.SearchEmpty,
@@ -73,7 +71,27 @@
             }
         });
     }
+
+    function SetDefaultPoint(point) {
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+        var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
+        marker.addEventListener("click", function() { this.openInfoWindow(infoWindow); });
+
+    }
+    //设置点标记
+    function SetPoint(mapPoint) {
+        var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude)); 
+        map.addOverlay(marker); 
+        var infoWindow = new BMap.InfoWindow(mapPoint.Address+"<br/>"+mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
+        marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+    }
     
+    //面板中填充搜索内容
+    function SearchPanel(mapPoint) {
+        
+    }
+
     function doSearchWithPoint(value,name) {
         map.clearOverlays();
         var localSearch = new BMap.LocalSearch(map);
