@@ -48,6 +48,17 @@ function InitMap(map, centerPoint) {
     map.addControl(new BMap.MapTypeControl());
     //添加地图类型控件
     map.disable3DBuilding();
-    map.centerAndZoom(centerPoint, 15);
+    SetDefaultPoint(centerPoint);
     map.setMapStyle({ style: 'midnight' });
+}
+
+
+//设置默认起始点
+function SetDefaultPoint(point) {
+    var marker = new BMap.Marker(point);
+    map.centerAndZoom(point, 15);
+    map.addOverlay(marker);
+    var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
+    marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+
 }

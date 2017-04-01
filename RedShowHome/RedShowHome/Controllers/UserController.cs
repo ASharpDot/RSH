@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -99,7 +100,6 @@ namespace RedShowHome.Controllers
             ap.Longitute = longitude;
             ap.Latitude = latitude;
             rshEntities.AddressPoint.Add(ap);
-            rshEntities.SaveChanges();
         }
 
         public ActionResult SetDesignerUserInfo()
@@ -114,11 +114,11 @@ namespace RedShowHome.Controllers
                 du.Address = Request.Params.Get("Address");
                 du.DesignConcept = Request.Params.Get("DesignConcept");
                 du.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"), Request.Params.Get("Latitude"));
+                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"),
+                    Request.Params.Get("Latitude"));
                 rshEntities.Designer_User.Add(du);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = du.UserID});
-
             }
             catch (Exception ex)
             {

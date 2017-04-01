@@ -21,10 +21,12 @@
     <div id="r-result"></div>
 
 <script type="text/javascript">
+    //map:地图对象，point：中心点对象
+    var map;
+    var point;
     $(function () {
-        //map:地图对象，point：中心点对象
-        var map = new BMap.Map("allmap");
-        var point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+        map = new BMap.Map("allmap");
+        point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
         InitMap(map, point);
     });
 
@@ -51,45 +53,52 @@
             doSearch(value, name);
             return;
         }
-        $.post(url, {SearchText:value}, function(data) {
-            if (data) {
-                if (data.length) {
-                    var centerPoint = new BMap.Point(data[0].Longitude, data[0].Latitude);
-                    map.centerAndZoom(centerPoint, 15);
-                    for(var i in data) {
-                        SetPoint(data[i]);
-                    }
-                } else {
-                    SetDefaultPoint(point);
-                    $.messager.show({
-                        title: RSH.Common.AlertTitle,
-                        msg: RSH.Search.SearchEmpty,
-                        timeout: 3000,
-                        showType: 'show'
-                    });
+        $.post(url, { SearchText: value }, function(data) {
+            map.clearOverlays();
+            $("#r-result").empty();
+            if (data && data.length) {
+                var centerPoint = new BMap.Point(data[0].Longitude, data[0].Latitude);
+                map.centerAndZoom(centerPoint, 15);
+                for (var i in data) {
+                    SetPoint(data[i]);
+                    SearchPanel(data[i]);
                 }
+            } else {
+                doSearch(value, name);
+                $.messager.show({
+                    title: RSH.Common.AlertTitle,
+                    msg: RSH.Search.SearchEmpty,
+                    timeout: 3000,
+                    showType: 'show'
+                });
             }
         });
     }
 
-    function SetDefaultPoint(point) {
-        var marker = new BMap.Marker(point);
-        map.addOverlay(marker);
-        var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
-        marker.addEventListener("click", function() { this.openInfoWindow(infoWindow); });
-
-    }
+    
     //设置点标记
     function SetPoint(mapPoint) {
         var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude)); 
         map.addOverlay(marker); 
-        var infoWindow = new BMap.InfoWindow(mapPoint.Address+"<br/>"+mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
-        marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+        var infoWindow = new BMap.InfoWindow(mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
+        marker.addEventListener("click", function () {
+            this.openInfoWindow(infoWindow);
+        });
+        marker.addEventListener("mousedown", function () {
+            $("#" + mapPoint.Id).css("background-color", "#eee8aa");
+        });
+        marker.addEventListener("mouseup", function () {
+            $("#" + mapPoint.Id).css("background-color", "#c0c0c0");
+        });
     }
     
     //面板中填充搜索内容
     function SearchPanel(mapPoint) {
-        
+        var htmlText = "<b>" + mapPoint.Title + "</b><br/>" + mapPoint.Description;
+        $("#r-result").append("<div id=" + mapPoint.Id + " class='searchPanelItem'>" + htmlText + "</div>");
+        $("#" + mapPoint.Id).bind("click", function () {
+            map.centerAndZoom(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude),17);
+        });
     }
 
     function doSearchWithPoint(value,name) {
