@@ -197,6 +197,9 @@
     <Compile Include="Models\Collection.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Context\Context.cs" />
+    <Compile Include="Models\Context\ContextHelper.cs" />
+    <Compile Include="Models\Context\IContext.cs" />
     <Compile Include="Models\DesignCompany_User.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
@@ -209,6 +212,7 @@
     <Compile Include="Models\HouseOwner.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MapModel.cs" />
     <Compile Include="Models\Normal_User.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
@@ -242,6 +246,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\common.css" />
+    <Content Include="Content\images\artist_128px_1176078_easyicon.net.ico" />
+    <Content Include="Content\images\Building_Company_128px_510929_easyicon.net.ico" />
+    <Content Include="Content\images\bullet-green.png" />
+    <Content Include="Content\images\bullet-red.png" />
+    <Content Include="Content\images\bullet-yellow.png" />
+    <Content Include="Content\images\shop_market_128px_1135136_easyicon.net.ico" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -1172,6 +1182,7 @@
     <Content Include="Views\User\DesignCompanyUserInfo.cshtml" />
     <Content Include="Views\User\NormalUserInfo.cshtml" />
     <Content Include="Views\User\DesignerUserInfo.cshtml" />
+    <Content Include="Views\User\Mine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,9 +12,9 @@
     <input class="easyui-searchbox" data-options="prompt:'请输入...',menu:'#mm',searcher:doSearchFromDB" style="width: 400px; height: 40px;"></input>
     <div id="mm">
         <div data-options="name:'All',iconCls:'icon-ok'">全部</div>
-        <div data-options="name:'Designer'">设计师</div>
-        <div data-options="name:'DesignCompany'">家装公司</div>
-        <div data-options="name:'Seller'">商家</div>
+        <div data-options="name:'Designer',iconCls:'icon-green-point'">设计师</div>
+        <div data-options="name:'DesignCompany',iconCls:'icon-red-point'">家装公司</div>
+        <div data-options="name:'Seller',iconCls:'icon-yellow-point'">商家</div>
     </div>
     </div>
     <div id="allmap"></div>
@@ -38,47 +38,71 @@
     
     //从数据读出数据并设置点
     function doSearchFromDB(value, name) {
-        var url = "";
-        switch (name) {
-        case RSH.Control.All:
-            url = "/Home/GetAllUsersExceptNormal"; break;
-        case RSH.Control.Designer:
-            url = "/Home/GetAllDesigner"; break;
-        case RSH.Control.DesignCompany:
-            url = "/Home/GetAllDesignCompany"; break;
-        case RSH.Control.Seller:
-            url = "/Home/GetAllSeller"; break;
-        }
-        if (url == "") {
-            doSearch(value, name);
-            return;
-        }
-        $.post(url, { SearchText: value }, function(data) {
-            map.clearOverlays();
-            $("#r-result").empty();
-            if (data && data.length) {
-                var centerPoint = new BMap.Point(data[0].Longitude, data[0].Latitude);
-                map.centerAndZoom(centerPoint, 15);
-                for (var i in data) {
-                    SetPoint(data[i]);
-                    SearchPanel(data[i]);
-                }
-            } else {
-                doSearch(value, name);
-                $.messager.show({
-                    title: RSH.Common.AlertTitle,
-                    msg: RSH.Search.SearchEmpty,
-                    timeout: 3000,
-                    showType: 'show'
-                });
+        if (value) {
+            var url = "";
+            switch (name) {
+            case RSH.Control.All:
+                url = "/Home/GetAllUsersExceptNormal";
+                break;
+            case RSH.Control.Designer:
+                url = "/Home/GetAllDesigner";
+                break;
+            case RSH.Control.DesignCompany:
+                url = "/Home/GetAllDesignCompany";
+                break;
+            case RSH.Control.Seller:
+                url = "/Home/GetAllSeller";
+                break;
             }
-        });
+            if (url == "") {
+                doSearch(value, name);
+                return;
+            }
+            $.post(url, { SearchText: value }, function(data) {
+                map.clearOverlays();
+                $("#r-result").empty();
+                if (data && data.length) {
+                    var centerPoint = new BMap.Point(data[0].Longitude, data[0].Latitude);
+                    map.centerAndZoom(centerPoint, 15);
+                    for (var i in data) {
+                        SetPoint(data[i]);
+                        SearchPanel(data[i]);
+                    }
+                } else {
+                    doSearch(value, name);
+                    $.messager.show({
+                        title: RSH.Common.AlertTitle,
+                        msg: RSH.Search.SearchEmpty,
+                        timeout: 3000,
+                        showType: 'show'
+                    });
+                }
+            });
+        } else {
+            $.messager.show({
+                title: RSH.Common.AlertTitle,
+                msg: RSH.Search.EmptyValue,
+                timeout: 3000,
+                showType: 'show'
+            });
+        }
     }
-
     
     //设置点标记
     function SetPoint(mapPoint) {
-        var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude)); 
+        var iconUrl;
+        switch (mapPoint.Type) {
+            case RSH.Common.UserType2:
+                iconUrl = "/Content/images/bullet-green.png";break;
+            case RSH.Common.UserType3:
+                iconUrl = "/Content/images/bullet-red.png";break;
+            case RSH.Common.UserType4:
+                iconUrl = "/Content/images/bullet-yellow.png"; break;
+                default :
+                    iconUrl = "";
+        }
+        var myIcon = new BMap.Icon(iconUrl, new BMap.Size(30, 30));
+        var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), { icon: myIcon });
         map.addOverlay(marker); 
         var infoWindow = new BMap.InfoWindow(mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
         marker.addEventListener("click", function () {
@@ -97,20 +121,9 @@
         var htmlText = "<b>" + mapPoint.Title + "</b><br/>" + mapPoint.Description;
         $("#r-result").append("<div id=" + mapPoint.Id + " class='searchPanelItem'>" + htmlText + "</div>");
         $("#" + mapPoint.Id).bind("click", function () {
-            map.centerAndZoom(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude),17);
+            map.centerAndZoom(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), 17);
+            $("#" + mapPoint.Id).css("background-color", "#c0c0c0");
         });
     }
 
-    function doSearchWithPoint(value,name) {
-        map.clearOverlays();
-        var localSearch = new BMap.LocalSearch(map);
-        localSearch.enableAutoViewport();
-        localSearch.setSearchCompleteCallback(function (searchResult) {
-            var poi = searchResult.getPoi(0);
-            map.centerAndZoom(poi.point, 16);
-            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地址对应的经纬度
-            map.addOverlay(marker);
-        });
-        localSearch.search(value);
-    }
 </script>

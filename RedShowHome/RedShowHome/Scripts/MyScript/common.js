@@ -5,7 +5,15 @@ RSH.Common.AlertTitle = "提示";
 RSH.Common.NEFU_Longitude = 126.646749;
 RSH.Common.NEFU_Latitude = 45.729233;
 RSH.Common.NEFU_Name = "东北林业大学";
-RSH.Common.NEFU_Address = "黑龙江省哈尔滨市香坊区和兴路26号";
+RSH.Common.NEFU_Address = "黑龙江省哈尔滨市香坊区和兴路26号<br/><p style='color:red;font-size:30px'>地理信息科学专业：<br/>一个神奇的专业</p>";
+RSH.Common.UserType1 = 1;
+RSH.Common.UserType2 = 2;
+RSH.Common.UserType3 = 3;
+RSH.Common.UserType4 = 4;
+RSH.Common.zh_CN_UserType1 = "普通用户";
+RSH.Common.zh_CN_UserType2 = "设计师";
+RSH.Common.zh_CN_UserType3 = "家装公司";
+RSH.Common.zh_CN_UserType4 = "商户";
 
 RSH.Login = {};
 RSH.Login.LoginFail = "登录失败";
@@ -33,6 +41,7 @@ RSH.Control.InfoWindowHeight = 150;
 
 RSH.Search = {};
 RSH.Search.SearchEmpty = "未检索出数据，已为您从网络中筛选";
+RSH.Search.EmptyValue = "请输入要检索的内容";
 
 
 function InitMap(map, centerPoint) {

@@ -9,3 +9,15 @@
 #smallmap{height:300px;width:300px;}
 #allmap{height:500px;width:100%;}
 .searchPanelItem{ border: 2px;border-style: solid;background-color: #e6e6fa}
+
+
+/*点图标*/
+.icon-red-point {
+    background: url('/Content/images/bullet-red.png') no-repeat center center;
+}
+.icon-green-point {
+    background: url('/Content/images/bullet-green.png') no-repeat center center;
+}
+.icon-yellow-point {
+    background: url('/Content/images/bullet-yellow.png') no-repeat center center;
+}

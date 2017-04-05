@@ -48,7 +48,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - 红秀不在家</p>
+                    <p>Copyright © @DateTime.Now.Year Red Show Home. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>
@@ -57,3 +57,8 @@
         @RenderSection("scripts", required: false)
     </body>
 </html>
+<script type="text/javascript">
+    $(function() {
+        window.GlobalVariable={};
+    });
+</script>

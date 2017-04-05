@@ -112,9 +112,9 @@ namespace RedShowHome.Controllers
                                select du;
             foreach (var queryObject in queryObjects)
             {
-                var name = (from user in rshEntities.RSH_User
+                var users = (from user in rshEntities.RSH_User
                             where user.UserID == queryObject.UserID
-                            select user.UserName).FirstOrDefault();
+                            select user).FirstOrDefault();
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
@@ -124,7 +124,8 @@ namespace RedShowHome.Controllers
                 mp.Description = string.Format(DesignerDescriptionFormat, queryObject.Sex, queryObject.Phone,
                     queryObject.Address, workingAge, queryObject.DesignConcept);
                 mp.Address = queryObject.Address;
-                mp.Title = name;
+                mp.Title = users.UserName;
+                mp.Type = users.UserType;
                 mp.Longitude = address == null ? "0" : address.Longitute;
                 mp.Latitude = address == null ? "0" : address.Latitude;
                 mpList.Add(mp);
@@ -139,9 +140,9 @@ namespace RedShowHome.Controllers
                                select dcu;
             foreach (var queryObject in queryObjects)
             {
-                var name = (from user in rshEntities.RSH_User
+                var users = (from user in rshEntities.RSH_User
                             where user.UserID == queryObject.UserID
-                            select user.UserName).FirstOrDefault();
+                            select user).FirstOrDefault();
                 var address = (from addr in rshEntities.AddressPoint
                     where addr.Address == queryObject.Address
                     select addr).FirstOrDefault();
@@ -149,7 +150,8 @@ namespace RedShowHome.Controllers
                 mp.Description = string.Format(DesignCompanyDescriptionFormat, queryObject.Phone, queryObject.Address, queryObject.Description);
                 mp.Id = Guid.NewGuid().ToString();
                 mp.Address = queryObject.Address;
-                mp.Title = name;
+                mp.Title = users.UserName;
+                mp.Type = users.UserType;
                 mp.Longitude = address == null ? "0" : address.Longitute;
                 mp.Latitude = address == null ? "0" : address.Latitude;
                 mpList.Add(mp);
@@ -164,9 +166,9 @@ namespace RedShowHome.Controllers
                                select su;
             foreach (var queryObject in queryObjects)
             {
-                var name = (from user in rshEntities.RSH_User
+                var users = (from user in rshEntities.RSH_User
                             where user.UserID == queryObject.UserID
-                            select user.UserName).FirstOrDefault();
+                            select user).FirstOrDefault();
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
@@ -174,7 +176,8 @@ namespace RedShowHome.Controllers
                 mp.Description = string.Format(SellerDescriptionFormat, queryObject.Phone, queryObject.Address, queryObject.Description);
                 mp.Id = Guid.NewGuid().ToString();
                 mp.Address = queryObject.Address;
-                mp.Title = name;
+                mp.Title = users.UserName;
+                mp.Type = users.UserType;
                 mp.Longitude = address == null ? "0" : address.Longitute;
                 mp.Latitude = address == null ? "0" : address.Latitude;
                 mpList.Add(mp);
@@ -182,5 +185,7 @@ namespace RedShowHome.Controllers
         }
 
         #endregion
+
+
     }
 }

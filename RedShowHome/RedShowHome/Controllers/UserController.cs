@@ -10,6 +10,7 @@ using RedShowHome.Models;
 using WebGrease.Css.Ast.Selectors;
 using Context = System.Runtime.Remoting.Contexts.Context;
 using System.Web.Security;
+using RedShowHome.Models.Context;
 
 namespace RedShowHome.Controllers
 {
@@ -41,6 +42,8 @@ namespace RedShowHome.Controllers
                     select user).FirstOrDefault();
                 if (query != null)
                 {
+                    ContextHelper.GetCurrent().SetItem("UserID",query.UserID);
+                    ContextHelper.GetCurrent().SetItem("UserName",query.UserName);
                     return Json("/Home/Index");
                 }
                 else
@@ -52,6 +55,11 @@ namespace RedShowHome.Controllers
             {
                 return null;
             }
+        }
+
+        public ActionResult Mine()
+        {
+            return View();
         }
 
         public ActionResult NormalUserInfo()
@@ -107,7 +115,7 @@ namespace RedShowHome.Controllers
             try
             {
                 Designer_User du = new Designer_User();
-                du.UserID = Session["UserID"].ToString();
+                du.UserID = ContextHelper.GetCurrent().GetItem("UserID").ToString();
                 du.Sex = Request.Params.Get("Sex");
                 du.Phone = Request.Params.Get("Phone");
                 du.StartWorkTime = DateTime.Parse(Request.Params.Get("StartWorkTime"));
@@ -131,7 +139,7 @@ namespace RedShowHome.Controllers
             try
             {
                 DesignCompany_User dcu = new DesignCompany_User();
-                dcu.UserID = Session["UserID"].ToString();
+                dcu.UserID = ContextHelper.GetCurrent().GetItem("UserID").ToString();
                 dcu.Address = Request.Params.Get("Address");
                 dcu.Phone = Request.Params.Get("Phone");
                 dcu.Description = Request.Params.Get("Description");
@@ -153,7 +161,7 @@ namespace RedShowHome.Controllers
             try
             {
                 Seller_User su = new Seller_User();
-                su.UserID = Session["UserID"].ToString();
+                su.UserID = ContextHelper.GetCurrent().GetItem("UserID").ToString();
                 su.Address = Request.Params.Get("Address");
                 su.Phone = Request.Params.Get("Phone");
                 su.Description = Request.Params.Get("Description");
@@ -179,7 +187,8 @@ namespace RedShowHome.Controllers
                 ru.UserName = Request.Params.Get("UserName");
                 ru.LoginPassword = Encrypt(Request.Params.Get("LoginPassword"));
                 ru.UserID = Guid.NewGuid().ToString();
-                Session["UserID"] = ru.UserID;
+                ContextHelper.GetCurrent().SetItem("UserID", ru.UserID);
+                ContextHelper.GetCurrent().SetItem("UserName", ru.UserName);
                 ru.UserType = int.Parse(Request.Params.Get("UserType"));
                 rshEntities.RSH_User.Add(ru);
                 rshEntities.SaveChanges();
