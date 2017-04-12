@@ -14,12 +14,11 @@
   </EntityContainer>
   <EntityType Name="AddressPoint">
     <Key>
-      <PropertyRef Name="Uid" />
+      <PropertyRef Name="Address" />
     </Key>
-    <Property Name="Uid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
-    <Property Name="Longitute" Type="varchar" Nullable="false" MaxLength="30" />
-    <Property Name="Latitude" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="Longitute" Type="decimal" Nullable="false" Precision="10" Scale="6" />
+    <Property Name="Latitude" Type="decimal" Nullable="false" Precision="10" Scale="6" />
   </EntityType>
   <EntityType Name="Collection">
     <Key>

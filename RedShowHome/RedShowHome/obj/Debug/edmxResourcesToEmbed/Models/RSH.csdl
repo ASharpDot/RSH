@@ -3,13 +3,13 @@
   <EntityContainer Name="RedShowHomeEntities" p1:LazyLoadingEnabled="true">
     <EntitySet Name="Collection" EntityType="RedShowHomeModel.Collection" />
     <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.DesignCompany_User" />
-    <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Designer_User" />
     <EntitySet Name="EnjoyStyle" EntityType="RedShowHomeModel.EnjoyStyle" />
     <EntitySet Name="HouseOwner" EntityType="RedShowHomeModel.HouseOwner" />
     <EntitySet Name="Normal_User" EntityType="RedShowHomeModel.Normal_User" />
     <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
     <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.RSH_User" />
     <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Seller_User" />
+    <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Designer_User" />
     <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
   </EntityContainer>
   <EntityType Name="Collection">
@@ -28,18 +28,6 @@
     <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
     <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
     <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-    <Property Name="FansQuantity" Type="Int32" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Designer_User">
-    <Key>
-      <PropertyRef Name="UserID" />
-    </Key>
-    <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-    <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
-    <Property Name="StartWorkTime" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
-    <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-    <Property Name="DesignConcept" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="FansQuantity" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="EnjoyStyle">
@@ -99,13 +87,24 @@
     <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
     <Property Name="FansQuantity" Type="Int32" Nullable="false" />
   </EntityType>
+  <EntityType Name="Designer_User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Sex" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Type="DateTime" Name="StartWorkTime" Nullable="false" Precision="0" />
+    <Property Type="String" Name="Phone" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="DesignConcept" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="FansQuantity" Nullable="false" />
+  </EntityType>
   <EntityType Name="AddressPoint">
     <Key>
-      <PropertyRef Name="Uid" />
+      <PropertyRef Name="Address" />
     </Key>
-    <Property Type="Int32" Name="Uid" Nullable="false" />
     <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="Longitute" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Type="String" Name="Latitude" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Type="Decimal" Name="Longitute" Nullable="false" Precision="10" Scale="6" />
+    <Property Type="Decimal" Name="Latitude" Nullable="false" Precision="10" Scale="6" />
   </EntityType>
 </Schema>

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Objects.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using RedShowHome.Models;
 using WebGrease.Css.Ast.Selectors;
 
@@ -43,7 +46,7 @@ namespace RedShowHome.Controllers
             try
             {
                 List<MapPoint> mpList = new List<MapPoint>();
-                string searchText = Request.Params.Get("SearchText");
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
                 GetAllDesignCompany(mpList,searchText);
                 GetAllDesigner(mpList, searchText);
                 GetAllSeller(mpList, searchText);
@@ -60,7 +63,7 @@ namespace RedShowHome.Controllers
             try
             {
                 List<MapPoint> mpList = new List<MapPoint>();
-                string searchText = Request.Params.Get("SearchText");
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
                 GetAllDesigner(mpList, searchText);
                 return Json(mpList);
             }
@@ -75,7 +78,7 @@ namespace RedShowHome.Controllers
             try
             {
                 List<MapPoint> mpList = new List<MapPoint>();
-                string searchText = Request.Params.Get("SearchText");
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
                 GetAllDesignCompany(mpList, searchText);
                 return Json(mpList);
             }
@@ -90,8 +93,63 @@ namespace RedShowHome.Controllers
             try
             {
                 List<MapPoint> mpList = new List<MapPoint>();
-                string searchText = Request.Params.Get("SearchText");
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
                 GetAllSeller(mpList, searchText);
+                return Json(mpList);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region ActionResult:按距离查找
+
+        public ActionResult GetDesignerByDistance()
+        {
+            try
+            {
+                List<MapPoint> mpList = new List<MapPoint>();
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
+                decimal longitude = Convert.ToDecimal(Request.Params.Get(Constant.Longitude));
+                decimal latitude = Convert.ToDecimal(Request.Params.Get(Constant.Latitude));
+                GetDesignerByDistance(mpList, searchText,longitude,latitude);
+                return Json(mpList);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public ActionResult GetDesignCompanyByDistance()
+        {
+            try
+            {
+                List<MapPoint> mpList = new List<MapPoint>();
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
+                decimal longitude = Convert.ToDecimal(Request.Params.Get(Constant.Longitude));
+                decimal latitude = Convert.ToDecimal(Request.Params.Get(Constant.Latitude));
+                GetDesignCompanyByDistance(mpList, searchText, longitude, latitude);
+                return Json(mpList);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public ActionResult GetSellerByDistance()
+        {
+            try
+            {
+                List<MapPoint> mpList = new List<MapPoint>();
+                string searchText = Request.Params.Get(Constant.SearchText)??"";
+                decimal longitude = Convert.ToDecimal(Request.Params.Get(Constant.Longitude));
+                decimal latitude = Convert.ToDecimal(Request.Params.Get(Constant.Latitude));
+                GetSellerByDistance(mpList, searchText, longitude, latitude);
                 return Json(mpList);
             }
             catch (Exception)
@@ -106,15 +164,82 @@ namespace RedShowHome.Controllers
 
         private void GetAllDesigner(List<MapPoint> mpList, string searchText)
         {
-            var queryObjects = from du in rshEntities.Designer_User
+            IQueryable<Designer_User> queryObjects = from du in rshEntities.Designer_User
                                from rshu in rshEntities.RSH_User
                                where du.UserID==rshu.UserID && rshu.UserName.Contains(searchText)
                                select du;
+            SetDesignerMapPointList(mpList, queryObjects);
+        }
+
+        private void GetAllDesignCompany(List<MapPoint> mpList, string searchText)
+        {
+            IQueryable<DesignCompany_User> queryObjects = from dcu in rshEntities.DesignCompany_User
+                               from rshu in rshEntities.RSH_User
+                               where dcu.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
+                               select dcu;
+            SetDesignCompanyMapPointList(mpList,queryObjects);
+        }
+
+        private void GetAllSeller(List<MapPoint> mpList, string searchText)
+        {
+            IQueryable<Seller_User> queryObjects = from su in rshEntities.Seller_User
+                               from rshu in rshEntities.RSH_User
+                               where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
+                               select su;
+            SetSellerMapPointList(mpList, queryObjects);
+        }
+
+        #endregion
+
+        #region 私有方法：按距离查找
+
+        private void GetDesignerByDistance(List<MapPoint> mpList, string searchText, decimal longitude,
+            decimal latitude)
+        {
+            IQueryable<Designer_User> queryObjects = from du in rshEntities.Designer_User
+                                                     from rshu in rshEntities.RSH_User
+                                                     from ap in rshEntities.AddressPoint
+                                                     where du.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
+                                                     &&du.Address==ap.Address
+                                                     orderby SqlFunctions.Square(ap.Longitute-longitude) + SqlFunctions.Square(ap.Latitude-latitude)
+                                                     select du;
+            SetDesignerMapPointList(mpList,queryObjects);
+        }
+
+        private void GetDesignCompanyByDistance(List<MapPoint> mpList, string searchText, decimal longitude,
+            decimal latitude)
+        {
+            IQueryable<DesignCompany_User> queryObjects = from dcu in rshEntities.DesignCompany_User
+                                                          from rshu in rshEntities.RSH_User
+                                                          from ap in rshEntities.AddressPoint
+                                                          where dcu.UserID == rshu.UserID && rshu.UserName.Contains(searchText) && dcu.Address == ap.Address
+                                                          orderby SqlFunctions.Square(ap.Longitute - longitude) + SqlFunctions.Square(ap.Latitude - latitude)
+                                                          select dcu;
+            SetDesignCompanyMapPointList(mpList, queryObjects);
+        }
+
+        private void GetSellerByDistance(List<MapPoint> mpList, string searchText, decimal longitude,
+    decimal latitude)
+        {
+            IQueryable<Seller_User> queryObjects = from su in rshEntities.Seller_User
+                                                   from rshu in rshEntities.RSH_User
+                                                   from ap in rshEntities.AddressPoint
+                                                   where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
+                                                   orderby SqlFunctions.Square(ap.Longitute - longitude) + SqlFunctions.Square(ap.Latitude - latitude)
+                                                   select su;
+            SetSellerMapPointList(mpList, queryObjects);
+        }
+        #endregion
+
+        #region 私有方法，设置MapPoint List
+
+        private void SetDesignerMapPointList(List<MapPoint> mpList, IQueryable<Designer_User> queryObjects)
+        {
             foreach (var queryObject in queryObjects)
             {
                 var users = (from user in rshEntities.RSH_User
-                            where user.UserID == queryObject.UserID
-                            select user).FirstOrDefault();
+                             where user.UserID == queryObject.UserID
+                             select user).FirstOrDefault();
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
@@ -126,49 +251,41 @@ namespace RedShowHome.Controllers
                 mp.Address = queryObject.Address;
                 mp.Title = users.UserName;
                 mp.Type = users.UserType;
-                mp.Longitude = address == null ? "0" : address.Longitute;
-                mp.Latitude = address == null ? "0" : address.Latitude;
+                mp.Longitude = address == null ? 0 : address.Longitute;
+                mp.Latitude = address == null ? 0 : address.Latitude;
                 mpList.Add(mp);
             }
         }
 
-        private void GetAllDesignCompany(List<MapPoint> mpList, string searchText)
+        private void SetDesignCompanyMapPointList(List<MapPoint> mpList, IQueryable<DesignCompany_User> queryObjects)
         {
-            var queryObjects = from dcu in rshEntities.DesignCompany_User
-                               from rshu in rshEntities.RSH_User
-                               where dcu.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
-                               select dcu;
             foreach (var queryObject in queryObjects)
             {
                 var users = (from user in rshEntities.RSH_User
-                            where user.UserID == queryObject.UserID
-                            select user).FirstOrDefault();
+                             where user.UserID == queryObject.UserID
+                             select user).FirstOrDefault();
                 var address = (from addr in rshEntities.AddressPoint
-                    where addr.Address == queryObject.Address
-                    select addr).FirstOrDefault();
+                               where addr.Address == queryObject.Address
+                               select addr).FirstOrDefault();
                 MapPoint mp = new MapPoint();
                 mp.Description = string.Format(DesignCompanyDescriptionFormat, queryObject.Phone, queryObject.Address, queryObject.Description);
                 mp.Id = Guid.NewGuid().ToString();
                 mp.Address = queryObject.Address;
                 mp.Title = users.UserName;
                 mp.Type = users.UserType;
-                mp.Longitude = address == null ? "0" : address.Longitute;
-                mp.Latitude = address == null ? "0" : address.Latitude;
+                mp.Longitude = address == null ? 0 : address.Longitute;
+                mp.Latitude = address == null ? 0 : address.Latitude;
                 mpList.Add(mp);
             }
         }
 
-        private void GetAllSeller(List<MapPoint> mpList, string searchText)
+        private void SetSellerMapPointList(List<MapPoint> mpList, IQueryable<Seller_User> queryObjects)
         {
-            var queryObjects = from su in rshEntities.Seller_User
-                               from rshu in rshEntities.RSH_User
-                               where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
-                               select su;
             foreach (var queryObject in queryObjects)
             {
                 var users = (from user in rshEntities.RSH_User
-                            where user.UserID == queryObject.UserID
-                            select user).FirstOrDefault();
+                             where user.UserID == queryObject.UserID
+                             select user).FirstOrDefault();
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
@@ -178,14 +295,12 @@ namespace RedShowHome.Controllers
                 mp.Address = queryObject.Address;
                 mp.Title = users.UserName;
                 mp.Type = users.UserType;
-                mp.Longitude = address == null ? "0" : address.Longitute;
-                mp.Latitude = address == null ? "0" : address.Latitude;
+                mp.Longitude = address == null ? 0 : address.Longitute;
+                mp.Latitude = address == null ? 0 : address.Latitude;
                 mpList.Add(mp);
             }
         }
 
         #endregion
-
-
     }
 }

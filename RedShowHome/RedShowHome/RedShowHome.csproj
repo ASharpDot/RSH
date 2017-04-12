@@ -197,6 +197,7 @@
     <Compile Include="Models\Collection.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Constant.cs" />
     <Compile Include="Models\Context\Context.cs" />
     <Compile Include="Models\Context\ContextHelper.cs" />
     <Compile Include="Models\Context\IContext.cs" />
@@ -1137,6 +1138,7 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\MyScript\common.js" />
+    <Content Include="Scripts\MyScript\Map.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -35,15 +36,15 @@ namespace RedShowHome.Controllers
         {
             try
             {
-                var loginEmail = HttpContext.Request.Params.Get("LoginEmail");
-                var loginPassword = Encrypt(Request.Params.Get("LoginPassword"));
+                var loginEmail = HttpContext.Request.Params.Get(Constant.LoginEmail);
+                var loginPassword = Encrypt(Request.Params.Get(Constant.LoginPassword));
                 var query = (from user in rshEntities.RSH_User
                     where user.LoginEmail == loginEmail && user.LoginPassword == loginPassword
                     select user).FirstOrDefault();
                 if (query != null)
                 {
-                    ContextHelper.GetCurrent().SetItem("UserID",query.UserID);
-                    ContextHelper.GetCurrent().SetItem("UserName",query.UserName);
+                    ContextHelper.GetCurrent().SetItem(Constant.UserID,query.UserID);
+                    ContextHelper.GetCurrent().SetItem(Constant.UserName,query.UserName);
                     return Json("/Home/Index");
                 }
                 else
@@ -87,9 +88,9 @@ namespace RedShowHome.Controllers
             try
             {
                 Normal_User nu = new Normal_User();
-                nu.UserID = Session["UserID"].ToString();
-                nu.Sex = Request.Params.Get("Sex");
-                nu.Phone = Request.Params.Get("Phone");
+                nu.UserID = Session[Constant.UserID].ToString();
+                nu.Sex = Request.Params.Get(Constant.Sex);
+                nu.Phone = Request.Params.Get(Constant.Phone);
                 rshEntities.Normal_User.Add(nu);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = nu.UserID});
@@ -101,13 +102,19 @@ namespace RedShowHome.Controllers
             }
         }
 
-        private void CreateAddressPoint(string address,string longitude,string latitude)
+        private void CreateAddressPoint(string address, decimal longitude, decimal latitude)
         {
-            AddressPoint ap=new AddressPoint();
-            ap.Address = address;
-            ap.Longitute = longitude;
-            ap.Latitude = latitude;
-            rshEntities.AddressPoint.Add(ap);
+            var isExistAddress = from ad in rshEntities.AddressPoint
+                where ad.Address == address
+                select ad;
+            if (isExistAddress.Count()>0)
+            {
+                AddressPoint ap = new AddressPoint();
+                ap.Address = address;
+                ap.Longitute = longitude;
+                ap.Latitude = latitude;
+                rshEntities.AddressPoint.Add(ap);
+            }
         }
 
         public ActionResult SetDesignerUserInfo()
@@ -115,15 +122,15 @@ namespace RedShowHome.Controllers
             try
             {
                 Designer_User du = new Designer_User();
-                du.UserID = ContextHelper.GetCurrent().GetItem("UserID").ToString();
-                du.Sex = Request.Params.Get("Sex");
-                du.Phone = Request.Params.Get("Phone");
-                du.StartWorkTime = DateTime.Parse(Request.Params.Get("StartWorkTime"));
-                du.Address = Request.Params.Get("Address");
-                du.DesignConcept = Request.Params.Get("DesignConcept");
+                du.UserID = ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString();
+                du.Sex = Request.Params.Get(Constant.Sex);
+                du.Phone = Request.Params.Get(Constant.Phone);
+                du.StartWorkTime = Convert.ToDateTime(Request.Params.Get(Constant.StartWorkTime));
+                du.Address = Request.Params.Get(Constant.Address);
+                du.DesignConcept = Request.Params.Get(Constant.DesignConcept);
                 du.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"),
-                    Request.Params.Get("Latitude"));
+                CreateAddressPoint(Request.Params.Get(Constant.Address), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                    Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.Designer_User.Add(du);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = du.UserID});
@@ -139,12 +146,13 @@ namespace RedShowHome.Controllers
             try
             {
                 DesignCompany_User dcu = new DesignCompany_User();
-                dcu.UserID = ContextHelper.GetCurrent().GetItem("UserID").ToString();
-                dcu.Address = Request.Params.Get("Address");
-                dcu.Phone = Request.Params.Get("Phone");
-                dcu.Description = Request.Params.Get("Description");
+                dcu.UserID = ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString();
+                dcu.Address = Request.Params.Get(Constant.Address);
+                dcu.Phone = Request.Params.Get(Constant.Phone);
+                dcu.Description = Request.Params.Get(Constant.Description);
                 dcu.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"), Request.Params.Get("Latitude"));
+                CreateAddressPoint(Request.Params.Get(Constant.Address), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                    Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.DesignCompany_User.Add(dcu);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = dcu.UserID});
@@ -161,12 +169,13 @@ namespace RedShowHome.Controllers
             try
             {
                 Seller_User su = new Seller_User();
-                su.UserID = ContextHelper.GetCurrent().GetItem("UserID").ToString();
-                su.Address = Request.Params.Get("Address");
-                su.Phone = Request.Params.Get("Phone");
-                su.Description = Request.Params.Get("Description");
+                su.UserID = ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString();
+                su.Address = Request.Params.Get(Constant.Address);
+                su.Phone = Request.Params.Get(Constant.Phone);
+                su.Description = Request.Params.Get(Constant.Description);
                 su.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get("Address"), Request.Params.Get("Longitude"), Request.Params.Get("Latitude"));
+                CreateAddressPoint(Request.Params.Get(Constant.Address), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                    Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.Seller_User.Add(su);
                 rshEntities.SaveChanges();
                 return Json(new {UserID = su.UserID});
@@ -183,13 +192,13 @@ namespace RedShowHome.Controllers
             try
             {
                 RSH_User ru = new RSH_User();
-                ru.LoginEmail = Request.Params.Get("LoginEmail");
-                ru.UserName = Request.Params.Get("UserName");
-                ru.LoginPassword = Encrypt(Request.Params.Get("LoginPassword"));
+                ru.LoginEmail = Request.Params.Get(Constant.LoginEmail);
+                ru.UserName = Request.Params.Get(Constant.UserName);
+                ru.LoginPassword = Encrypt(Request.Params.Get(Constant.LoginPassword));
                 ru.UserID = Guid.NewGuid().ToString();
-                ContextHelper.GetCurrent().SetItem("UserID", ru.UserID);
-                ContextHelper.GetCurrent().SetItem("UserName", ru.UserName);
-                ru.UserType = int.Parse(Request.Params.Get("UserType"));
+                ContextHelper.GetCurrent().SetItem(Constant.UserID, ru.UserID);
+                ContextHelper.GetCurrent().SetItem(Constant.UserName, ru.UserName);
+                ru.UserType = Convert.ToInt32(Request.Params.Get(Constant.UserType));
                 rshEntities.RSH_User.Add(ru);
                 rshEntities.SaveChanges();
                 return Json(new {UserType = ru.UserType});

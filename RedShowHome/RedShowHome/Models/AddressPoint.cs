@@ -14,9 +14,8 @@ namespace RedShowHome.Models
     
     public partial class AddressPoint
     {
-        public int Uid { get; set; }
         public string Address { get; set; }
-        public string Longitute { get; set; }
-        public string Latitude { get; set; }
+        public decimal Longitute { get; set; }
+        public decimal Latitude { get; set; }
     }
 }

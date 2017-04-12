@@ -7,14 +7,14 @@
       <Diagram DiagramId="c7c22081b972437ba0f86297f34a7a46" Name="关系图1">
         <EntityTypeShape EntityType="RedShowHomeModel.Collection" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.DesignCompany_User" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RedShowHomeModel.Designer_User" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.EnjoyStyle" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.HouseOwner" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.Normal_User" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.RSH_House" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.RSH_User" Width="1.5" PointX="9.375" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="RedShowHomeModel.Seller_User" Width="1.5" PointX="7.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RedShowHomeModel.AddressPoint" Width="1.5" PointX="9.5" PointY="2.125" />
+        <EntityTypeShape EntityType="RedShowHomeModel.Designer_User" Width="1.5" PointX="0.625" PointY="2.875" />
+        <EntityTypeShape EntityType="RedShowHomeModel.AddressPoint" Width="1.5" PointX="7.625" PointY="6.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

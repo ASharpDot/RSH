@@ -86,6 +86,6 @@ E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\bin\ko\System.Spatial.r
 E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\bin\ru\System.Spatial.resources.dll
 E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\bin\zh-Hans\System.Spatial.resources.dll
 E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\bin\zh-Hant\System.Spatial.resources.dll
-E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\obj\Debug\RedShowHome.csprojResolveAssemblyReference.cache
 E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\obj\Debug\RedShowHome.dll
 E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\obj\Debug\RedShowHome.pdb
+E:\zyf\个人文档\zyfBY\程序\RedShowHome\RedShowHome\obj\Debug\RedShowHome.csprojResolveAssemblyReference.cache
