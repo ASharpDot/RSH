@@ -9,6 +9,6 @@ namespace RedShowHome.Models.Context
     {
         object GetItem(string key);
 
-        void SetItem(string key, object value);
+        void SetItem(string key, string value);
     }
 }

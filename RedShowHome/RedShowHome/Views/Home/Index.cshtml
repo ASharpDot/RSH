@@ -24,15 +24,18 @@
         <div id="menuDesignCompany" data-options="name:'DesignCompany',iconCls:'icon-red-point'">家装公司</div>
         <div id="menuSeller" data-options="name:'Seller',iconCls:'icon-yellow-point'">商家</div>
     </div>
+    <div id="alertDiv" class="alertPanel" style="padding: 5px;"></div>
 </div>
 
 <div id="allmap"></div>
 <div id="r-result"></div>
 
+<script src="~/Scripts/MyScript/Map.js"></script>
 <script type="text/javascript">
-    //map:地图对象，point：中心点对象
+    //map:地图对象，point：中心点对象，currentPoint：当前位置点对象
     var map;
     var point;
+    var currentPoint;
     $(function () {
         map = new BMap.Map("allmap");
         point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
@@ -51,10 +54,14 @@
     }
 
     function doSearchFromDBByInstance(url) {
+        $("#alertDiv").text(Map.Search.SearchCurrent);
+        $("#alertDiv").fadeToggle(1000);
         var geolocation = new BMap.Geolocation();
         var lon, lat;
         geolocation.getCurrentPosition(function (r) {
+            $("#alertDiv").fadeToggle();
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                currentPoint = r.point;
                 lon = r.longitude;
                 lat = r.latitude;
                 var para = { Longitude: lon, Latitude: lat };
@@ -63,7 +70,7 @@
                     $("#r-result").empty();
                     if (data && data.length) {
                         var centerPoint = new BMap.Point(data[0].Longitude, data[0].Latitude);
-                        var mk = new BMap.Marker(r.point);
+                        var mk = new BMap.Marker(currentPoint);
                         map.addOverlay(mk);
                         var infoWindow = new BMap.InfoWindow("<b>当前位置</b>");
                         mk.addEventListener("click", function () {

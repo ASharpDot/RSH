@@ -39,12 +39,12 @@ namespace RedShowHome.Controllers
                 var loginEmail = HttpContext.Request.Params.Get(Constant.LoginEmail);
                 var loginPassword = Encrypt(Request.Params.Get(Constant.LoginPassword));
                 var query = (from user in rshEntities.RSH_User
-                    where user.LoginEmail == loginEmail && user.LoginPassword == loginPassword
-                    select user).FirstOrDefault();
+                             where user.LoginEmail == loginEmail && user.LoginPassword == loginPassword
+                             select user).FirstOrDefault();
                 if (query != null)
                 {
-                    ContextHelper.GetCurrent().SetItem(Constant.UserID,query.UserID);
-                    ContextHelper.GetCurrent().SetItem(Constant.UserName,query.UserName);
+                    ContextHelper.GetCurrent().SetItem(Constant.UserID, query.UserID);
+                    ContextHelper.GetCurrent().SetItem(Constant.UserName, query.UserName);
                     return Json("/Home/Index");
                 }
                 else
@@ -52,7 +52,7 @@ namespace RedShowHome.Controllers
                     return null;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -88,32 +88,25 @@ namespace RedShowHome.Controllers
             try
             {
                 Normal_User nu = new Normal_User();
-                nu.UserID = Session[Constant.UserID].ToString();
+                nu.UserID = ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString();
                 nu.Sex = Request.Params.Get(Constant.Sex);
                 nu.Phone = Request.Params.Get(Constant.Phone);
                 rshEntities.Normal_User.Add(nu);
                 rshEntities.SaveChanges();
-                return Json(new {UserID = nu.UserID});
+                return Json(new { UserID = nu.UserID });
 
             }
             catch (Exception ex)
             {
+                var nu = rshEntities.Normal_User.Find(ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString());
+                if (nu != null)
+                {
+                    var rshu = rshEntities.RSH_User.FirstOrDefault(r => r.UserID == nu.UserID);
+                    rshEntities.Normal_User.Remove(nu);
+                    if (rshu != null)
+                        rshEntities.RSH_User.Remove(rshu);
+                }
                 return null;
-            }
-        }
-
-        private void CreateAddressPoint(string address, decimal longitude, decimal latitude)
-        {
-            var isExistAddress = from ad in rshEntities.AddressPoint
-                where ad.Address == address
-                select ad;
-            if (isExistAddress.Count()>0)
-            {
-                AddressPoint ap = new AddressPoint();
-                ap.Address = address;
-                ap.Longitute = longitude;
-                ap.Latitude = latitude;
-                rshEntities.AddressPoint.Add(ap);
             }
         }
 
@@ -133,10 +126,18 @@ namespace RedShowHome.Controllers
                     Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.Designer_User.Add(du);
                 rshEntities.SaveChanges();
-                return Json(new {UserID = du.UserID});
+                return Json(new { UserID = du.UserID });
             }
             catch (Exception ex)
             {
+                var nu = rshEntities.Designer_User.Find(ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString());
+                if (nu != null)
+                {
+                    var rshu = rshEntities.RSH_User.FirstOrDefault(r => r.UserID == nu.UserID);
+                    rshEntities.Designer_User.Remove(nu);
+                    if (rshu != null)
+                        rshEntities.RSH_User.Remove(rshu);
+                }
                 return null;
             }
         }
@@ -155,11 +156,19 @@ namespace RedShowHome.Controllers
                     Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.DesignCompany_User.Add(dcu);
                 rshEntities.SaveChanges();
-                return Json(new {UserID = dcu.UserID});
+                return Json(new { UserID = dcu.UserID });
 
             }
             catch (Exception ex)
             {
+                var nu = rshEntities.DesignCompany_User.Find(ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString());
+                if (nu != null)
+                {
+                    var rshu = rshEntities.RSH_User.FirstOrDefault(r => r.UserID == nu.UserID);
+                    rshEntities.DesignCompany_User.Remove(nu);
+                    if (rshu != null)
+                        rshEntities.RSH_User.Remove(rshu);
+                }
                 return null;
             }
         }
@@ -178,12 +187,46 @@ namespace RedShowHome.Controllers
                     Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.Seller_User.Add(su);
                 rshEntities.SaveChanges();
-                return Json(new {UserID = su.UserID});
+                return Json(new { UserID = su.UserID });
 
             }
             catch (Exception ex)
             {
+                var nu = rshEntities.Seller_User.Find(ContextHelper.GetCurrent().GetItem(Constant.UserID).ToString());
+                if (nu != null)
+                {
+                    var rshu = rshEntities.RSH_User.FirstOrDefault(r => r.UserID == nu.UserID);
+                    rshEntities.Seller_User.Remove(nu);
+                    if (rshu != null)
+                        rshEntities.RSH_User.Remove(rshu);
+                }
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// 检查是否已存在该用户
+        /// </summary>
+        /// <param name="loginEmail"></param>
+        /// <returns></returns>
+        public bool CheckExistUser(string loginEmail)
+        {
+            bool isExist = rshEntities.RSH_User.Any(u => u.LoginEmail == loginEmail);
+            if (isExist)
+                return true;
+            return false;
+        }
+
+        private void CreateAddressPoint(string address, decimal longitude, decimal latitude)
+        {
+            bool isExist = rshEntities.AddressPoint.Any(u => u.Address == address);
+            if (!isExist)
+            {
+                AddressPoint ap = new AddressPoint();
+                ap.Address = address;
+                ap.Longitute = longitude;
+                ap.Latitude = latitude;
+                rshEntities.AddressPoint.Add(ap);
             }
         }
 
@@ -191,8 +234,11 @@ namespace RedShowHome.Controllers
         {
             try
             {
+                string loginEmail = Request.Params.Get(Constant.LoginEmail);
+                if (CheckExistUser(loginEmail))
+                    throw new Exception("该账号已注册");
                 RSH_User ru = new RSH_User();
-                ru.LoginEmail = Request.Params.Get(Constant.LoginEmail);
+                ru.LoginEmail = loginEmail;
                 ru.UserName = Request.Params.Get(Constant.UserName);
                 ru.LoginPassword = Encrypt(Request.Params.Get(Constant.LoginPassword));
                 ru.UserID = Guid.NewGuid().ToString();
@@ -201,7 +247,7 @@ namespace RedShowHome.Controllers
                 ru.UserType = Convert.ToInt32(Request.Params.Get(Constant.UserType));
                 rshEntities.RSH_User.Add(ru);
                 rshEntities.SaveChanges();
-                return Json(new {UserType = ru.UserType});
+                return Json(new { UserType = ru.UserType });
             }
             catch (Exception ex)
             {

@@ -1,5 +1,14 @@
 ﻿@{
     ViewBag.Title = "Mine";
 }
+<div style="padding: 5px 0;">
+    <a id="publishBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width: 200px;height: 200px;"> 发布家装需求 </a>
+</div>
 
-<h2>Mine</h2>
+<script type="text/javascript">
+    $(function() {
+        $("#publishBtn").bind('click', function() {
+            window.location.href = "/Order/Index";
+        });
+    });
+</script>

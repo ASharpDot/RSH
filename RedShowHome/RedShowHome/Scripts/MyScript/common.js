@@ -44,6 +44,7 @@ RSH.Search.SearchEmpty = "未检索出数据，已为您从网络中筛选";
 RSH.Search.OnlySearchEmpty = "未检索出数据";
 RSH.Search.EmptyValue = "请输入要检索的内容";
 RSH.Search.GetCurrentPositionFailed = "当前位置获取失败，无法进行自动定位";
+RSH.Search.SearchNow = "正在获取数据...";
 
 function InitMap(map, centerPoint) {
     window.map = map;
