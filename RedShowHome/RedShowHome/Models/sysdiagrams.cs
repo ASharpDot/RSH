@@ -12,16 +12,12 @@ namespace RedShowHome.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RSH_House
+    public partial class sysdiagrams
     {
-        public string HouseID { get; set; }
-        public string Address { get; set; }
-        public int Status { get; set; }
-        public double Area { get; set; }
-        public int HouseType { get; set; }
-        public int DecorationWay { get; set; }
-        public string Description { get; set; }
-        public string Ichnography { get; set; }
-        public string Valid { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

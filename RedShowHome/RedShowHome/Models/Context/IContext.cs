@@ -7,7 +7,7 @@ namespace RedShowHome.Models.Context
 {
     public interface IContext
     {
-        object GetItem(string key);
+        string GetItem(string key);
 
         void SetItem(string key, string value);
     }

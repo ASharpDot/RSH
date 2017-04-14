@@ -14,7 +14,7 @@ namespace RedShowHome.Controllers
 {
     public class HomeController : BaseController
     {
-        private const string DesignCompanyDescriptionFormat = "联系方式：{0}<br/>联系地址：<br/>\n公司信息：{2}";
+        private const string DesignCompanyDescriptionFormat = "联系方式：{0}<br/>联系地址：<br/>公司信息：{2}";
         private const string DesignerDescriptionFormat = "性别：{0}<br/>联系方式：{1}<br/>联系地址：{2}<br/>工作经验：{3}年<br/>设计理念：{4}";
         private const string SellerDescriptionFormat = "联系方式：{0}<br/>联系地址：{1}<br/>公司信息：{2}";
         

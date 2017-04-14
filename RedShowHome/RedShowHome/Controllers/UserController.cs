@@ -58,7 +58,7 @@ namespace RedShowHome.Controllers
             }
         }
 
-        public ActionResult Mine()
+        public ActionResult NormalMine()
         {
             return View();
         }

@@ -18,7 +18,7 @@ namespace RedShowHome.Models.Context
             return ContextMap;
         }
 
-        public object GetItem(string key)
+        public string GetItem(string key)
         {
             return ContextMap.ContainsKey(key) ? ContextMap[key] : "";
         }

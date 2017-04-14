@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "发布请求";
+}
+<div id="myHouse"></div>
+<div style="padding: 5px 0;">
+    <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px;height: 120px">添加一个房子</a>
+</div>
+<div id="addHouse" class="easyui-panel" title="房子信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+    <div style="margin-bottom: 20px">
+        <label for="area" class="label-top">建筑面积(m²):</label>
+        <input id="area" class="easyui-validatebox tb" data-options="required:true">
+    </div>
+    <div style="margin-bottom: 20px">
+        <select class="easyui-combobox tb" id="houseType" label="户型:" labelposition="top" style="width: 100%;" panelheight="100px">
+            <option value="1">一居室</option>
+            <option value="2">二居室</option>
+            <option value="3">三居室</option>
+            <option value="4">四居室</option>
+            <option value="5">小户型</option>
+            <option value="6">公寓</option>
+            <option value="7">复式</option>
+            <option value="8">别墅</option>
+            <option value="9">其他</option>
+        </select>
+    </div>
+    <div style="margin-bottom: 20px">
+        <select class="easyui-combobox tb" id="houseStatus" label="装修状态:" labelposition="top" style="width: 100%;" panelheight="100px">
+            <option value="1">准备：挑选风格找公司</option>
+            <option value="2">拆改：敲敲打打改户型</option>
+            <option value="3">水电：铺设电线埋水管</option>
+            <option value="4">泥木：贴砖打柜做吊顶</option>
+            <option value="5">油漆：刷完木漆刷墙漆</option>
+            <option value="6">竣工：安装橱柜铺地板</option>
+            <option value="7">软装：摆好沙发挂窗帘</option>
+            <option value="8">入住：欢天喜地住新家</option>
+        </select>
+    </div>
+    <div style="margin-bottom: 20px">
+        <select class="easyui-combobox tb" id="decorationWay" label="装修方式:" labelposition="top" style="width: 100%;" panelheight="80px">
+            <option value="1">清包：预算最低，只包施工</option>
+            <option value="2">半包：大众首选，包施工和辅料</option>
+            <option value="3">全包：省时省力，包施工和所有材料</option>
+        </select>
+    </div>
+    <div style="margin-bottom: 20px">
+        <label for="address" class="label-top">地址:</label>
+        <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+        <div id="smallmap"></div>
+    </div>
+    <div style="margin-bottom: 20px">
+        <label for="description" class="label-top">描述:</label>
+        <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+    </div>
+    <div style="margin-bottom: 20px">
+        <label for="description" class="label-top">平面图:</label>
+        <img id="ichonography" alt="" style="width: 300px; height: 200px" src="~/Content/images/chooseFile.png">
+        <input id="fileToUpload" style="display: none" type="file" name="upfile">
+    </div>
+    <div style="padding: 5px 0;">
+        <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">添加 </a>
+    </div>
+</div>
+<script>
+    var uploadFilePath="";
+    $(function() {
+        getAllHouse();
+        $("#address").textbox('textbox').bind({ blur: searchAddressPoint });
+        $("#btnAddHouse").bind('click', function() {
+            $("#addHouse").panel('open');
+            var map = new BMap.Map("smallmap");
+            var point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+            InitMap(map, point);
+        });
+        $("#ichonography").on('click', function () {
+            $('#fileToUpload').click();
+        });
+        $('#fileToUpload').on('change', function () {
+            $.ajaxFileUpload(
+                {
+                    url: '/Demand/Upload', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'fileToUpload', //文件上传域的ID
+                    dataType: 'json', //返回值类型 一般设置为json
+                    success: function(data)  //服务器成功响应处理函数
+                    {
+                        uploadFilePath = data.FilePath;
+                    },
+                    error: function(data)//服务器响应失败处理函数
+                    {
+                        $.messager.alert(RSH.Common.AlertTitle, RSH.Common.UploadFileFailed);
+                    }
+                }
+            );
+            return false;
+        });
+        $("#btnAdd").bind('click', function() {
+            var para = {
+                Area: $("#area").val(),
+                HouseType: $("#houseType").combobox('getValue'),
+                HouseStatus: $("#houseStatus").combobox('getValue'),
+                DecorationWay: $("#decorationWay").combobox('getValue'),
+                Address: $("#address").val(),
+                Ichonography: uploadFilePath
+            };
+            $.ajax({                
+                url: '/Demand/AddHouse',
+                type: 'post',
+                data: para,
+                success: function (data) {
+                    if (data) {
+                        refreshAllHouse();
+                        $.messager.show({
+                            title: RSH.Common.AlertTitle,
+                            msg: RSH.House.AddHouseSuccess,
+                            showType: 'slide',
+                            timeOut: '3000'
+                        });
+                    }
+                },
+                error: function (returnInfo) {
+                    window.location.href = "/User/Login";
+                }
+            });
+        });
+    });
+    
+    function searchAddressPoint() {
+        map.clearOverlays();
+        var localSearch = new BMap.LocalSearch(map);
+        localSearch.enableAutoViewport();
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            if (searchResult != null) {
+                var poi = searchResult.getPoi(0);
+                map.centerAndZoom(poi.point, 16);
+                $("#address").data("Longitude", poi.point.lng);
+                $("#address").data("Latitude", poi.point.lat);
+                var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));
+                map.addOverlay(marker);
+            }
+        });
+        localSearch.search($("#address").val());
+    }
+    
+    function getAllHouse() {
+        $("#addHouse").panel('close');
+        $.post('/Demand/GetAllHouse', {}, function(data) {
+            if (data && data.length > 0) {
+                for (var i in data) {
+                    var houseInfo = data[i];
+                    var htmlText = houseInfo.FormatInfo;
+                    $("#myHouse").append("<div id=" + houseInfo.HouseID + " class='searchPanelItem'>" + htmlText + "</div>");
+                }
+            }
+        });
+    }
+    
+    function refreshAllHouse() {
+        $("#myHouse").empty();
+        getAllHouse();
+    }
+</script>

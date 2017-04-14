@@ -25,15 +25,17 @@ namespace RedShowHome.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<AddressPoint> AddressPoint { get; set; }
         public DbSet<Collection> Collection { get; set; }
+        public DbSet<Demand> Demand { get; set; }
         public DbSet<DesignCompany_User> DesignCompany_User { get; set; }
+        public DbSet<Designer_User> Designer_User { get; set; }
         public DbSet<EnjoyStyle> EnjoyStyle { get; set; }
         public DbSet<HouseOwner> HouseOwner { get; set; }
         public DbSet<Normal_User> Normal_User { get; set; }
-        public DbSet<RSH_House> RSH_House { get; set; }
         public DbSet<RSH_User> RSH_User { get; set; }
         public DbSet<Seller_User> Seller_User { get; set; }
-        public DbSet<Designer_User> Designer_User { get; set; }
-        public DbSet<AddressPoint> AddressPoint { get; set; }
+        public DbSet<RSH_House> RSH_House { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

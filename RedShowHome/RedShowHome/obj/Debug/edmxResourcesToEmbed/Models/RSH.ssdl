@@ -3,6 +3,7 @@
   <EntityContainer Name="RedShowHomeModelStoreContainer">
     <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.Store.AddressPoint" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Collection" EntityType="RedShowHomeModel.Store.Collection" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Demand" EntityType="RedShowHomeModel.Store.Demand" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.Store.DesignCompany_User" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Store.Designer_User" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EnjoyStyle" EntityType="RedShowHomeModel.Store.EnjoyStyle" store:Type="Tables" Schema="dbo" />
@@ -11,6 +12,7 @@
     <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.Store.RSH_House" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.Store.RSH_User" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Store.Seller_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="RedShowHomeModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="AddressPoint">
     <Key>
@@ -27,6 +29,17 @@
     </Key>
     <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
     <Property Name="CollectUserID" Type="varchar" Nullable="false" MaxLength="36" />
+  </EntityType>
+  <EntityType Name="Demand">
+    <Key>
+      <PropertyRef Name="DemandID" />
+    </Key>
+    <Property Name="DemandID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="CreatorID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="DemandName" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="Visible" Type="nchar" Nullable="false" MaxLength="1" />
+    <Property Name="Valid" Type="nchar" Nullable="false" MaxLength="1" />
   </EntityType>
   <EntityType Name="DesignCompany_User">
     <Key>
@@ -45,7 +58,7 @@
     <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
     <Property Name="Sex" Type="nchar" Nullable="false" MaxLength="1" />
     <Property Name="StartWorkTime" Type="date" Nullable="false" />
-    <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="50" />
     <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="DesignConcept" Type="nvarchar" Nullable="false" MaxLength="30" />
     <Property Name="FansQuantity" Type="int" Nullable="false" />
@@ -65,6 +78,7 @@
     </Key>
     <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
     <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="Valid" Type="nchar" Nullable="false" MaxLength="1" />
   </EntityType>
   <EntityType Name="Normal_User">
     <Key>
@@ -80,12 +94,13 @@
     </Key>
     <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
     <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
-    <Property Name="Status" Type="int" />
+    <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="Area" Type="float" Nullable="false" />
     <Property Name="HouseType" Type="int" Nullable="false" />
     <Property Name="DecorationWay" Type="int" Nullable="false" />
     <Property Name="Description" Type="nvarchar" MaxLength="100" />
     <Property Name="Ichnography" Type="nvarchar" MaxLength="100" />
+    <Property Name="Valid" Type="nchar" Nullable="false" MaxLength="1" />
   </EntityType>
   <EntityType Name="RSH_User">
     <Key>
@@ -106,5 +121,15 @@
     <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="FansQuantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
 </Schema>

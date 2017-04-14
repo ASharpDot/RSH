@@ -16,5 +16,6 @@ namespace RedShowHome.Models
     {
         public string UserID { get; set; }
         public string HouseID { get; set; }
+        public string Valid { get; set; }
     }
 }

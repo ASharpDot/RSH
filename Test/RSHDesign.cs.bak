@@ -94,7 +94,7 @@ namespace ConsoleApplication1
         public int HouseID { get; set; }
         public string Address { get; set; }
         public byte Status { get; set; }//装修状态，可仿照图巴图
-        public float Area { get; set; }//建筑面积，单位平方米
+        public int Area { get; set; }//建筑面积，单位平方米
         public byte HouseType { get; set; }//户型：几居室
         public byte DecorationWay { get; set; }//装修方法：1.清包、2.半包、3.全包等
         public string Ichnography { get; set; }//平面图，可为空

@@ -22,5 +22,12 @@ namespace RedShowHome.Models
         public const string UserName = "UserName";
         public const string LoginPassword = "LoginPassword";
         public const string UserType = "UserType";
+        public const string HouseID = "HouseID";
+        public const string Status = "Status";
+        public const string HouseType = "HouseType";
+        public const string Area = "Area";
+        public const string DecorationWay = "DecorationWay";
+        public const string Ichnography = "Ichnography";
+
     }
 }

@@ -8,6 +8,7 @@
         <EntityContainer Name="RedShowHomeModelStoreContainer">
           <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.Store.AddressPoint" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Collection" EntityType="RedShowHomeModel.Store.Collection" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Demand" EntityType="RedShowHomeModel.Store.Demand" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.Store.DesignCompany_User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Store.Designer_User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EnjoyStyle" EntityType="RedShowHomeModel.Store.EnjoyStyle" store:Type="Tables" Schema="dbo" />
@@ -16,6 +17,7 @@
           <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.Store.RSH_House" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.Store.RSH_User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Store.Seller_User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="RedShowHomeModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
         <EntityType Name="AddressPoint">
           <Key>
@@ -32,6 +34,17 @@
           </Key>
           <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
           <Property Name="CollectUserID" Type="varchar" Nullable="false" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="Demand">
+          <Key>
+            <PropertyRef Name="DemandID" />
+          </Key>
+          <Property Name="DemandID" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="CreatorID" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="DemandName" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="Visible" Type="nchar" Nullable="false" MaxLength="1" />
+          <Property Name="Valid" Type="nchar" Nullable="false" MaxLength="1" />
         </EntityType>
         <EntityType Name="DesignCompany_User">
           <Key>
@@ -50,7 +63,7 @@
           <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
           <Property Name="Sex" Type="nchar" Nullable="false" MaxLength="1" />
           <Property Name="StartWorkTime" Type="date" Nullable="false" />
-          <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="DesignConcept" Type="nvarchar" Nullable="false" MaxLength="30" />
           <Property Name="FansQuantity" Type="int" Nullable="false" />
@@ -70,6 +83,7 @@
           </Key>
           <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="36" />
           <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
+          <Property Name="Valid" Type="nchar" Nullable="false" MaxLength="1" />
         </EntityType>
         <EntityType Name="Normal_User">
           <Key>
@@ -85,12 +99,13 @@
           </Key>
           <Property Name="HouseID" Type="varchar" Nullable="false" MaxLength="36" />
           <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="Status" Type="int" />
+          <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="Area" Type="float" Nullable="false" />
           <Property Name="HouseType" Type="int" Nullable="false" />
           <Property Name="DecorationWay" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Ichnography" Type="nvarchar" MaxLength="100" />
+          <Property Name="Valid" Type="nchar" Nullable="false" MaxLength="1" />
         </EntityType>
         <EntityType Name="RSH_User">
           <Key>
@@ -112,109 +127,34 @@
           <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="FansQuantity" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RedShowHomeModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RedShowHomeEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
           <EntitySet Name="Collection" EntityType="RedShowHomeModel.Collection" />
+          <EntitySet Name="Demand" EntityType="RedShowHomeModel.Demand" />
           <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.DesignCompany_User" />
+          <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Designer_User" />
           <EntitySet Name="EnjoyStyle" EntityType="RedShowHomeModel.EnjoyStyle" />
           <EntitySet Name="HouseOwner" EntityType="RedShowHomeModel.HouseOwner" />
           <EntitySet Name="Normal_User" EntityType="RedShowHomeModel.Normal_User" />
-          <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
           <EntitySet Name="RSH_User" EntityType="RedShowHomeModel.RSH_User" />
           <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Seller_User" />
-          <EntitySet Name="Designer_User" EntityType="RedShowHomeModel.Designer_User" />
-          <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
+          <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
+          <EntitySet Name="sysdiagrams" EntityType="RedShowHomeModel.sysdiagrams" />
         </EntityContainer>
-        <EntityType Name="Collection">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="CollectUserID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="CollectUserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="DesignCompany_User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="FansQuantity" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EnjoyStyle">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="StyleType" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="StyleType" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="HouseOwner">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="HouseID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="HouseID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="Normal_User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
-          <Property Name="Phone" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="RSH_House">
-          <Key>
-            <PropertyRef Name="HouseID" />
-          </Key>
-          <Property Name="HouseID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="Area" Type="Double" Nullable="false" />
-          <Property Name="HouseType" Type="Int32" Nullable="false" />
-          <Property Name="DecorationWay" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Ichnography" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="RSH_User">
-          <Key>
-            <PropertyRef Name="LoginEmail" />
-          </Key>
-          <Property Name="LoginEmail" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
-          <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Seller_User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="36" Unicode="false" FixedLength="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="FansQuantity" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Designer_User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Sex" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
-          <Property Type="DateTime" Name="StartWorkTime" Nullable="false" Precision="0" />
-          <Property Type="String" Name="Phone" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="DesignConcept" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="FansQuantity" Nullable="false" />
-        </EntityType>
         <EntityType Name="AddressPoint">
           <Key>
             <PropertyRef Name="Address" />
@@ -223,89 +163,159 @@
           <Property Type="Decimal" Name="Longitute" Nullable="false" Precision="10" Scale="6" />
           <Property Type="Decimal" Name="Latitude" Nullable="false" Precision="10" Scale="6" />
         </EntityType>
-      </Schema>
+        <EntityType Name="Collection">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="CollectUserID" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CollectUserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Demand">
+          <Key>
+            <PropertyRef Name="DemandID" />
+          </Key>
+          <Property Type="String" Name="DemandID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CreatorID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HouseID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DemandName" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Visible" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Valid" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DesignCompany_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FansQuantity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Designer_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Sex" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Type="DateTime" Name="StartWorkTime" Nullable="false" Precision="0" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DesignConcept" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FansQuantity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EnjoyStyle">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="StyleType" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="StyleType" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HouseOwner">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="HouseID" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HouseID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Valid" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Normal_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Sex" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Phone" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RSH_User">
+          <Key>
+            <PropertyRef Name="LoginEmail" />
+          </Key>
+          <Property Type="String" Name="LoginEmail" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LoginPassword" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="UserType" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seller_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FansQuantity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RSH_House">
+          <Key>
+            <PropertyRef Name="HouseID" />
+          </Key>
+          <Property Type="String" Name="HouseID" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Double" Name="Area" Nullable="false" />
+          <Property Type="Int32" Name="HouseType" Nullable="false" />
+          <Property Type="Int32" Name="DecorationWay" Nullable="false" />
+          <Property Type="String" Name="Description" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Ichnography" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Valid" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="principal_id" Nullable="false" />
+          <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="version" />
+          <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RedShowHomeModelStoreContainer" CdmEntityContainer="RedShowHomeEntities">
+          <EntitySetMapping Name="AddressPoint">
+            <EntityTypeMapping TypeName="RedShowHomeModel.AddressPoint">
+              <MappingFragment StoreEntitySet="AddressPoint">
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitute" ColumnName="Longitute" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Collection">
             <EntityTypeMapping TypeName="RedShowHomeModel.Collection">
               <MappingFragment StoreEntitySet="Collection">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CollectUserID" ColumnName="CollectUserID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Demand">
+            <EntityTypeMapping TypeName="RedShowHomeModel.Demand">
+              <MappingFragment StoreEntitySet="Demand">
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="DemandName" ColumnName="DemandName" />
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+                <ScalarProperty Name="CreatorID" ColumnName="CreatorID" />
+                <ScalarProperty Name="DemandID" ColumnName="DemandID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DesignCompany_User">
             <EntityTypeMapping TypeName="RedShowHomeModel.DesignCompany_User">
               <MappingFragment StoreEntitySet="DesignCompany_User">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EnjoyStyle">
-            <EntityTypeMapping TypeName="RedShowHomeModel.EnjoyStyle">
-              <MappingFragment StoreEntitySet="EnjoyStyle">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="StyleType" ColumnName="StyleType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HouseOwner">
-            <EntityTypeMapping TypeName="RedShowHomeModel.HouseOwner">
-              <MappingFragment StoreEntitySet="HouseOwner">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Normal_User">
-            <EntityTypeMapping TypeName="RedShowHomeModel.Normal_User">
-              <MappingFragment StoreEntitySet="Normal_User">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RSH_House">
-            <EntityTypeMapping TypeName="RedShowHomeModel.RSH_House">
-              <MappingFragment StoreEntitySet="RSH_House">
-                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
-                <ScalarProperty Name="HouseType" ColumnName="HouseType" />
-                <ScalarProperty Name="DecorationWay" ColumnName="DecorationWay" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Ichnography" ColumnName="Ichnography" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RSH_User">
-            <EntityTypeMapping TypeName="RedShowHomeModel.RSH_User">
-              <MappingFragment StoreEntitySet="RSH_User">
-                <ScalarProperty Name="LoginEmail" ColumnName="LoginEmail" />
-                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Seller_User">
-            <EntityTypeMapping TypeName="RedShowHomeModel.Seller_User">
-              <MappingFragment StoreEntitySet="Seller_User">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -322,12 +332,77 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AddressPoint">
-            <EntityTypeMapping TypeName="RedShowHomeModel.AddressPoint">
-              <MappingFragment StoreEntitySet="AddressPoint">
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitute" ColumnName="Longitute" />
+          <EntitySetMapping Name="EnjoyStyle">
+            <EntityTypeMapping TypeName="RedShowHomeModel.EnjoyStyle">
+              <MappingFragment StoreEntitySet="EnjoyStyle">
+                <ScalarProperty Name="StyleType" ColumnName="StyleType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HouseOwner">
+            <EntityTypeMapping TypeName="RedShowHomeModel.HouseOwner">
+              <MappingFragment StoreEntitySet="HouseOwner">
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Normal_User">
+            <EntityTypeMapping TypeName="RedShowHomeModel.Normal_User">
+              <MappingFragment StoreEntitySet="Normal_User">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RSH_User">
+            <EntityTypeMapping TypeName="RedShowHomeModel.RSH_User">
+              <MappingFragment StoreEntitySet="RSH_User">
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+                <ScalarProperty Name="LoginEmail" ColumnName="LoginEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seller_User">
+            <EntityTypeMapping TypeName="RedShowHomeModel.Seller_User">
+              <MappingFragment StoreEntitySet="Seller_User">
+                <ScalarProperty Name="FansQuantity" ColumnName="FansQuantity" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RSH_House">
+            <EntityTypeMapping TypeName="RedShowHomeModel.RSH_House">
+              <MappingFragment StoreEntitySet="RSH_House">
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="Ichnography" ColumnName="Ichnography" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DecorationWay" ColumnName="DecorationWay" />
+                <ScalarProperty Name="HouseType" ColumnName="HouseType" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RedShowHomeModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

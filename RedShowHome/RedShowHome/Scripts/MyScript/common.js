@@ -14,9 +14,11 @@ RSH.Common.zh_CN_UserType1 = "普通用户";
 RSH.Common.zh_CN_UserType2 = "设计师";
 RSH.Common.zh_CN_UserType3 = "家装公司";
 RSH.Common.zh_CN_UserType4 = "商户";
+RSH.Common.UploadFileFailed = "文件上传失败";
 
 RSH.Login = {};
 RSH.Login.LoginFail = "登录失败";
+RSH.Login.PleaseLogin = "登录状态失效，请先登录";
 
 RSH.Register = {};
 RSH.Register.RegisterSuccess = "注册成功";
@@ -45,6 +47,9 @@ RSH.Search.OnlySearchEmpty = "未检索出数据";
 RSH.Search.EmptyValue = "请输入要检索的内容";
 RSH.Search.GetCurrentPositionFailed = "当前位置获取失败，无法进行自动定位";
 RSH.Search.SearchNow = "正在获取数据...";
+
+RSH.House = {};
+RSH.House.AddHouseSuccess = "您的房子添加成功";
 
 function InitMap(map, centerPoint) {
     window.map = map;
