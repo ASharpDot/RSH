@@ -37,11 +37,11 @@ namespace RedShowHome.Controllers
                     return "竣工";
                 case 7:
                     return "软装";
-                case 8 :
+                case 8:
                     return "入住";
                 default:
                     return "无";
-            }    
+            }
         }
 
         private string ConvertHouseType(int type)
@@ -90,6 +90,9 @@ namespace RedShowHome.Controllers
 
         public ActionResult Index()
         {
+            var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
+            if (userID == "")
+                return RedirectToAction("Login", "User");
             return View();
         }
 
@@ -98,26 +101,29 @@ namespace RedShowHome.Controllers
             try
             {
                 var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
-                if(userID=="")
+                if (userID == "")
                     throw new Exception("重新登录");
-                RSH_House rh=new RSH_House();
+                RSH_House rh = new RSH_House();
                 rh.HouseID = Guid.NewGuid().ToString();
                 rh.Area = Convert.ToDouble(Request.Params.Get(Constant.Area));
                 rh.HouseType = Convert.ToInt32(Request.Params.Get(Constant.HouseType));
                 rh.Status = Convert.ToInt32(Request.Params.Get(Constant.Status));
                 rh.DecorationWay = Convert.ToInt32(Request.Params.Get(Constant.DecorationWay));
                 rh.Address = Request.Params.Get(Constant.Address);
+                rh.Description = Request.Params.Get(Constant.Description);
                 rh.Ichnography = Request.Params.Get(Constant.Ichnography);
-                HouseOwner ho=new HouseOwner();
+                rh.Valid = "1";
+                HouseOwner ho = new HouseOwner();
                 ho.HouseID = rh.HouseID;
                 ho.UserID = userID;
+                ho.Valid = "1";
                 rshEntities.RSH_House.Add(rh);
                 rshEntities.HouseOwner.Add(ho);
                 rshEntities.SaveChanges();
             }
             catch (Exception ex)
             {
-                throw  new Exception(ex.Message);
+                throw new Exception(ex.Message);
             }
             return Json(true);
         }
@@ -149,28 +155,28 @@ namespace RedShowHome.Controllers
                 HttpFileCollection hfc = System.Web.HttpContext.Current.Request.Files;
                 if (hfc.Count > 0)
                 {
-                    string newFileName = DateTime.Now.ToString("yyyyMMddhhmm")+"_"+Guid.NewGuid() + Path.GetExtension(hfc[0].FileName);
+                    string newFileName = DateTime.Now.ToString("yyyyMMddhhmm") + "_" + Guid.NewGuid() + Path.GetExtension(hfc[0].FileName);
                     if (Directory.Exists(EPath))
                     {
                         if (!Directory.Exists(HouseUploadFilePath))
                             Directory.CreateDirectory(HouseUploadFilePath);
-                        imgPath = Path.Combine(HouseUploadFilePath,newFileName );
+                        imgPath = Path.Combine(HouseUploadFilePath, newFileName);
                     }
                     else
                     {
-                        imgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,@"\RSH\House", newFileName);
+                        imgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\RSH\House", newFileName);
                     }
                     hfc[0].SaveAs(imgPath);
                 }
             }
             catch (Exception ex)
             {
-                
+
             }
-            return Json(new {FilePath = imgPath});
+            return Json(new { FilePath = imgPath });
         }
 
-        private void GetAllHouse( List<HouseInfo> houseInfoList,string userID)
+        private void GetAllHouse(List<HouseInfo> houseInfoList, string userID)
         {
             var queryObjects = from h in rshEntities.RSH_House
                                from ho in rshEntities.HouseOwner
@@ -179,7 +185,7 @@ namespace RedShowHome.Controllers
             SetHouseList(houseInfoList, queryObjects);
         }
 
-        private void SetHouseList(List<HouseInfo> houseInfoList,IQueryable<RSH_House> queryObjects  )
+        private void SetHouseList(List<HouseInfo> houseInfoList, IQueryable<RSH_House> queryObjects)
         {
             foreach (var queryObject in queryObjects)
             {

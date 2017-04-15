@@ -52,7 +52,7 @@
         <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
     </div>
     <div style="margin-bottom: 20px">
-        <label for="description" class="label-top">平面图:</label>
+        <label for="ichonography" class="label-top">平面图:</label>
         <img id="ichonography" alt="" style="width: 300px; height: 200px" src="~/Content/images/chooseFile.png">
         <input id="fileToUpload" style="display: none" type="file" name="upfile">
     </div>
@@ -61,7 +61,7 @@
     </div>
 </div>
 <script>
-    var uploadFilePath="";
+    var uploadFilePath;
     $(function() {
         getAllHouse();
         $("#address").textbox('textbox').bind({ blur: searchAddressPoint });
@@ -84,6 +84,7 @@
                     success: function(data)  //服务器成功响应处理函数
                     {
                         uploadFilePath = data.FilePath;
+                        alert(uploadFilePath);
                     },
                     error: function(data)//服务器响应失败处理函数
                     {
@@ -93,14 +94,15 @@
             );
             return false;
         });
-        $("#btnAdd").bind('click', function() {
+        $("#btnAdd").bind('click', function () {
             var para = {
                 Area: $("#area").val(),
                 HouseType: $("#houseType").combobox('getValue'),
-                HouseStatus: $("#houseStatus").combobox('getValue'),
+                Status: $("#houseStatus").combobox('getValue'),
                 DecorationWay: $("#decorationWay").combobox('getValue'),
+                Description: $('#description').val(),
                 Address: $("#address").val(),
-                Ichonography: uploadFilePath
+                Ichnography: uploadFilePath
             };
             $.ajax({                
                 url: '/Demand/AddHouse',
@@ -157,5 +159,11 @@
     function refreshAllHouse() {
         $("#myHouse").empty();
         getAllHouse();
+        emptyAddHousePanel();
+    }
+    
+    function emptyAddHousePanel() {
+        $("#area").empty();
+        $("#description").textbox("setValue","");
     }
 </script>

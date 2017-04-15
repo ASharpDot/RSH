@@ -60,6 +60,9 @@ namespace RedShowHome.Controllers
 
         public ActionResult NormalMine()
         {
+            var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
+            if (userID == "")
+                return RedirectToAction("Login", "User");
             return View();
         }
 
