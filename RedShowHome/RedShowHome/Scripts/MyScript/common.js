@@ -51,6 +51,12 @@ RSH.Search.SearchNow = "正在获取数据...";
 RSH.House = {};
 RSH.House.AddHouseSuccess = "您的房子添加成功";
 
+RSH.Demand = {};
+RSH.Demand.PleaseChoose = "请选择一个房子";
+RSH.Demand.PleaseSetName = "请输入需求标题";
+RSH.Demand.PublishSuccess = "发布成功";
+RSH.Demand.PublishFailed = "发布失败";
+
 function InitMap(map, centerPoint) {
     window.map = map;
     map.addControl(new BMap.NavigationControl());

@@ -1,10 +1,19 @@
 ﻿@{
     ViewBag.Title = "发布请求";
 }
-<div id="myHouse"></div>
 <div style="padding: 5px 0;">
     <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px;height: 120px">添加一个房子</a>
+    <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px; height: 120px">发布需求</a>
+    <a id="btnMyDemands" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px; height: 120px">我的发布</a>
 </div>
+<div id="publishDemandPanel" class="easyui-panel" title="发布家装需求" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+    <div style="margin-bottom: 20px">
+        <label for="demandName" class="label-top">标题:</label>
+        <input id="demandName" class="easyui-validatebox tb" data-options="required:true">
+    </div>
+</div>
+<div id="myHouse"></div>
+
 <div id="addHouse" class="easyui-panel" title="房子信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
     <div style="margin-bottom: 20px">
         <label for="area" class="label-top">建筑面积(m²):</label>
@@ -62,15 +71,65 @@
 </div>
 <script>
     var uploadFilePath;
+    var map, point;
+    var currentHouseID;
+    var demandName;
     $(function() {
         getAllHouse();
-        $("#address").textbox('textbox').bind({ blur: searchAddressPoint });
+
+        $("#btnMyDemands").bind('click', function() {
+            window.location.href = "/Demand/Demands";
+        });
+
+        //添加房子按钮打开面板
         $("#btnAddHouse").bind('click', function() {
             $("#addHouse").panel('open');
-            var map = new BMap.Map("smallmap");
-            var point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+            map = new BMap.Map("smallmap");
+            point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
             InitMap(map, point);
         });
+        
+        //发布需求按钮
+        $("#btnPublish").bind('click', function() {
+            demandName = $("#demandName").val();
+            if (!demandName) {
+                $.messager.alert(RSH.Common.AlertTitle, RSH.Demand.PleaseSetName);
+                return;
+            }
+            if (!currentHouseID) {
+                $.messager.alert(RSH.Common.AlertTitle, RSH.Demand.PleaseChoose);
+                return;
+            }
+            var para = {
+                DemandName: demandName,
+                HouseID: currentHouseID
+            };
+            $.ajax({
+                url: '/Demand/PublishDemand',
+                type: 'post',
+                data: para,
+                success: function (data) {
+                    $.messager.show({
+                        title: RSH.Common.AlertTitle,
+                        msg:RSH.Demand.PublishSuccess,
+                        showType: 'slide',
+                        timeOut: '3000'
+                    });
+                },
+                error: function (data) {
+                    $.messager.show({
+                        title: RSH.Common.AlertTitle,
+                        msg: RSH.Demand.PublishFailed,
+                        showType: 'slide',
+                        timeOut: '3000'
+                    });
+                }
+            });
+        });
+
+        //输入地址栏，失去焦点自动搜索位置
+        $("#address").textbox('textbox').bind({ blur: searchAddressPoint });
+        //点击平面图上传文件，并返回图片保存路径
         $("#ichonography").on('click', function () {
             $('#fileToUpload').click();
         });
@@ -94,6 +153,8 @@
             );
             return false;
         });
+        
+        //添加一个房子
         $("#btnAdd").bind('click', function () {
             var para = {
                 Area: $("#area").val(),
@@ -111,6 +172,7 @@
                 success: function (data) {
                     if (data) {
                         refreshAllHouse();
+                        refreshAddHousePanel();
                         $.messager.show({
                             title: RSH.Common.AlertTitle,
                             msg: RSH.House.AddHouseSuccess,
@@ -151,6 +213,11 @@
                     var houseInfo = data[i];
                     var htmlText = houseInfo.FormatInfo;
                     $("#myHouse").append("<div id=" + houseInfo.HouseID + " class='searchPanelItem'>" + htmlText + "</div>");
+                    $("#" + houseInfo.HouseID).bind('click', function() {
+                        currentHouseID = $(this).prop('id');
+                        $("div.searchPanelItem").css("background-color", "#e6e6fa");
+                        $(this).css("background-color", "#c0c0c0");
+                    });
                 }
             }
         });
@@ -159,11 +226,20 @@
     function refreshAllHouse() {
         $("#myHouse").empty();
         getAllHouse();
-        emptyAddHousePanel();
+        refreshAddHousePanel();
     }
     
-    function emptyAddHousePanel() {
-        $("#area").empty();
-        $("#description").textbox("setValue","");
+    function refreshAddHousePanel() {
+        $("#area").textbox("setValue", "");
+        $("#houseType").combobox("setValue", "1");
+        $("#houseStatus").combobox("setValue", "1");
+        $("#decorationWay").combobox("setValue", "1");
+        $("#address").textbox("setValue", "");
+        $("#description").textbox("setValue", "");
+        uploadFilePath = "";
+        //$("#ichonography").img("setValue", "");
+        $("#fileToUpload").filebox("setValue", "");
+        
+        InitMap(map, point);
     }
 </script>

@@ -17,6 +17,11 @@ namespace RedShowHome.Controllers
                                               "地址：{3}<br/>" +
                                               "装修方式：{4}<br/>" +
                                               "详细信息：{5}";
+        public const string DemandInfoFormat = "标题：{6}<br/>" +
+                                               "建筑面积：{0} m²&nbsp;&nbsp;户型：{1}&nbsp;&nbsp;装修状态：{2}<br/>" +
+                                              "地址：{3}<br/>" +
+                                              "装修方式：{4}<br/>" +
+                                              "详细信息：{5}";
         #region 枚举型数据转换
 
         private string ConvertHouseStatus(int status)
@@ -98,8 +103,10 @@ namespace RedShowHome.Controllers
 
         public ActionResult AddHouse()
         {
+            string ichnography = string.Empty;
             try
             {
+                ichnography = Request.Params.Get(Constant.Ichnography);
                 var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
                 if (userID == "")
                     throw new Exception("重新登录");
@@ -111,7 +118,7 @@ namespace RedShowHome.Controllers
                 rh.DecorationWay = Convert.ToInt32(Request.Params.Get(Constant.DecorationWay));
                 rh.Address = Request.Params.Get(Constant.Address);
                 rh.Description = Request.Params.Get(Constant.Description);
-                rh.Ichnography = Request.Params.Get(Constant.Ichnography);
+                rh.Ichnography = ichnography;
                 rh.Valid = "1";
                 HouseOwner ho = new HouseOwner();
                 ho.HouseID = rh.HouseID;
@@ -123,6 +130,8 @@ namespace RedShowHome.Controllers
             }
             catch (Exception ex)
             {
+                if (System.IO.File.Exists(ichnography))
+                    System.IO.File.Delete(ichnography);
                 throw new Exception(ex.Message);
             }
             return Json(true);
@@ -205,6 +214,79 @@ namespace RedShowHome.Controllers
             }
         }
 
+        public ActionResult PublishDemand()
+        {
+            try
+            {
+                var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
+                if (userID == "")
+                    return RedirectToAction("Login", "User");
+                Demand de = new Demand();
+                de.CreatorID = userID;
+                de.DemandID = Guid.NewGuid().ToString();
+                de.DemandName = Request.Params.Get(Constant.DemandName);
+                de.HouseID = Request.Params.Get(Constant.HouseID);
+                de.Valid = "1";
+                de.Visible = "1";
+                rshEntities.Demand.Add(de);
+                rshEntities.SaveChanges();
+            }
+            catch (Exception ex)
+            {
 
+            }
+            return Json(new { });
+        }
+
+        public ActionResult Demands()
+        {
+            return View();
+        }
+
+        public ActionResult GetAllDemands()
+        {
+            var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
+            if (userID == "")
+                return RedirectToAction("Login", "User");
+            var queryObjects = from de in rshEntities.Demand
+                               where de.Valid == "1"
+                                     && de.CreatorID == userID
+                               select de;
+            List<DemandInfo> demandList = new List<DemandInfo>();
+            SetDemandList(demandList, queryObjects);
+            return Json(demandList);
+        }
+
+        private void SetDemandList(List<DemandInfo> demandList, IQueryable<Demand> queryObjects)
+        {
+            foreach (var queryObject in queryObjects)
+            {
+                DemandInfo info = new DemandInfo();
+                string houseID= queryObject.HouseID;
+                if (!string.IsNullOrEmpty(houseID))
+                {
+                    var house = (from h in rshEntities.RSH_House
+                        where h.HouseID == houseID
+                        select h).FirstOrDefault();
+                    if (house != null)
+                    {
+                        info.DemandID = queryObject.DemandID;
+                        info.DemandName = queryObject.DemandName;
+                        info.HouseID = houseID;
+                        info.Address = house.Address;
+                        info.Area = house.Area;
+                        info.DecorationWay = house.DecorationWay;
+                        info.Description = house.Description;
+                        info.HouseType = house.HouseType;
+                        info.Status = house.Status;
+                        info.FormatInfo = string.Format(DemandInfoFormat, info.Area, ConvertHouseType(info.HouseType),
+                            ConvertHouseStatus(info.Status), info.Address,
+                            ConvertDecorationWay(info.DecorationWay), info.Description,info.DemandName);
+                        info.Ichnography = house.Ichnography; //平面图Url
+                        demandList.Add(info);
+                    }
+                }
+            }
+        }
     }
 }

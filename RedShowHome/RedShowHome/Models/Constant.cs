@@ -28,6 +28,7 @@ namespace RedShowHome.Models
         public const string Area = "Area";
         public const string DecorationWay = "DecorationWay";
         public const string Ichnography = "Ichnography";
+        public const string DemandName = "DemandName";
 
     }
 }

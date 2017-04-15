@@ -205,6 +205,7 @@
     <Compile Include="Models\Demand.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DemandModel.cs" />
     <Compile Include="Models\DesignCompany_User.cs">
       <DependentUpon>RSH.tt</DependentUpon>
     </Compile>
@@ -1196,6 +1197,7 @@
     <Content Include="Views\User\DesignerUserInfo.cshtml" />
     <Content Include="Views\User\NormalMine.cshtml" />
     <Content Include="Views\Demand\Index.cshtml" />
+    <Content Include="Views\Demand\Demands.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

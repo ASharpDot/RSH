@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "我的发布";
+}
+
+
+<div id="demands"></div>
+<script type="text/javascript">
+    function getAllDemands() {
+        $.post('/Demand/GetAllDemands', {}, function (data) {
+            if (data && data.length > 0) {
+                for (var i in data) {
+                    var demandInfo = data[i];
+                    var htmlText = demandInfo.FormatInfo;
+                    $("#demands").append("<div id=" + demandInfo.DemandID + " class='searchPanelItem'>" + htmlText + "</div>");
+                    $("#" + demandInfo.DemandID).bind('click', function () {
+                        $("div.searchPanelItem").css("background-color", "#e6e6fa");
+                        $(this).css("background-color", "#c0c0c0");
+                    });
+                }
+            }
+        });
+    }
+</script>
