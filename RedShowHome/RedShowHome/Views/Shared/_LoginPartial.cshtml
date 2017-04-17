@@ -2,13 +2,13 @@
 @using RedShowHome.Models.Context
 @if (ContextHelper.GetCurrent().GetItem(Constant.UserID)!="") {
     <ul>
-        @ContextHelper.WelcomeUserName()
-        <li>@Html.ActionLink("注销", "Logoff", "User")</li>
+        <li style="color: whitesmoke">@ContextHelper.WelcomeUserName()</li>
+        <li><b>@Html.ActionLink("注销", "Logoff", "User")</b></li>
     </ul>
 } else {
     <ul>
-        @ContextHelper.WelcomeUserName()
-        <li>@Html.ActionLink("注册", "Register", "User", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("登录", "Login", "User", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li style="color: whitesmoke">@ContextHelper.WelcomeUserName()</li>
+        <li><b>@Html.ActionLink("注册", "Register", "User", routeValues: null, htmlAttributes: new { id = "registerLink" })</b></li>
+        <li><b>@Html.ActionLink("登录", "Login", "User", routeValues: null, htmlAttributes: new { id = "loginLink" })</b></li>
     </ul>
 }
