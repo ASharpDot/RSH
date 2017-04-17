@@ -58,14 +58,52 @@ namespace RedShowHome.Controllers
             }
         }
 
-        public ActionResult NormalMine()
+        public ActionResult Logoff()
+        {
+            ContextHelper.GetCurrent().SetItem(Constant.UserID, "");
+            ContextHelper.GetCurrent().SetItem(Constant.UserName, "");
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Mine()
         {
             var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
             if (userID == "")
                 return RedirectToAction("Login", "User");
-            return View();
+            var userType = (from user in rshEntities.RSH_User
+                where user.UserID == userID
+                select user.UserType).FirstOrDefault();
+            switch (userType)
+            {
+                case Constant.UserType1:
+                    return RedirectToAction("NormalMine");
+                case Constant.UserType2:
+                    return RedirectToAction("DesignerMine");
+                case Constant.UserType3:
+                    return RedirectToAction("DesignCompanyMine");
+                case Constant.UserType4:
+                    return RedirectToAction("SellerMine");
+                default:
+                    throw new Exception("完蛋了，完蛋了，出问题了");
+            }
         }
 
+        public ActionResult NormalMine()
+        {
+            return View();
+        }
+        public ActionResult DesignerMine()
+        {
+            return View();
+        }
+        public ActionResult DesignCompanyMine()
+        {
+            return View();
+        }
+        public ActionResult SellerMine()
+        {
+            return View();
+        }
         public ActionResult NormalUserInfo()
         {
             return View();
@@ -125,7 +163,7 @@ namespace RedShowHome.Controllers
                 du.Address = Request.Params.Get(Constant.Address);
                 du.DesignConcept = Request.Params.Get(Constant.DesignConcept);
                 du.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get(Constant.Address), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                CreateAddressPoint(Request.Params.Get(Constant.Address),Request.Params.Get(Constant.City), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
                     Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.Designer_User.Add(du);
                 rshEntities.SaveChanges();
@@ -155,7 +193,7 @@ namespace RedShowHome.Controllers
                 dcu.Phone = Request.Params.Get(Constant.Phone);
                 dcu.Description = Request.Params.Get(Constant.Description);
                 dcu.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get(Constant.Address), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                CreateAddressPoint(Request.Params.Get(Constant.Address), Request.Params.Get(Constant.City), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
                     Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.DesignCompany_User.Add(dcu);
                 rshEntities.SaveChanges();
@@ -186,7 +224,7 @@ namespace RedShowHome.Controllers
                 su.Phone = Request.Params.Get(Constant.Phone);
                 su.Description = Request.Params.Get(Constant.Description);
                 su.FansQuantity = 0;
-                CreateAddressPoint(Request.Params.Get(Constant.Address), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                CreateAddressPoint(Request.Params.Get(Constant.Address), Request.Params.Get(Constant.City), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
                     Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rshEntities.Seller_User.Add(su);
                 rshEntities.SaveChanges();
@@ -218,19 +256,6 @@ namespace RedShowHome.Controllers
             if (isExist)
                 return true;
             return false;
-        }
-
-        private void CreateAddressPoint(string address, decimal longitude, decimal latitude)
-        {
-            bool isExist = rshEntities.AddressPoint.Any(u => u.Address == address);
-            if (!isExist)
-            {
-                AddressPoint ap = new AddressPoint();
-                ap.Address = address;
-                ap.Longitute = longitude;
-                ap.Latitude = latitude;
-                rshEntities.AddressPoint.Add(ap);
-            }
         }
 
         public ActionResult CreateUser()

@@ -25,7 +25,6 @@ namespace RedShowHome.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<AddressPoint> AddressPoint { get; set; }
         public DbSet<Collection> Collection { get; set; }
         public DbSet<Demand> Demand { get; set; }
         public DbSet<DesignCompany_User> DesignCompany_User { get; set; }
@@ -37,5 +36,6 @@ namespace RedShowHome.Models
         public DbSet<Seller_User> Seller_User { get; set; }
         public DbSet<RSH_House> RSH_House { get; set; }
         public DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public DbSet<AddressPoint> AddressPoint { get; set; }
     }
 }

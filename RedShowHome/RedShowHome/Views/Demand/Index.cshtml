@@ -2,9 +2,8 @@
     ViewBag.Title = "发布请求";
 }
 <div style="padding: 5px 0;">
-    <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px;height: 120px">添加一个房子</a>
-    <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px; height: 120px">发布需求</a>
-    <a id="btnMyDemands" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 120px; height: 120px">我的发布</a>
+    <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color:yellow; width: 120px; height: 120px">添加一个房子</a>
+    <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color:yellowgreen; width: 120px; height: 120px">发布需求</a>
 </div>
 <div id="publishDemandPanel" class="easyui-panel" title="发布家装需求" style="width: 100%; max-width: 400px; padding: 30px 60px;">
     <div style="margin-bottom: 20px">
@@ -12,6 +11,7 @@
         <input id="demandName" class="easyui-validatebox tb" data-options="required:true">
     </div>
 </div>
+<div>
 <div id="myHouse"></div>
 
 <div id="addHouse" class="easyui-panel" title="房子信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
@@ -69,6 +69,7 @@
         <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">添加 </a>
     </div>
 </div>
+</div>
 <script>
     var uploadFilePath;
     var map, point;
@@ -76,10 +77,6 @@
     var demandName;
     $(function() {
         getAllHouse();
-
-        $("#btnMyDemands").bind('click', function() {
-            window.location.href = "/Demand/Demands";
-        });
 
         //添加房子按钮打开面板
         $("#btnAddHouse").bind('click', function() {
@@ -115,6 +112,7 @@
                         showType: 'slide',
                         timeOut: '3000'
                     });
+                    window.location.href = "/Demand/Demands";
                 },
                 error: function (data) {
                     $.messager.show({
@@ -143,7 +141,6 @@
                     success: function(data)  //服务器成功响应处理函数
                     {
                         uploadFilePath = data.FilePath;
-                        alert(uploadFilePath);
                     },
                     error: function(data)//服务器响应失败处理函数
                     {
@@ -163,7 +160,10 @@
                 DecorationWay: $("#decorationWay").combobox('getValue'),
                 Description: $('#description').val(),
                 Address: $("#address").val(),
-                Ichnography: uploadFilePath
+                Ichnography: uploadFilePath,
+                "Longitude": $("#address").data("Longitude"),
+                "Latitude": $("#address").data("Latitude"),
+                "City": $("#address").data("City")
             };
             $.ajax({                
                 url: '/Demand/AddHouse',
@@ -195,9 +195,15 @@
         localSearch.setSearchCompleteCallback(function (searchResult) {
             if (searchResult != null) {
                 var poi = searchResult.getPoi(0);
+                console.log(poi);
                 map.centerAndZoom(poi.point, 16);
                 $("#address").data("Longitude", poi.point.lng);
                 $("#address").data("Latitude", poi.point.lat);
+                if (poi.hasOwnProperty('city'))
+                    $("#address").data("City", poi.city);
+                else {
+                    $("#address").data("City", "未知");
+                }
                 var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));
                 map.addOverlay(marker);
             }

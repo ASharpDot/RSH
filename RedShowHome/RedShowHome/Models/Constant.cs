@@ -29,6 +29,10 @@ namespace RedShowHome.Models
         public const string DecorationWay = "DecorationWay";
         public const string Ichnography = "Ichnography";
         public const string DemandName = "DemandName";
-
+        public const string City = "City";
+        public const int UserType1 = 1;//普通用户
+        public const int UserType2 = 2;//设计师
+        public const int UserType3 = 3;//家装公司
+        public const int UserType4 = 4;//商家
     }
 }

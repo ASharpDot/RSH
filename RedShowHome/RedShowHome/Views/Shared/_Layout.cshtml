@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - 红秀不在家</title>
+        <title>@ViewBag.Title - RedShow</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -24,7 +24,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("将你的徽标放置在此处", "Index", "Home")</p>
+                    <p class="site-title">@Html.ActionLink("RedShow is not at home！", "Index", "Home")</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -33,7 +33,7 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                            <li>@Html.ActionLink("我", "NormalMine", "User")</li>
+                            <li>@Html.ActionLink("我", "Mine", "User")</li>
                             <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
                         </ul>
                     </nav>
@@ -49,7 +49,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>Copyright © @DateTime.Now.Year Red Show Home. All Rights Reserved.</p>
+                    <p style="align-content: center">Copyright © @DateTime.Now.Year Red Show Home. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>

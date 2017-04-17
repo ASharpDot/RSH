@@ -1,12 +1,10 @@
-﻿@using RedShowHome.Models.Context
-@if (Request.IsAuthenticated) {
-    <text>
-        你好，@Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "管理" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">注销</a>
-        }
-    </text>
+﻿@using RedShowHome.Models
+@using RedShowHome.Models.Context
+@if (ContextHelper.GetCurrent().GetItem(Constant.UserID)!="") {
+    <ul>
+        @ContextHelper.WelcomeUserName()
+        <li>@Html.ActionLink("注销", "Logoff", "User")</li>
+    </ul>
 } else {
     <ul>
         @ContextHelper.WelcomeUserName()

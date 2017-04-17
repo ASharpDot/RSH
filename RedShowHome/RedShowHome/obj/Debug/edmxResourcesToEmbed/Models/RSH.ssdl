@@ -21,6 +21,7 @@
     <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="Longitute" Type="decimal" Nullable="false" Precision="10" Scale="6" />
     <Property Name="Latitude" Type="decimal" Nullable="false" Precision="10" Scale="6" />
+    <Property Name="City" Type="nvarchar" MaxLength="30" />
   </EntityType>
   <EntityType Name="Collection">
     <Key>

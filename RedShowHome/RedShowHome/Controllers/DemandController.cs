@@ -22,6 +22,10 @@ namespace RedShowHome.Controllers
                                               "地址：{3}<br/>" +
                                               "装修方式：{4}<br/>" +
                                               "详细信息：{5}";
+        public const string DemandMapPointInfoFormat = "建筑面积：{0} m²&nbsp;&nbsp;户型：{1}&nbsp;&nbsp;装修状态：{2}<br/>" +
+                                                       "地址：{3}<br/>" +
+                                                       "装修方式：{4}<br/>" +
+                                                       "详细信息：{5}";
         #region 枚举型数据转换
 
         private string ConvertHouseStatus(int status)
@@ -117,6 +121,8 @@ namespace RedShowHome.Controllers
                 rh.Status = Convert.ToInt32(Request.Params.Get(Constant.Status));
                 rh.DecorationWay = Convert.ToInt32(Request.Params.Get(Constant.DecorationWay));
                 rh.Address = Request.Params.Get(Constant.Address);
+                CreateAddressPoint(Request.Params.Get(Constant.Address), Request.Params.Get(Constant.City), Convert.ToDecimal(Request.Params.Get(Constant.Longitude)),
+                    Convert.ToDecimal(Request.Params.Get(Constant.Latitude)));
                 rh.Description = Request.Params.Get(Constant.Description);
                 rh.Ichnography = ichnography;
                 rh.Valid = "1";
@@ -243,18 +249,50 @@ namespace RedShowHome.Controllers
             return View();
         }
 
+        //普通用户获取自己全部发布
         public ActionResult GetAllDemands()
         {
             var userID = ContextHelper.GetCurrent().GetItem(Constant.UserID);
             if (userID == "")
                 return RedirectToAction("Login", "User");
             var queryObjects = from de in rshEntities.Demand
-                               where de.Valid == "1"
-                                     && de.CreatorID == userID
-                               select de;
+                where de.Valid == "1"
+                      && de.CreatorID == userID
+                select de;
             List<DemandInfo> demandList = new List<DemandInfo>();
             SetDemandList(demandList, queryObjects);
             return Json(demandList);
+        }
+
+        public ActionResult GetAllDemandsInSameCity()
+        {
+
+            try
+            {
+                List<MapPoint> mpList = new List<MapPoint>();
+                string searchText = Request.Params.Get(Constant.SearchText) ?? "";
+                string city = Request.Params.Get(Constant.City) ?? "";
+                GetAllDemandsInSameCity(mpList, city);
+                return Json(mpList);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private void GetAllDemandsInSameCity(List<MapPoint> mpList, string city)
+        {
+            var queryObjects = from de in rshEntities.Demand
+                               where de.Valid == "1" && de.Visible == "1"
+                               select de;
+            if (city != "" || city != "未知")
+                queryObjects = from q in queryObjects
+                    from ap in rshEntities.AddressPoint
+                    from ho in rshEntities.RSH_House
+                    where ap.Address == ho.Address && q.HouseID == ho.HouseID && ap.City == city
+                    select q;
+            SetDemandMapPointList(mpList, queryObjects);
         }
 
         private void SetDemandList(List<DemandInfo> demandList, IQueryable<Demand> queryObjects)
@@ -285,6 +323,30 @@ namespace RedShowHome.Controllers
                         info.Ichnography = house.Ichnography; //平面图Url
                         demandList.Add(info);
                     }
+                }
+            }
+        }
+
+        private void SetDemandMapPointList(List<MapPoint> mpList, IQueryable<Demand> queryObjects)
+        {
+            foreach (var queryObject in queryObjects)
+            {
+                var house = rshEntities.RSH_House.FirstOrDefault(h => h.HouseID == queryObject.HouseID);
+                if (house != null)
+                {
+                    var address = rshEntities.AddressPoint.FirstOrDefault(ap => ap.Address == house.Address);
+                    MapPoint mp = new MapPoint();
+                    mp.Id = queryObject.DemandID;
+                    mp.Title = queryObject.DemandName;
+                    mp.Type = 2;
+                    mp.Description = string.Format(DemandMapPointInfoFormat, house.Area,
+                        ConvertHouseType(house.HouseType),
+                        ConvertHouseStatus(house.Status), house.Address,
+                        ConvertDecorationWay(house.DecorationWay), house.Description);
+                    mp.Address = address == null ? "" : address.Address;
+                    mp.Longitude = address == null ? 0 : address.Longitute;
+                    mp.Latitude = address == null ? 0 : address.Latitude;
+                    mpList.Add(mp);
                 }
             }
         }

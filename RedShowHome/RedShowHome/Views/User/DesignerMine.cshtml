@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "我";
+}
+
+<div style="padding: 5px 0;">
+    <a id="btnGetDemands" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 100px; height: 100px; background-color: yellowgreen">需求检索</a>
+</div>
+<div id="alertDiv" class="alertPanel" style="padding: 5px;"></div>
+<div id="allmap"></div>
+<div id="r-result"></div>
+
+<script type="text/javascript">
+    var map;
+    var point;
+    var currentPoint;
+    $(function() {
+        map = new BMap.Map("allmap");
+        point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+        InitMap(map, point);
+        
+        $("#btnGetDemands").bind('click', function () {
+            var url = "/Demand/GetAllDemandsInSameCity";
+            doSearchFromDBInSameCity(map, url);
+        });
+    });
+</script>

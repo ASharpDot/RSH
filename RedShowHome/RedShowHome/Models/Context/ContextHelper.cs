@@ -28,9 +28,9 @@ namespace RedShowHome.Models.Context
         {
             if (GetCurrent() != null)
             {
-                if (GetCurrent().GetItem("UserName") != null)
+                if (GetCurrent().GetItem("UserName") != "")
                 {
-                    return "欢迎 - "+GetCurrent().GetItem("UserName").ToString();
+                    return "欢迎 - " + GetCurrent().GetItem("UserName");
                 }
             }
             return "请先登录";

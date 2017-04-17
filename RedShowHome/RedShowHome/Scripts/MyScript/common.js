@@ -1,4 +1,9 @@
-﻿RSH = {};
+﻿Map = {};
+
+Map.Search = {};
+Map.Search.SearchCurrent = "正在获取当前位置信息...";
+
+RSH = {};
 
 RSH.Common = {};
 RSH.Common.AlertTitle = "提示";
@@ -57,6 +62,7 @@ RSH.Demand.PleaseSetName = "请输入需求标题";
 RSH.Demand.PublishSuccess = "发布成功";
 RSH.Demand.PublishFailed = "发布失败";
 
+//初始化地图
 function InitMap(map, centerPoint) {
     window.map = map;
     map.addControl(new BMap.NavigationControl());
@@ -83,4 +89,104 @@ function SetDefaultPoint(point) {
     var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
     marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
 
+}
+
+
+//设置点标记
+function SetPoint(mapPoint, map) {
+    var iconUrl;
+    switch (mapPoint.Type) {
+        case RSH.Common.UserType2:
+            iconUrl = "/Content/images/bullet-green.png"; break;
+        case RSH.Common.UserType3:
+            iconUrl = "/Content/images/bullet-red.png"; break;
+        case RSH.Common.UserType4:
+            iconUrl = "/Content/images/bullet-yellow.png"; break;
+        default:
+            iconUrl = "";
+    }
+    var myIcon = new BMap.Icon(iconUrl, new BMap.Size(30, 30));
+    var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), { icon: myIcon });
+    console.log(map);
+    console.log(marker);
+    map.addOverlay(marker);
+    var infoWindow = new BMap.InfoWindow(mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
+    marker.addEventListener("click", function () {
+        this.openInfoWindow(infoWindow);
+    });
+    marker.addEventListener("mousedown", function () {
+        $("#" + mapPoint.Id).css("background-color", "#eee8aa");
+    });
+    marker.addEventListener("mouseup", function () {
+        $("#" + mapPoint.Id).css("background-color", "#c0c0c0");
+    });
+}
+
+
+//面板中填充搜索内容
+function SearchPanel(mapPoint) {
+    var htmlText = "<b>" + mapPoint.Title + "</b><br/>" + mapPoint.Description;
+    $("#r-result").append("<div id=" + mapPoint.Id + " class='searchPanelItem'>" + htmlText + "</div>");
+    $("#" + mapPoint.Id).bind("click", function () {
+        map.centerAndZoom(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), 17);
+        $("#" + mapPoint.Id).css("background-color", "#c0c0c0");
+    });
+}
+
+
+//网络搜索
+function doSearch(value, name) {
+    var local = new BMap.LocalSearch(map, { renderOptions: { map: map, panel: "r-result" } });
+    local.search(value);
+}
+
+
+//同城市搜索
+function doSearchFromDBInSameCity(map, url, searchText) {
+    $("#r-result").empty();
+    map.clearOverlays();
+    $("#alertDiv").text(Map.Search.SearchCurrent);
+    $("#alertDiv").fadeToggle(1000);
+    var geolocation = new BMap.Geolocation();
+    var lon, lat, city;
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var currentPoint = r.point;
+            lon = r.longitude;
+            lat = r.latitude;
+            city = r.address.hasOwnProperty('city') ? r.address.city : "未知";
+
+            $("#alertDiv").text("当前城市：" + city);
+
+            //设置当前位置点
+            var mk = new BMap.Marker(currentPoint);
+            map.addOverlay(mk);
+            var infoWindow = new BMap.InfoWindow("<b>当前位置</b>");
+            mk.addEventListener("click", function () {
+                this.openInfoWindow(infoWindow);
+            });
+            map.centerAndZoom(r.point, 12);
+
+            var para = { Longitude: lon, Latitude: lat, City: city, SearchText: searchText };
+            $.post(url, para, function (data) {
+                if (data && data.length) {
+                    for (var i in data) {
+                        SetPoint(data[i], map);
+                        SearchPanel(data[i]);
+                    }
+                } else {
+                    $.messager.show({
+                        title: RSH.Common.AlertTitle,
+                        msg: RSH.Search.OnlySearchEmpty,
+                        timeout: 3000,
+                        showType: 'show'
+                    });
+                }
+            });
+        } else {
+            $.messager.alert(RSH.Common.AlertTitle, RSH.Search.GetCurrentPositionFailed + "<br/>" + this.getStatus());
+            return;
+        }
+        $("#alertDiv").fadeToggle(3000);
+    }, { enableHighAccuracy: true });
 }

@@ -2,13 +2,18 @@
     ViewBag.Title = "我";
 }
 <div style="padding: 5px 0;">
-    <a id="publishBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width: 200px;height: 200px;"> 发布家装需求 </a>
+    <a id="publishBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width: 200px;height: 200px;background-color: yellow"> 发布家装需求 </a>
+    <a id="btnMyDemands" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 200px; height: 200px;background-color: yellowgreen">我的发布</a>
 </div>
 
 <script type="text/javascript">
     $(function() {
         $("#publishBtn").bind('click', function() {
             window.location.href = "/Demand/Index";
+        });
+
+        $("#btnMyDemands").bind('click', function () {
+            window.location.href = "/Demand/Demands";
         });
     });
 </script>

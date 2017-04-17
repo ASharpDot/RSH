@@ -17,5 +17,6 @@ namespace RedShowHome.Models
         public string Address { get; set; }
         public decimal Longitute { get; set; }
         public decimal Latitude { get; set; }
+        public string City { get; set; }
     }
 }

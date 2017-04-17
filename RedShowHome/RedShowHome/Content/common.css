@@ -8,7 +8,7 @@
 
 #smallmap{height:300px;width:300px;}
 #allmap{height:500px;width:100%;}
-.searchPanelItem{ border: 2px;border-style: solid;background-color: #e6e6fa}
+.searchPanelItem{ border: 2px;border-style: solid;background-color: #e6e6fa;width: 400px}
 
 
 /*点图标*/
@@ -23,8 +23,9 @@
 }
 
 .alertPanel {
-    background-color: #7fffd4;
-    font-size: 30px;
-    height: 50px;
+    background-color: lightskyblue;
+    font-size: 20px;
+    height: 40px;
     display:none;
+    align-content: center
 }

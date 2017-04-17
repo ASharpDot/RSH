@@ -5,6 +5,10 @@
 
 <div id="demands"></div>
 <script type="text/javascript">
+    $(function() {
+        getAllDemands();
+    });
+
     function getAllDemands() {
         $.post('/Demand/GetAllDemands', {}, function (data) {
             if (data && data.length > 0) {

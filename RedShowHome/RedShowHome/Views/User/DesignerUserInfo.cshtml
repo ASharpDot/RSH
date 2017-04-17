@@ -45,7 +45,8 @@
                 "DesignConcept": $("#designconcept").val(),
                 "StartWorkTime": $("#startworktime").datebox('getValue'),
                 "Longitude": $("#address").data("Longitude"),
-                "Latitude": $("#address").data("Latitude")
+                "Latitude": $("#address").data("Latitude"),
+                "City": $("#address").data("City")
             };
             $.post("/User/SetDesignerUserInfo", parameter, function (data) {
                 if (!data) {
@@ -66,6 +67,11 @@
                 map.centerAndZoom(poi.point, 16);
                 $("#address").data("Longitude", poi.point.lng);
                 $("#address").data("Latitude", poi.point.lat);
+                if (poi.hasOwnProperty('city'))
+                    $("#address").data("City", poi.city);
+                else {
+                    $("#address").data("City", "未知");
+                }
                 var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));
                 map.addOverlay(marker);
             }

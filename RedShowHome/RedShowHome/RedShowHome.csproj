@@ -257,6 +257,8 @@
   <ItemGroup>
     <Content Include="Content\common.css" />
     <Content Include="Content\images\artist_128px_1176078_easyicon.net.ico" />
+    <Content Include="Content\images\beijing.jpg" />
+    <Content Include="Content\images\beijing2.jpg" />
     <Content Include="Content\images\Building_Company_128px_510929_easyicon.net.ico" />
     <Content Include="Content\images\bullet-green.png" />
     <Content Include="Content\images\bullet-red.png" />
@@ -1149,7 +1151,6 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\MyScript\common.js" />
-    <Content Include="Scripts\MyScript\Map.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1198,6 +1199,9 @@
     <Content Include="Views\User\NormalMine.cshtml" />
     <Content Include="Views\Demand\Index.cshtml" />
     <Content Include="Views\Demand\Demands.cshtml" />
+    <Content Include="Views\User\DesignerMine.cshtml" />
+    <Content Include="Views\User\DesignCompanyMine.cshtml" />
+    <Content Include="Views\User\SellerMine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="RedShowHomeModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="RedShowHomeEntities" p1:LazyLoadingEnabled="true">
-    <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
     <EntitySet Name="Collection" EntityType="RedShowHomeModel.Collection" />
     <EntitySet Name="Demand" EntityType="RedShowHomeModel.Demand" />
     <EntitySet Name="DesignCompany_User" EntityType="RedShowHomeModel.DesignCompany_User" />
@@ -13,15 +12,8 @@
     <EntitySet Name="Seller_User" EntityType="RedShowHomeModel.Seller_User" />
     <EntitySet Name="RSH_House" EntityType="RedShowHomeModel.RSH_House" />
     <EntitySet Name="sysdiagrams" EntityType="RedShowHomeModel.sysdiagrams" />
+    <EntitySet Name="AddressPoint" EntityType="RedShowHomeModel.AddressPoint" />
   </EntityContainer>
-  <EntityType Name="AddressPoint">
-    <Key>
-      <PropertyRef Name="Address" />
-    </Key>
-    <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Type="Decimal" Name="Longitute" Nullable="false" Precision="10" Scale="6" />
-    <Property Type="Decimal" Name="Latitude" Nullable="false" Precision="10" Scale="6" />
-  </EntityType>
   <EntityType Name="Collection">
     <Key>
       <PropertyRef Name="UserID" />
@@ -131,5 +123,14 @@
     <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Type="Int32" Name="version" />
     <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="AddressPoint">
+    <Key>
+      <PropertyRef Name="Address" />
+    </Key>
+    <Property Type="String" Name="Address" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="Decimal" Name="Longitute" Nullable="false" Precision="10" Scale="6" />
+    <Property Type="Decimal" Name="Latitude" Nullable="false" Precision="10" Scale="6" />
+    <Property Type="String" Name="City" MaxLength="30" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
