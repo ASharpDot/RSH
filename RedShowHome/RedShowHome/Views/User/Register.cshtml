@@ -1,59 +1,63 @@
 ﻿@{
     ViewBag.Title = "注册";
 }
-<div class="easyui-panel" title="注册" style="width: 100%; max-width: 400px; padding: 30px 60px;">
-    <div style="margin-bottom: 20px">
-        <label for="email" class="label-top">邮箱:</label>
-        <input id="email" class="easyui-validatebox tb" data-options="required:true,validType:'email'">
-    </div>
-    <div style="margin-bottom: 20px">
-        <label for="username" class="label-top">用户名:</label>
-        <input id="username" class="easyui-validatebox tb" data-options="required:true,validType:'length[2,30]'">
-    </div>
-    <div style="margin-bottom: 20px">
-        <select class="easyui-combobox tb" name="usertype" id="usertype" label="用户类型:" labelposition="top" style="width: 100%;" panelheight="90">
-            <option value="1">普通用户</option>
-            <option value="2">设计师</option>
-            <option value="3">家装公司</option>
-            <option value="4">商户</option>
-        </select>
-        
-    </div>
-    <div style="margin-bottom: 20px">
-        <label class="label-top">密码：</label>
-        <input id="password" class="easyui-passwordbox" prompt="请输入密码..." iconwidth="28" style="width: 100%; height: 30px; padding: 10px" data-options="required:true,validType:'length[2,30]'">
-    </div>
-    <div style="padding: 5px 0;">
-        <a id="btnRegister" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px"> 注册 </a>
+
+<div style="margin: 20px 0; width: 100%; height: 750px">
+    <div style="width: 1000px; height: 600px; margin: 10px 300px; padding: 50px">
+        <div class="easyui-panel" title="注册" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+            <div style="margin-bottom: 20px">
+                <label for="email" class="label-top">邮箱:</label>
+                <input id="email" class="easyui-validatebox tb" data-options="required:true,validType:'email'">
+            </div>
+            <div style="margin-bottom: 20px">
+                <label for="username" class="label-top">用户名:</label>
+                <input id="username" class="easyui-validatebox tb" data-options="required:true,validType:'length[2,30]'">
+            </div>
+            <div style="margin-bottom: 20px">
+                <select class="easyui-combobox tb" name="usertype" id="usertype" label="用户类型:" labelposition="top" style="width: 100%;" panelheight="90">
+                    <option value="1">普通用户</option>
+                    <option value="2">设计师</option>
+                    <option value="3">家装公司</option>
+                    <option value="4">商户</option>
+                </select>
+
+            </div>
+            <div style="margin-bottom: 20px">
+                <label class="label-top">密码：</label>
+                <input id="password" class="easyui-passwordbox" prompt="请输入密码..." iconwidth="28" style="width: 100%; height: 30px; padding: 10px" data-options="required:true,validType:'length[2,30]'">
+            </div>
+            <div style="padding: 5px 0;">
+                <a id="btnRegister" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">注册 </a>
+            </div>
+        </div>
     </div>
 </div>
-
 <script>
     $(function () {
-        $("#btnRegister").bind('click', function() {
+        $("#btnRegister").bind('click', function () {
             var parameter = {
                 "LoginEmail": $("#email").val(),
                 "UserName": $("#username").val(),
                 "LoginPassword": $("#password").val(),
                 "UserType": $("#usertype").combobox('getValue')
             };
-            $.post("/User/CreateUser", parameter, function(data) {
+            $.post("/User/CreateUser", parameter, function (data) {
                 if (!data) {
                     $.messager.alert(RSH.Common.AlertTitle, RSH.Register.RegisterFail);
                 } else {
                     switch (data.UserType) {
-                    case 1:
-                        window.location.href = "/User/NormalUserInfo";
-                        break;
-                    case 2:
-                        window.location.href = "/User/DesignerUserInfo";
-                        break;
-                    case 3:
-                        window.location.href = "/User/DesignCompanyUserInfo";
-                        break;
-                    case 4:
-                        window.location.href = "/User/SellerUserInfo";
-                        break;
+                        case 1:
+                            window.location.href = "/User/NormalUserInfo";
+                            break;
+                        case 2:
+                            window.location.href = "/User/DesignerUserInfo";
+                            break;
+                        case 3:
+                            window.location.href = "/User/DesignCompanyUserInfo";
+                            break;
+                        case 4:
+                            window.location.href = "/User/SellerUserInfo";
+                            break;
                     }
                 }
             });

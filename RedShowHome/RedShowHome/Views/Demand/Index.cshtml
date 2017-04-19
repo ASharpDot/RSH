@@ -1,93 +1,102 @@
 ﻿@{
     ViewBag.Title = "发布请求";
 }
-<div style="padding: 5px 0;">
-    <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color:yellow; width: 120px; height: 120px">添加一个房子</a>
-    <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color:yellowgreen; width: 120px; height: 120px">发布需求</a>
-</div>
-<div id="publishDemandPanel" class="easyui-panel" title="发布家装需求" style="width: 100%; max-width: 400px; padding: 30px 60px;">
-    <div style="margin-bottom: 20px">
-        <label for="demandName" class="label-top">标题:</label>
-        <input id="demandName" class="easyui-validatebox tb" data-options="required:true">
-    </div>
-</div>
-<div>
-<div id="myHouse"></div>
 
-<div id="addHouse" class="easyui-panel" title="房子信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
-    <div style="margin-bottom: 20px">
-        <label for="area" class="label-top">建筑面积(m²):</label>
-        <input id="area" class="easyui-validatebox tb" data-options="required:true">
+<div class="easyui-layout" style="width: 100%; height: 800px;">
+    <div data-options="region:'north'" style="height: 150px; background-color: oldlace">
+        <div style="padding: 5px 0;">
+            <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellow; width: 120px; height: 120px">添加一个房子</a>
+            <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellowgreen; width: 120px; height: 120px">发布需求</a>
+        </div>
     </div>
-    <div style="margin-bottom: 20px">
-        <select class="easyui-combobox tb" id="houseType" label="户型:" labelposition="top" style="width: 100%;" panelheight="100px">
-            <option value="1">一居室</option>
-            <option value="2">二居室</option>
-            <option value="3">三居室</option>
-            <option value="4">四居室</option>
-            <option value="5">小户型</option>
-            <option value="6">公寓</option>
-            <option value="7">复式</option>
-            <option value="8">别墅</option>
-            <option value="9">其他</option>
-        </select>
+    <div data-options="region:'west'" title="这边是左" style="width: 50%; padding: 10px">
+        <div id="publishDemandPanel" class="easyui-panel" title="发布家装需求" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+            <div style="margin-bottom: 20px">
+                <label for="demandName" class="label-top">标题:</label>
+                <input id="demandName" class="easyui-validatebox tb" data-options="required:true">
+            </div>
+        </div>
+        <div id="myHouse"></div>
     </div>
-    <div style="margin-bottom: 20px">
-        <select class="easyui-combobox tb" id="houseStatus" label="装修状态:" labelposition="top" style="width: 100%;" panelheight="100px">
-            <option value="1">准备：挑选风格找公司</option>
-            <option value="2">拆改：敲敲打打改户型</option>
-            <option value="3">水电：铺设电线埋水管</option>
-            <option value="4">泥木：贴砖打柜做吊顶</option>
-            <option value="5">油漆：刷完木漆刷墙漆</option>
-            <option value="6">竣工：安装橱柜铺地板</option>
-            <option value="7">软装：摆好沙发挂窗帘</option>
-            <option value="8">入住：欢天喜地住新家</option>
-        </select>
-    </div>
-    <div style="margin-bottom: 20px">
-        <select class="easyui-combobox tb" id="decorationWay" label="装修方式:" labelposition="top" style="width: 100%;" panelheight="80px">
-            <option value="1">清包：预算最低，只包施工</option>
-            <option value="2">半包：大众首选，包施工和辅料</option>
-            <option value="3">全包：省时省力，包施工和所有材料</option>
-        </select>
-    </div>
-    <div style="margin-bottom: 20px">
-        <label for="address" class="label-top">地址:</label>
-        <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
-        <div id="smallmap"></div>
-    </div>
-    <div style="margin-bottom: 20px">
-        <label for="description" class="label-top">描述:</label>
-        <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
-    </div>
-    <div style="margin-bottom: 20px">
-        <label for="ichonography" class="label-top">平面图:</label>
-        <img id="ichonography" alt="" style="width: 300px; height: 200px" src="~/Content/images/chooseFile.png">
-        <input id="fileToUpload" style="display: none" type="file" name="upfile">
-    </div>
-    <div style="padding: 5px 0;">
-        <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">添加 </a>
+    <div data-options="region:'center'" title="这边是右">
+        <div id="addHouse" class="easyui-panel" title="房子信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+            <div style="margin-bottom: 20px">
+                <label for="area" class="label-top">建筑面积(m²):</label>
+                <input id="area" class="easyui-validatebox tb" data-options="required:true">
+            </div>
+            <div style="margin-bottom: 20px">
+                <select class="easyui-combobox tb" id="houseType" label="户型:" labelposition="top" style="width: 100%;" panelheight="100px">
+                    <option value="1">一居室</option>
+                    <option value="2">二居室</option>
+                    <option value="3">三居室</option>
+                    <option value="4">四居室</option>
+                    <option value="5">小户型</option>
+                    <option value="6">公寓</option>
+                    <option value="7">复式</option>
+                    <option value="8">别墅</option>
+                    <option value="9">其他</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 20px">
+                <select class="easyui-combobox tb" id="houseStatus" label="装修状态:" labelposition="top" style="width: 100%;" panelheight="100px">
+                    <option value="1">准备：挑选风格找公司</option>
+                    <option value="2">拆改：敲敲打打改户型</option>
+                    <option value="3">水电：铺设电线埋水管</option>
+                    <option value="4">泥木：贴砖打柜做吊顶</option>
+                    <option value="5">油漆：刷完木漆刷墙漆</option>
+                    <option value="6">竣工：安装橱柜铺地板</option>
+                    <option value="7">软装：摆好沙发挂窗帘</option>
+                    <option value="8">入住：欢天喜地住新家</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 20px">
+                <select class="easyui-combobox tb" id="decorationWay" label="装修方式:" labelposition="top" style="width: 100%;" panelheight="80px">
+                    <option value="1">清包：预算最低，只包施工</option>
+                    <option value="2">半包：大众首选，包施工和辅料</option>
+                    <option value="3">全包：省时省力，包施工和所有材料</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 20px">
+                <label for="address" class="label-top">地址:</label>
+                <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+                <div id="smallmap"></div>
+            </div>
+            <div style="margin-bottom: 20px">
+                <label for="description" class="label-top">描述:</label>
+                <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+            </div>
+            <div style="margin-bottom: 20px">
+                <label for="ichonography" class="label-top">平面图:</label>
+                <img id="ichonography" alt="" style="width: 300px; height: 200px" src="~/Content/images/chooseFile.png">
+                <input id="fileToUpload" style="display: none" type="file" name="upfile">
+            </div>
+            <div style="padding: 5px 0;">
+                <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">添加 </a>
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
+
+
 <script>
     var uploadFilePath;
     var map, point;
     var currentHouseID;
     var demandName;
-    $(function() {
+    $(function () {
         getAllHouse();
 
         //添加房子按钮打开面板
-        $("#btnAddHouse").bind('click', function() {
+        $("#btnAddHouse").bind('click', function () {
             $("#addHouse").panel('open');
             map = new BMap.Map("smallmap");
             point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
             InitMap(map, point);
         });
-        
+
         //发布需求按钮
-        $("#btnPublish").bind('click', function() {
+        $("#btnPublish").bind('click', function () {
             demandName = $("#demandName").val();
             if (!demandName) {
                 $.messager.alert(RSH.Common.AlertTitle, RSH.Demand.PleaseSetName);
@@ -108,7 +117,7 @@
                 success: function (data) {
                     $.messager.show({
                         title: RSH.Common.AlertTitle,
-                        msg:RSH.Demand.PublishSuccess,
+                        msg: RSH.Demand.PublishSuccess,
                         showType: 'slide',
                         timeOut: '3000'
                     });
@@ -138,11 +147,11 @@
                     secureuri: false, //是否需要安全协议，一般设置为false
                     fileElementId: 'fileToUpload', //文件上传域的ID
                     dataType: 'json', //返回值类型 一般设置为json
-                    success: function(data)  //服务器成功响应处理函数
+                    success: function (data)  //服务器成功响应处理函数
                     {
                         uploadFilePath = data.FilePath;
                     },
-                    error: function(data)//服务器响应失败处理函数
+                    error: function (data)//服务器响应失败处理函数
                     {
                         $.messager.alert(RSH.Common.AlertTitle, RSH.Common.UploadFileFailed);
                     }
@@ -150,7 +159,7 @@
             );
             return false;
         });
-        
+
         //添加一个房子
         $("#btnAdd").bind('click', function () {
             var para = {
@@ -165,7 +174,7 @@
                 "Latitude": $("#address").data("Latitude"),
                 "City": $("#address").data("City")
             };
-            $.ajax({                
+            $.ajax({
                 url: '/Demand/AddHouse',
                 type: 'post',
                 data: para,
@@ -187,7 +196,7 @@
             });
         });
     });
-    
+
     function searchAddressPoint() {
         map.clearOverlays();
         var localSearch = new BMap.LocalSearch(map);
@@ -210,16 +219,16 @@
         });
         localSearch.search($("#address").val());
     }
-    
+
     function getAllHouse() {
         $("#addHouse").panel('close');
-        $.post('/Demand/GetAllHouse', {}, function(data) {
+        $.post('/Demand/GetAllHouse', {}, function (data) {
             if (data && data.length > 0) {
                 for (var i in data) {
                     var houseInfo = data[i];
                     var htmlText = houseInfo.FormatInfo;
                     $("#myHouse").append("<div id=" + houseInfo.HouseID + " class='searchPanelItem'>" + htmlText + "</div>");
-                    $("#" + houseInfo.HouseID).bind('click', function() {
+                    $("#" + houseInfo.HouseID).bind('click', function () {
                         currentHouseID = $(this).prop('id');
                         $("div.searchPanelItem").css("background-color", "#e6e6fa");
                         $(this).css("background-color", "#c0c0c0");
@@ -228,13 +237,13 @@
             }
         });
     }
-    
+
     function refreshAllHouse() {
         $("#myHouse").empty();
         getAllHouse();
         refreshAddHousePanel();
     }
-    
+
     function refreshAddHousePanel() {
         $("#area").textbox("setValue", "");
         $("#houseType").combobox("setValue", "1");
@@ -245,7 +254,7 @@
         uploadFilePath = "";
         //$("#ichonography").img("setValue", "");
         $("#fileToUpload").filebox("setValue", "");
-        
+
         InitMap(map, point);
     }
 </script>
