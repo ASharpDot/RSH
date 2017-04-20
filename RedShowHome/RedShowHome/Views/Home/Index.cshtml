@@ -2,35 +2,38 @@
     ViewBag.Title = "首页";
 }
 <div class="easyui-layout" style="width: 100%; height: 800px;">
-    <div data-options="region:'north'" style="height: 70px; background-color: oldlace">
-        <div style="margin: 10px 100px">
-            <input class="easyui-searchbox" data-options="prompt:'请输入...（默认搜索本市）',menu:'#mm',searcher:doSearchFromDB" style="width: 400px; height: 40px; background-color: salmon" />
-            <div id="mm" style="background-color: thistle">
-                <div data-options="name:'All',iconCls:'icon-ok'"><b>全部</b></div>
-                <div data-options="name:'Designer',iconCls:'icon-green-point'"><b>设计师</b></div>
-                <div data-options="name:'DesignCompany',iconCls:'icon-red-point'"><b>家装公司</b></div>
-                <div data-options="name:'Seller',iconCls:'icon-yellow-point'"><b>商家</b></div>
+    <div data-options="region:'west'" style="width: 30%; padding: 10px;background-color: #ddffdd">
+        <div style="margin-left: 10px; margin-bottom: 20px">
+            <div style="margin-bottom: 10px">
+                <input class="easyui-searchbox" data-options="prompt:'请输入...（默认搜索本市）',menu:'#mm',searcher:doSearchFromDB" style="width: 440px; height: 40px; background-color: salmon" />
+                <div id="mm" style="background-color: aquamarine">
+                    <div data-options="name:'All',iconCls:'icon-ok'"><b>全部</b></div>
+                    <div data-options="name:'Designer',iconCls:'icon-green-point'"><b>设计师</b></div>
+                    <div data-options="name:'DesignCompany',iconCls:'icon-red-point'"><b>家装公司</b></div>
+                    <div data-options="name:'Seller',iconCls:'icon-yellow-point'"><b>商家</b></div>
+                </div>
             </div>
-            <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'" style="padding: 5px; margin-left: 10px; width: 200px; background-color: lightsalmon">按距离查找（默认搜索本市） </a>
-            <div id="mm1" style="width: 200px; background-color: thistle">
-                <div id="menuDesigner" data-options="name:'Designer',iconCls:'icon-green-point'"><b>设计师</b></div>
-                <div id="menuDesignCompany" data-options="name:'DesignCompany',iconCls:'icon-red-point'"><b>家装公司</b></div>
-                <div id="menuSeller" data-options="name:'Seller',iconCls:'icon-yellow-point'"><b>商家</b></div>
-            </div>
+            <div>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'" style="padding: 5px; width: 200px; background-color: lightsalmon">按距离查找（默认搜索本市） </a>
+                <div id="mm1" style="width: 200px; background-color: aquamarine">
+                    <div id="menuDesigner" data-options="name:'Designer',iconCls:'icon-green-point'"><b>设计师</b></div>
+                    <div id="menuDesignCompany" data-options="name:'DesignCompany',iconCls:'icon-red-point'"><b>家装公司</b></div>
+                    <div id="menuSeller" data-options="name:'Seller',iconCls:'icon-yellow-point'"><b>商家</b></div>
+                </div>
 
-            <a href="#" class="easyui-menubutton" data-options="menu:'#mm2'" style="padding: 5px; margin-left: 10px; width: 220px; background-color: lightpink">按关注度查找（默认搜索本市） </a>
-            <div id="mm2" style="width: 220px; background-color: thistle">
-                <div id="menuDesigner2" data-options="name:'Designer',iconCls:'icon-green-point'"><b>设计师</b></div>
-                <div id="menuDesignCompany2" data-options="name:'DesignCompany',iconCls:'icon-red-point'"><b>家装公司</b></div>
-                <div id="menuSeller2" data-options="name:'Seller',iconCls:'icon-yellow-point'"><b>商家</b></div>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#mm2'" style="padding: 5px; width: 220px; background-color: lightpink">按关注度查找（默认搜索本市） </a>
+                <div id="mm2" style="width: 220px; background-color: aquamarine">
+                    <div id="menuDesigner2" data-options="name:'Designer',iconCls:'icon-green-point'"><b>设计师</b></div>
+                    <div id="menuDesignCompany2" data-options="name:'DesignCompany',iconCls:'icon-red-point'"><b>家装公司</b></div>
+                    <div id="menuSeller2" data-options="name:'Seller',iconCls:'icon-yellow-point'"><b>商家</b></div>
+                </div>
             </div>
-            <div id="alertDiv" class="alertPanel" style="padding: 5px;"></div>
+        </div>
+        <div id="alertDiv" class="alertPanel" style="padding: 5px;max-width: 470px"></div>
+        <div id="r-result">
         </div>
     </div>
-    <div data-options="region:'west'" title="这边是左" style="width: 30%; padding: 10px">
-        <div id="r-result"></div>
-    </div>
-    <div data-options="region:'center'" title="这边是右">
+    <div data-options="region:'center'">
         <div id="allmap"></div>
     </div>
 </div>

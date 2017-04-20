@@ -6,9 +6,9 @@
     box-sizing: border-box;
 }
 
-#smallmap{height:300px;width:300px;}
+#smallmap{height:300px;width:400px;}
 #allmap{height:100%;width:100%;}
-.searchPanelItem{ border: 2px;border-style: solid;background-color: #e6e6fa;width: 100%;}
+.searchPanelItem{ border: 2px;border-style: solid;background-color: lightcyan;width: 100%;}
 
 
 /*点图标*/
@@ -26,8 +26,7 @@
     background-color: lightskyblue;
     font-size: 20px;
     height: 40px;
-    width: 300px;
-    float: right;
+    width: 100%;
     display:none;
     text-align: center
 }

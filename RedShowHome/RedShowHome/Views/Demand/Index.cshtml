@@ -3,28 +3,27 @@
 }
 
 <div class="easyui-layout" style="width: 100%; height: 800px;">
-    <div data-options="region:'north'" style="height: 150px; background-color: oldlace">
-        <div style="padding: 5px 0;">
-            <a id="btnAddHouse" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellow; width: 120px; height: 120px">添加一个房子</a>
-            <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellowgreen; width: 120px; height: 120px">发布需求</a>
-        </div>
-    </div>
-    <div data-options="region:'west'" title="这边是左" style="width: 50%; padding: 10px">
-        <div id="publishDemandPanel" class="easyui-panel" title="发布家装需求" style="width: 100%; max-width: 400px; padding: 30px 60px;">
+    <div data-options="region:'west'" title="发布需求" style="width: 30%; padding: 10px">
+        <div id="publishDemandPanel" class="easyui-panel" style="width: 100%; max-width: 460px; padding: 30px 60px;">
             <div style="margin-bottom: 20px">
                 <label for="demandName" class="label-top">标题:</label>
                 <input id="demandName" class="easyui-validatebox tb" data-options="required:true">
             </div>
         </div>
+        <div style="padding: 5px 0;">
+            <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellowgreen; width: 120px; height: 120px">发布需求</a>
+        </div>
+        <div class="easyui-panel"  style="width: 100%; max-width: 460px;" title="房子列表">
         <div id="myHouse"></div>
+        </div>
     </div>
-    <div data-options="region:'center'" title="这边是右">
-        <div id="addHouse" class="easyui-panel" title="房子信息" style="width: 100%; max-width: 400px; padding: 30px 60px;">
-            <div style="margin-bottom: 20px">
+    <div data-options="region:'center'" title="房子信息" style="width: 30%;">
+        <div id="addHouse" class="easyui-panel" style="width: 100%; max-width: 1500px; padding: 30px 60px;">
+            <div style="margin-bottom: 10px; width: 400px">
                 <label for="area" class="label-top">建筑面积(m²):</label>
                 <input id="area" class="easyui-validatebox tb" data-options="required:true">
             </div>
-            <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 10px; width: 400px">
                 <select class="easyui-combobox tb" id="houseType" label="户型:" labelposition="top" style="width: 100%;" panelheight="100px">
                     <option value="1">一居室</option>
                     <option value="2">二居室</option>
@@ -37,7 +36,7 @@
                     <option value="9">其他</option>
                 </select>
             </div>
-            <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 10px; width: 400px">
                 <select class="easyui-combobox tb" id="houseStatus" label="装修状态:" labelposition="top" style="width: 100%;" panelheight="100px">
                     <option value="1">准备：挑选风格找公司</option>
                     <option value="2">拆改：敲敲打打改户型</option>
@@ -49,30 +48,32 @@
                     <option value="8">入住：欢天喜地住新家</option>
                 </select>
             </div>
-            <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 10px; width: 400px">
                 <select class="easyui-combobox tb" id="decorationWay" label="装修方式:" labelposition="top" style="width: 100%;" panelheight="80px">
                     <option value="1">清包：预算最低，只包施工</option>
                     <option value="2">半包：大众首选，包施工和辅料</option>
                     <option value="3">全包：省时省力，包施工和所有材料</option>
                 </select>
             </div>
-            <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 10px; width: 400px">
                 <label for="address" class="label-top">地址:</label>
-                <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
-                <div id="smallmap"></div>
+                <input id="address" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 100%; height: 100px;">
             </div>
-            <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 10px; width: 400px">
                 <label for="description" class="label-top">描述:</label>
-                <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 300px; height: 100px">
+                <input id="description" class="easyui-textbox tb" data-options="required:true,multiline:true" style="width: 100%; height: 100px">
             </div>
-            <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 10px; width: 400px">
                 <label for="ichonography" class="label-top">平面图:</label>
-                <img id="ichonography" alt="" style="width: 300px; height: 200px" src="~/Content/images/chooseFile.png">
+                <img id="ichonography" alt="" style="width:200px; height: 120px" src="~/Content/images/chooseFile.png">
                 <input id="fileToUpload" style="display: none" type="file" name="upfile">
+                <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellow; width: 120px; height: 120px;float: right">添加一个房子</a>
             </div>
-            <div style="padding: 5px 0;">
-                <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 80px">添加 </a>
-            </div>
+        </div>
+    </div>
+    <div data-options="region:'east'" style="width:600px; padding: 10px">
+        <div style="margin-bottom: 10px; width: 100%">
+            <div id="smallmap" style="width: 100%;height: 760px"></div>
         </div>
     </div>
 </div>
@@ -85,15 +86,10 @@
     var currentHouseID;
     var demandName;
     $(function () {
+        map = new BMap.Map("smallmap");
+        point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
+        InitMap(map, point);
         getAllHouse();
-
-        //添加房子按钮打开面板
-        $("#btnAddHouse").bind('click', function () {
-            $("#addHouse").panel('open');
-            map = new BMap.Map("smallmap");
-            point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
-            InitMap(map, point);
-        });
 
         //发布需求按钮
         $("#btnPublish").bind('click', function () {
@@ -221,7 +217,6 @@
     }
 
     function getAllHouse() {
-        $("#addHouse").panel('close');
         $.post('/Demand/GetAllHouse', {}, function (data) {
             if (data && data.length > 0) {
                 for (var i in data) {

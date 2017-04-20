@@ -138,7 +138,6 @@ namespace RedShowHome.Controllers
             {
                 if (System.IO.File.Exists(ichnography))
                     System.IO.File.Delete(ichnography);
-                throw new Exception(ex.Message);
             }
             return Json(true);
         }

@@ -2,10 +2,15 @@
     ViewBag.Title = "我的发布";
 }
 
-
-<div id="demands"></div>
+<div class="content-wrapper main-content clear-fix">
+    <div style="margin: 20px 0; width: 100%; height: 700px">
+        <div class="easyui-panel" style="width: 100%;padding: 10px" title="我的发布">
+            <div id="demands"></div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         getAllDemands();
     });
 

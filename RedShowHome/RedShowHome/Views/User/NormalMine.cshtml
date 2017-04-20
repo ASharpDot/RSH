@@ -1,14 +1,24 @@
 ﻿@{
     ViewBag.Title = "我";
 }
-<div style="padding: 5px 0;">
-    <a id="publishBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width: 200px;height: 200px;background-color: yellow"> 发布家装需求 </a>
-    <a id="btnMyDemands" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="width: 200px; height: 200px;background-color: yellowgreen">我的发布</a>
+
+<div class="content-wrapper main-content clear-fix">
+    <div style="margin: 20px 0; width: 100%; height: 700px">
+        <div style="padding: 5px 0;">
+            <a id="publishBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="margin: 10px;width: 200px; height: 200px; background-color: yellow">发布家装需求 </a>
+            <a id="btnMyDemands" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="margin: 10px; width: 200px; height: 200px; background-color: yellowgreen">我的发布</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="margin: 10px; width: 200px; height: 200px; background-color: orange">东北林业大学 </a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="margin: 10px; width: 200px; height: 200px; background-color: purple">2013级</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="margin: 10px; width: 200px; height: 200px; background-color: red">地理信息科学 </a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="margin: 10px; width: 200px; height: 200px; background-color: blue">1班</a>
+        </div>
+    </div>
 </div>
 
+
 <script type="text/javascript">
-    $(function() {
-        $("#publishBtn").bind('click', function() {
+    $(function () {
+        $("#publishBtn").bind('click', function () {
             window.location.href = "/Demand/Index";
         });
 
