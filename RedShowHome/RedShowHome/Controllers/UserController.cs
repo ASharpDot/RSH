@@ -45,6 +45,29 @@ namespace RedShowHome.Controllers
                 {
                     ContextHelper.GetCurrent().SetItem(Constant.UserID, query.UserID);
                     ContextHelper.GetCurrent().SetItem(Constant.UserName, query.UserName);
+                    switch (query.UserType)
+                    {
+                        case 1:
+                           var info1 = rshEntities.Normal_User.Find(query.UserID);
+                            if (info1 == null)
+                                return Json("/User/NormalUserInfo");
+                            break;
+                        case 2:
+                            var info2 = rshEntities.Designer_User.Find(query.UserID);
+                            if (info2 == null)
+                                return Json("/User/DesignerUserInfo");
+                            break;
+                        case 3:
+                            var info3 = rshEntities.DesignCompany_User.Find(query.UserID);
+                            if (info3 == null)
+                                return Json("/User/DesignCompanyUserInfo");
+                            break;
+                        case 4:
+                           var  info4 = rshEntities.Seller_User.Find(query.UserID);
+                            if (info4 == null)
+                                return Json("/User/SellerUserInfo");
+                            break;
+                    }
                     return Json("/Home/Index");
                 }
                 else

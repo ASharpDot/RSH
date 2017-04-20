@@ -10,7 +10,6 @@
 #allmap{height:100%;width:100%;}
 .searchPanelItem{ border: 2px;border-style: solid;background-color: lightcyan;width: 100%;}
 
-
 /*点图标*/
 .icon-red-point {
     background: url('/Content/images/bullet-red.png') no-repeat center center;

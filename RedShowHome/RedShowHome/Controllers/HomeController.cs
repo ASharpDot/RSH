@@ -15,7 +15,7 @@ namespace RedShowHome.Controllers
 {
     public class HomeController : BaseController
     {
-        private const string DesignCompanyDescriptionFormat = "联系方式：{0}<br/>联系地址：<br/>公司信息：{2}<br/>粉丝数量：{3}";
+        private const string DesignCompanyDescriptionFormat = "联系方式：{0}<br/>联系地址：{1}<br/>公司信息：{2}<br/>粉丝数量：{3}";
         private const string DesignerDescriptionFormat = "性别：{0}<br/>联系方式：{1}<br/>联系地址：{2}<br/>工作经验：{3}年<br/>设计理念：{4}<br/>粉丝数量：{5}";
         private const string SellerDescriptionFormat = "联系方式：{0}<br/>联系地址：{1}<br/>公司信息：{2}<br/>粉丝数量：{3}";
 
@@ -308,7 +308,7 @@ namespace RedShowHome.Controllers
             IEnumerable<Seller_User> queryObjects = from su in rshEntities.Seller_User
                                                    from rshu in rshEntities.RSH_User
                                                    from ap in rshEntities.AddressPoint
-                                                   where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
+                                                   where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)&&su.Address==ap.Address
                                                    orderby SqlFunctions.Square(ap.Longitute - longitude) + SqlFunctions.Square(ap.Latitude - latitude)
                                                    select su;
             if (city != "未知" || city != "")
@@ -381,17 +381,20 @@ namespace RedShowHome.Controllers
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
-                MapPoint mp = new MapPoint();
-                string workingAge = (DateTime.Now.Year - queryObject.StartWorkTime.Year + 1).ToString();
-                mp.Id = Guid.NewGuid().ToString();
-                mp.Description = string.Format(DesignerDescriptionFormat, queryObject.Sex, queryObject.Phone,
-                    queryObject.Address, workingAge, queryObject.DesignConcept,queryObject.FansQuantity);
-                mp.Address = queryObject.Address;
-                mp.Title = users.UserName;
-                mp.Type = users.UserType;
-                mp.Longitude = address == null ? 0 : address.Longitute;
-                mp.Latitude = address == null ? 0 : address.Latitude;
-                mpList.Add(mp);
+                if (users != null)
+                {
+                    MapPoint mp = new MapPoint();
+                    string workingAge = (DateTime.Now.Year - queryObject.StartWorkTime.Year + 1).ToString();
+                    mp.Id = Guid.NewGuid().ToString();
+                    mp.Description = string.Format(DesignerDescriptionFormat, queryObject.Sex, queryObject.Phone,
+                        queryObject.Address, workingAge, queryObject.DesignConcept, queryObject.FansQuantity);
+                    mp.Address = queryObject.Address;
+                    mp.Title = users.UserName;
+                    mp.Type = users.UserType;
+                    mp.Longitude = address == null ? 0 : address.Longitute;
+                    mp.Latitude = address == null ? 0 : address.Latitude;
+                    mpList.Add(mp);
+                }
             }
         }
 
@@ -405,15 +408,19 @@ namespace RedShowHome.Controllers
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
-                MapPoint mp = new MapPoint();
-                mp.Description = string.Format(DesignCompanyDescriptionFormat, queryObject.Phone, queryObject.Address, queryObject.Description, queryObject.FansQuantity);
-                mp.Id = Guid.NewGuid().ToString();
-                mp.Address = queryObject.Address;
-                mp.Title = users.UserName;
-                mp.Type = users.UserType;
-                mp.Longitude = address == null ? 0 : address.Longitute;
-                mp.Latitude = address == null ? 0 : address.Latitude;
-                mpList.Add(mp);
+                if (users != null)
+                {
+                    MapPoint mp = new MapPoint();
+                    mp.Description = string.Format(DesignCompanyDescriptionFormat, queryObject.Phone,
+                        queryObject.Address, queryObject.Description, queryObject.FansQuantity);
+                    mp.Id = Guid.NewGuid().ToString();
+                    mp.Address = queryObject.Address;
+                    mp.Title = users.UserName;
+                    mp.Type = users.UserType;
+                    mp.Longitude = address == null ? 0 : address.Longitute;
+                    mp.Latitude = address == null ? 0 : address.Latitude;
+                    mpList.Add(mp);
+                }
             }
         }
 
@@ -427,15 +434,19 @@ namespace RedShowHome.Controllers
                 var address = (from addr in rshEntities.AddressPoint
                                where addr.Address == queryObject.Address
                                select addr).FirstOrDefault();
-                MapPoint mp = new MapPoint();
-                mp.Description = string.Format(SellerDescriptionFormat, queryObject.Phone, queryObject.Address, queryObject.Description, queryObject.FansQuantity);
-                mp.Id = Guid.NewGuid().ToString();
-                mp.Address = queryObject.Address;
-                mp.Title = users.UserName;
-                mp.Type = users.UserType;
-                mp.Longitude = address == null ? 0 : address.Longitute;
-                mp.Latitude = address == null ? 0 : address.Latitude;
-                mpList.Add(mp);
+                if (users != null)
+                {
+                    MapPoint mp = new MapPoint();
+                    mp.Description = string.Format(SellerDescriptionFormat, queryObject.Phone, queryObject.Address,
+                        queryObject.Description, queryObject.FansQuantity);
+                    mp.Id = Guid.NewGuid().ToString();
+                    mp.Address = queryObject.Address;
+                    mp.Title = users.UserName;
+                    mp.Type = users.UserType;
+                    mp.Longitude = address == null ? 0 : address.Longitute;
+                    mp.Latitude = address == null ? 0 : address.Latitude;
+                    mpList.Add(mp);
+                }
             }
         }
 

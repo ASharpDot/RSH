@@ -52,6 +52,7 @@ RSH.Search.OnlySearchEmpty = "未检索出数据";
 RSH.Search.EmptyValue = "请输入要检索的内容";
 RSH.Search.GetCurrentPositionFailed = "当前位置获取失败，无法进行自动定位";
 RSH.Search.SearchNow = "正在获取数据...";
+RSH.Search.CheckCurrentPosition = "请设置指定位置";
 
 RSH.House = {};
 RSH.House.AddHouseSuccess = "您的房子添加成功";
@@ -107,8 +108,6 @@ function SetPoint(mapPoint, map) {
     }
     var myIcon = new BMap.Icon(iconUrl, new BMap.Size(30, 30));
     var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), { icon: myIcon });
-    console.log(map);
-    console.log(marker);
     map.addOverlay(marker);
     var infoWindow = new BMap.InfoWindow(mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
     marker.addEventListener("click", function () {
@@ -128,7 +127,7 @@ function SearchPanel(mapPoint) {
     var htmlText = "<b>" + mapPoint.Title + "</b><br/>" + mapPoint.Description;
     $("#r-result").append("<div id=" + mapPoint.Id + " class='searchPanelItem'>" + htmlText + "</div>");
     $("#" + mapPoint.Id).bind("click", function () {
-        map.centerAndZoom(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), 17);
+        map.centerAndZoom(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), 15);
         $("#" + mapPoint.Id).css("background-color", "#c0c0c0");
     });
 }
@@ -138,6 +137,46 @@ function SearchPanel(mapPoint) {
 function doSearch(value, name) {
     var local = new BMap.LocalSearch(map, { renderOptions: { map: map, panel: "r-result" } });
     local.search(value);
+}
+
+
+function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
+    $("#r-result").empty();
+    map.clearOverlays();
+    $("#alertDiv").text(Map.Search.SearchCurrent);
+    $("#alertDiv").fadeToggle(1000);
+    var lon, lat, city;
+    lon = currentPoint.point.lng;
+    lat = currentPoint.point.lat;
+    city = currentPoint.hasOwnProperty('city') ? currentPoint.city : "未知";
+
+    $("#alertDiv").text("当前城市：" + city);
+    //设置当前位置点
+    var mk = new BMap.Marker(currentPoint.point);
+    map.addOverlay(mk);
+    var infoWindow = new BMap.InfoWindow("<b>当前设定位置</b>");
+    mk.addEventListener("click", function () {
+        this.openInfoWindow(infoWindow);
+    });
+    map.centerAndZoom(currentPoint.point, 12);
+
+    var para = { Longitude: lon, Latitude: lat, City: city, SearchText: searchText };
+    $.post(url, para, function (data) {
+        if (data && data.length) {
+            for (var i in data) {
+                SetPoint(data[i], map);
+                SearchPanel(data[i]);
+            }
+        } else {
+            $.messager.show({
+                title: RSH.Common.AlertTitle,
+                msg: RSH.Search.OnlySearchEmpty,
+                timeout: 3000,
+                showType: 'show'
+            });
+        }
+    });
+    $("#alertDiv").fadeToggle(3000);
 }
 
 

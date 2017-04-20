@@ -13,7 +13,7 @@
         <div style="padding: 5px 0;">
             <a id="btnPublish" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellowgreen; width: 120px; height: 120px">发布需求</a>
         </div>
-        <div class="easyui-panel"  style="width: 100%; max-width: 460px;" title="房子列表">
+        <div class="easyui-panel"  style="width: 100%; max-width: 460px;padding: 10px" title="房子列表">
         <div id="myHouse"></div>
         </div>
     </div>
@@ -65,7 +65,7 @@
             </div>
             <div style="margin-bottom: 10px; width: 400px">
                 <label for="ichonography" class="label-top">平面图:</label>
-                <img id="ichonography" alt="" style="width:200px; height: 120px" src="~/Content/images/chooseFile.png">
+                <img id="ichonography" alt="" style="width:200px; height: 120px;border: 1px;border-style: solid" src="~/Content/images/chooseFile.png">
                 <input id="fileToUpload" style="display: none" type="file" name="upfile">
                 <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-man'" style="background-color: yellow; width: 120px; height: 120px;float: right">添加一个房子</a>
             </div>
@@ -146,6 +146,7 @@
                     success: function (data)  //服务器成功响应处理函数
                     {
                         uploadFilePath = data.FilePath;
+                        $("#ichonography").attr('src', "/Content/images/uploadSuccess.png");
                     },
                     error: function (data)//服务器响应失败处理函数
                     {
@@ -240,14 +241,14 @@
     }
 
     function refreshAddHousePanel() {
-        $("#area").textbox("setValue", "");
+        $("#area").val("");
         $("#houseType").combobox("setValue", "1");
         $("#houseStatus").combobox("setValue", "1");
         $("#decorationWay").combobox("setValue", "1");
         $("#address").textbox("setValue", "");
         $("#description").textbox("setValue", "");
         uploadFilePath = "";
-        //$("#ichonography").img("setValue", "");
+        $("#ichonography").attr('src', "/Content/images/chooseFile.png");
         $("#fileToUpload").filebox("setValue", "");
 
         InitMap(map, point);

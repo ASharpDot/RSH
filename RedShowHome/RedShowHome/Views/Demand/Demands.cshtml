@@ -22,7 +22,7 @@
                     var htmlText = demandInfo.FormatInfo;
                     $("#demands").append("<div id=" + demandInfo.DemandID + " class='searchPanelItem'>" + htmlText + "</div>");
                     $("#" + demandInfo.DemandID).bind('click', function () {
-                        $("div.searchPanelItem").css("background-color", "#e6e6fa");
+                        $("div.searchPanelItem").css("background-color", "lightcyan");
                         $(this).css("background-color", "#c0c0c0");
                     });
                 }
