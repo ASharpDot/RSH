@@ -37,22 +37,68 @@
         <div style="margin: 5px">
             <input id="currentPosition" class="easyui-textbox" prompt="设置指定位置..." iconwidth="28" style="width: 400px; height: 34px; padding: 5px;">
             <a id="btnSetPosition" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="height: 34px; width: 80px">确定 </a>
-            <input type="checkbox" id="isUseThis"/>是否使用指定位置
+            <input type="checkbox" id="isUseThis" />是否使用指定位置
+            <input type="button" id="openHeat" value="显示热力图" style="background-color: yellow" />
+            <input type="button" id="closeHeat" value="关闭热力图" style="background-color: yellowgreen" />
         </div>
-        <div id="allmap" style="height: 750px"></div>
+        <div id="allmap" style="height: 740px"></div>
     </div>
 </div>
 
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
 <script type="text/javascript">
     //map:地图对象，point：中心点对象
     var map;
     var point;
-    var currentPosition;//当前位置
+    var currentPosition;
+    //当前位置
     var heatmapOverlay;
     $(function () {
         map = new BMap.Map("allmap");
         point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
         InitMap(map, point);
+        //********************
+
+        $('#openHeat').bind('click', function () {
+            var points = HeatMap.Count;
+            var markers = HeatMap.Marker;
+            if (points instanceof Array && points.length > 0) {
+                if (!isSupportCanvas()) {
+                    alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~');
+                    return;
+                }
+                for (var marker in markers) {
+                    markers[marker].hide();
+                }
+                heatmapOverlay = new BMapLib.HeatmapOverlay({ "radius": 30 });
+                map.addOverlay(heatmapOverlay);
+                heatmapOverlay.setDataSet({ data: points, max: 100 });
+                heatmapOverlay.show();
+
+                function setGradient() {
+                    var gradient = {};
+                    var colors = document.querySelectorAll("input[type='color']");
+                    colors = [].slice.call(colors, 0);
+                    colors.forEach(function (ele) {
+                        gradient[ele.getAttribute("data-key")] = ele.value;
+                    });
+                    heatmapOverlay.setOptions({ "gradient": gradient });
+                }
+            } else {
+                alert('热力点为空');
+            }
+        });
+
+        $("#closeHeat").bind('click', function () {
+            var markers = HeatMap.Marker;
+            for (var marker in markers) {
+                markers[marker].show();
+            }
+            if (heatmapOverlay)
+                heatmapOverlay.hide();
+        });
+        //*********************
+
 
         $("#btnSetPosition").bind('click', function () {
             $("#r-result").empty();
@@ -69,13 +115,13 @@
                         var mk = new BMap.Marker(currentPosition.point);
                         map.addOverlay(mk);
                         var infoWindow = new BMap.InfoWindow("<b>当前设定位置</b>");
-                        mk.addEventListener("click", function() {
+                        mk.addEventListener("click", function () {
                             this.openInfoWindow(infoWindow);
                         });
                         map.centerAndZoom(currentPosition.point, 12);
                     } else {
                         $.messager.alert(RSH.Common.AlertTitle, RSH.Search.CurrentPositionFailed);
-                        $("#currentPosition").textbox("setValue","");
+                        $("#currentPosition").textbox("setValue", "");
                     }
                 }
             });
@@ -83,7 +129,7 @@
         });
 
         //按距离查找
-        $("#menuDesigner").bind('click', function() {
+        $("#menuDesigner").bind('click', function () {
             var url = "/Home/GetDesignerByDistance";
             var isusethis = $("#isUseThis").prop('checked');
             if (isusethis) {
@@ -166,6 +212,7 @@
     });
 
     //从数据读出数据并设置点
+
     function doSearchFromDB(value, name) {
         if (value) {
             var url = "";
@@ -187,8 +234,13 @@
                 doSearch(value, name);
                 return;
             }
-            if (currentPosition) {
-                doSearchFromDBByPosition(map, url, currentPosition,value);
+            var isusethis = $("#isUseThis").prop('checked');
+            if (isusethis) {
+                if (currentPosition) {
+                    doSearchFromDBByPosition(map, url, currentPosition, value);
+                } else {
+                    $.messager.alert(RSH.Common.AlertTitle, RSH.Search.CheckCurrentPosition);
+                }
             } else {
                 doSearchFromDBInSameCity(map, url, value);
             }

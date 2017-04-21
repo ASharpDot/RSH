@@ -393,6 +393,7 @@ namespace RedShowHome.Controllers
                     mp.Type = users.UserType;
                     mp.Longitude = address == null ? 0 : address.Longitute;
                     mp.Latitude = address == null ? 0 : address.Latitude;
+                    mp.HeatMapCount = queryObject.FansQuantity;
                     mpList.Add(mp);
                 }
             }
@@ -419,6 +420,7 @@ namespace RedShowHome.Controllers
                     mp.Type = users.UserType;
                     mp.Longitude = address == null ? 0 : address.Longitute;
                     mp.Latitude = address == null ? 0 : address.Latitude;
+                    mp.HeatMapCount = queryObject.FansQuantity;
                     mpList.Add(mp);
                 }
             }
@@ -445,6 +447,7 @@ namespace RedShowHome.Controllers
                     mp.Type = users.UserType;
                     mp.Longitude = address == null ? 0 : address.Longitute;
                     mp.Latitude = address == null ? 0 : address.Latitude;
+                    mp.HeatMapCount = queryObject.FansQuantity;
                     mpList.Add(mp);
                 }
             }
