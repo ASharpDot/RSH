@@ -48,25 +48,35 @@
     var map;
     var point;
     var currentPosition;//当前位置
+    var heatmapOverlay;
     $(function () {
         map = new BMap.Map("allmap");
         point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
         InitMap(map, point);
 
         $("#btnSetPosition").bind('click', function () {
+            $("#r-result").empty();
+            map.clearOverlays();
             var address = $("#currentPosition").val();
             var localSearch = new BMap.LocalSearch(map);
             localSearch.enableAutoViewport();
             localSearch.setSearchCompleteCallback(function (searchResult) {
                 if (searchResult != null) {
                     currentPosition = searchResult.getPoi(0);
-                    var mk = new BMap.Marker(currentPosition.point);
-                    map.addOverlay(mk);
-                    var infoWindow = new BMap.InfoWindow("<b>当前设定位置</b>");
-                    mk.addEventListener("click", function () {
-                        this.openInfoWindow(infoWindow);
-                    });
-                    map.centerAndZoom(currentPosition.point, 12);
+                    console.log(searchResult);
+                    console.log(currentPosition);
+                    if (currentPosition) {
+                        var mk = new BMap.Marker(currentPosition.point);
+                        map.addOverlay(mk);
+                        var infoWindow = new BMap.InfoWindow("<b>当前设定位置</b>");
+                        mk.addEventListener("click", function() {
+                            this.openInfoWindow(infoWindow);
+                        });
+                        map.centerAndZoom(currentPosition.point, 12);
+                    } else {
+                        $.messager.alert(RSH.Common.AlertTitle, RSH.Search.CurrentPositionFailed);
+                        $("#currentPosition").textbox("setValue","");
+                    }
                 }
             });
             localSearch.search(address);
