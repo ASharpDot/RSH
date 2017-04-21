@@ -70,7 +70,7 @@
                 for (var marker in markers) {
                     markers[marker].hide();
                 }
-                heatmapOverlay = new BMapLib.HeatmapOverlay({ "radius": 30 });
+                heatmapOverlay = new BMapLib.HeatmapOverlay({ "radius": 20 });
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({ data: points, max: 100 });
                 heatmapOverlay.show();
