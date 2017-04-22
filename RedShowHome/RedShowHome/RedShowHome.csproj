@@ -266,6 +266,7 @@
     <Content Include="Content\images\uploadSuccess.png" />
     <Content Include="Content\images\chooseFile.png" />
     <Content Include="Content\images\shop_market_128px_1135136_easyicon.net.ico" />
+    <Content Include="Content\searchinfowindow.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />

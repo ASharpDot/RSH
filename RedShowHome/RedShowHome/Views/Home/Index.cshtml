@@ -35,6 +35,10 @@
     </div>
     <div data-options="region:'center'">
         <div style="margin: 5px">
+            @*<select>
+                <option id="setdark" >夜色阑珊</option>
+                <option id="setblue" >蓝色妖姬</option>
+            </select>*@
             <input id="currentPosition" class="easyui-textbox" prompt="设置指定位置..." iconwidth="28" style="width: 400px; height: 34px; padding: 5px;">
             <a id="btnSetPosition" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="height: 34px; width: 80px">确定 </a>
             <input type="checkbox" id="isUseThis" />是否使用指定位置
@@ -62,6 +66,13 @@
         map = new BMap.Map("allmap");
         point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
         InitMap(map, point);
+
+        //$("#setdark").bind('click', function () {
+        //    setDarkStyle(map);
+        //});
+        //$("#setblue").bind('click', function () {
+        //    setBlueStyle(map);
+        //});
         //********************
         
         $('#openHeat').bind('click', function () {
@@ -96,6 +107,7 @@
 
         $("#closeHeat").bind('click', function () {
             var markers = HeatMap.Marker;
+            console.log(markers);
             for (var marker in markers) {
                 markers[marker].show();
             }
@@ -258,4 +270,5 @@
             });
         }
     }
+
 </script>

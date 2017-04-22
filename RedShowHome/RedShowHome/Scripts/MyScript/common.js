@@ -3,6 +3,27 @@
 Map.Search = {};
 Map.Search.SearchCurrent = "正在获取当前位置信息...";
 
+Map.StyleJson = {};
+Map.StyleJson.Blue = [
+    {
+        "featureType": "all",
+        "elementType": "geometry",
+        "stylers": {
+            "hue": "#007fff",
+            "saturation": 100
+        }
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": {
+            "color": "#ffffff"
+        }
+    }
+];
+Map.Style = {};
+Map.Style.Night = 'midnight';
+
 RSH = {};
 
 RSH.Common = {};
@@ -67,6 +88,8 @@ RSH.Demand.PublishFailed = "发布失败";
 HeatMap = {};
 HeatMap.Count = [];
 HeatMap.Marker = [];
+
+
 //初始化地图
 function InitMap(map, centerPoint) {
     window.map = map;
@@ -85,28 +108,21 @@ function InitMap(map, centerPoint) {
     map.setMapStyle({ style: 'midnight' });
 }
 
+function setDarkStyle(map) {
+    map.setMapStyle({ style: Map.Style.Night, styleJson: [] });
+}
+
+function setBlueStyle(map) {
+    map.setMapStyle({ style: '', styleJson: Map.StyleJson.Blue });
+}
 
 //设置默认起始点
 function SetDefaultPoint(point) {
     var marker = new BMap.Marker(point);
     map.centerAndZoom(point, 15);
-    //var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
-    //marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
-    var searchInfoWindow = new BMapLib.SearchInfoWindow(map, RSH.Common.NEFU_Address, {
-        title: RSH.Common.NEFU_Name,
-        //height: RSH.Control.InfoWindowHeight,
-        width: RSH.Control.InfoWindowWidth,
-        panel: "panel",
-        searchType: [
-            BMAPLIB_TAB_TO_HERE,
-            BMAPLIB_TAB_FROM_HERE,
-            BMAPLIB_TAB_SEARCH
-        ]
-    });
-    marker.addEventListener("click", function () {
-        searchInfoWindow.open(marker);
-    });
     map.addOverlay(marker);
+    var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
+    marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
 }
 
 
@@ -167,10 +183,14 @@ function doSearch(value, name) {
     local.search(value);
 }
 
-
+var markerClusterer = null;
 function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
     $("#r-result").empty();
     map.clearOverlays();
+    if (markerClusterer)
+        markerClusterer.clearMarkers();
+    HeatMap.Count = [];
+    HeatMap.Marker = [];
     $("#alertDiv").text(Map.Search.SearchCurrent);
     $("#alertDiv").fadeToggle(1000);
     var lon, lat, city;
@@ -191,17 +211,13 @@ function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
     var para = { Longitude: lon, Latitude: lat, City: city, SearchText: searchText };
     $.post(url, para, function (data) {
         if (data && data.length) {
-            HeatMap.Count = [];
-            HeatMap.Marker = [];
             for (var i in data) {
                 SetPoint(data[i], map);
                 SearchPanel(data[i]);
                 var apoint = { "lng": data[i].Longitude, "lat": data[i].Latitude, "count": data[i].HeatMapCount };
                 HeatMap.Count.push(apoint);
             }
-            //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-            var markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 11 });
-            
+
         } else {
             $.messager.show({
                 title: RSH.Common.AlertTitle,
@@ -210,6 +226,8 @@ function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
                 showType: 'show'
             });
         }
+        //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+        markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12 });
     });
     $("#alertDiv").fadeToggle(3000);
 }
@@ -219,6 +237,10 @@ function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
 function doSearchFromDBInSameCity(map, url, searchText) {
     $("#r-result").empty();
     map.clearOverlays();
+    if (markerClusterer)
+        markerClusterer.clearMarkers();
+    HeatMap.Count = [];
+    HeatMap.Marker = [];
     $("#alertDiv").text(Map.Search.SearchCurrent);
     $("#alertDiv").fadeToggle(1000);
     var geolocation = new BMap.Geolocation();
@@ -244,8 +266,6 @@ function doSearchFromDBInSameCity(map, url, searchText) {
             var para = { Longitude: lon, Latitude: lat, City: city, SearchText: searchText };
             $.post(url, para, function (data) {
                 if (data && data.length) {
-                    HeatMap.Count = [];
-                    HeatMap.Marker = [];
                     for (var i in data) {
                         SetPoint(data[i], map);
                         SearchPanel(data[i]);
@@ -253,7 +273,8 @@ function doSearchFromDBInSameCity(map, url, searchText) {
                         HeatMap.Count.push(apoint);
                     }
                     //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-                    var markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker ,maxZoom:11});
+                    markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12 });
+                    console.log(markerClusterer);
                 } else {
                     $.messager.show({
                         title: RSH.Common.AlertTitle,
