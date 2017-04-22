@@ -49,12 +49,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
-<link href="~/Content/searchinfowindow.css" rel="stylesheet" />
-@*<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />*@
-<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
 <script type="text/javascript">
     //map:地图对象，point：中心点对象
     var map;
@@ -87,7 +81,7 @@
                     markers[marker].hide();
                 }
                 clearMarkerClusterer();
-                heatmapOverlay = new BMapLib.HeatmapOverlay({ "radius": 20 });
+                heatmapOverlay = new BMapLib.HeatmapOverlay({ "radius": 40 });
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({ data: points, max: 100 });
                 heatmapOverlay.show();

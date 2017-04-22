@@ -186,12 +186,16 @@ function doSearch(value, name) {
 var markerClusterer = null;
 
 function clearMarkerClusterer() {
-    if (markerClusterer)
+    console.log(markerClusterer);
+    if (markerClusterer) {
         markerClusterer.clearMarkers();
+        markerClusterer = null;
+    }
 }
 
 function newMarkerClusterer() {
-    markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12, girdSize: 40 });
+    if (!markerClusterer)
+        markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12, girdSize: 40 });
 }
 
 function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
