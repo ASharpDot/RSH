@@ -184,6 +184,16 @@ function doSearch(value, name) {
 }
 
 var markerClusterer = null;
+
+function clearMarkerClusterer() {
+    if (markerClusterer)
+        markerClusterer.clearMarkers();
+}
+
+function newMarkerClusterer() {
+    markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12, girdSize: 40 });
+}
+
 function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
     $("#r-result").empty();
     map.clearOverlays();
@@ -227,7 +237,7 @@ function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
             });
         }
         //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-        markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12 });
+        markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12,girdSize:40 });
     });
     $("#alertDiv").fadeToggle(3000);
 }
@@ -273,8 +283,7 @@ function doSearchFromDBInSameCity(map, url, searchText) {
                         HeatMap.Count.push(apoint);
                     }
                     //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-                    markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12 });
-                    console.log(markerClusterer);
+                    markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 12, girdSize: 40 });
                 } else {
                     $.messager.show({
                         title: RSH.Common.AlertTitle,

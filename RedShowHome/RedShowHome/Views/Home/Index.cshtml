@@ -86,6 +86,7 @@
                 for (var marker in markers) {
                     markers[marker].hide();
                 }
+                clearMarkerClusterer();
                 heatmapOverlay = new BMapLib.HeatmapOverlay({ "radius": 20 });
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({ data: points, max: 100 });
@@ -107,7 +108,7 @@
 
         $("#closeHeat").bind('click', function () {
             var markers = HeatMap.Marker;
-            console.log(markers);
+            newMarkerClusterer();
             for (var marker in markers) {
                 markers[marker].show();
             }
