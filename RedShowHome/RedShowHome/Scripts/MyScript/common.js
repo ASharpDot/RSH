@@ -90,10 +90,23 @@ function InitMap(map, centerPoint) {
 function SetDefaultPoint(point) {
     var marker = new BMap.Marker(point);
     map.centerAndZoom(point, 15);
+    //var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
+    //marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+    var searchInfoWindow = new BMapLib.SearchInfoWindow(map, RSH.Common.NEFU_Address, {
+        title: RSH.Common.NEFU_Name,
+        //height: RSH.Control.InfoWindowHeight,
+        width: RSH.Control.InfoWindowWidth,
+        panel: "panel",
+        searchType: [
+            BMAPLIB_TAB_TO_HERE,
+            BMAPLIB_TAB_FROM_HERE,
+            BMAPLIB_TAB_SEARCH
+        ]
+    });
+    marker.addEventListener("click", function () {
+        searchInfoWindow.open(marker);
+    });
     map.addOverlay(marker);
-    var infoWindow = new BMap.InfoWindow(RSH.Common.NEFU_Address, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: RSH.Common.NEFU_Name });
-    marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
-
 }
 
 
@@ -112,12 +125,22 @@ function SetPoint(mapPoint, map) {
     }
     var myIcon = new BMap.Icon(iconUrl, new BMap.Size(30, 30));
     var marker = new BMap.Marker(new BMap.Point(mapPoint.Longitude, mapPoint.Latitude), { icon: myIcon });
+    var searchInfoWindow = new BMapLib.SearchInfoWindow(map, mapPoint.Description, {
+        title: mapPoint.Title,
+        //height: RSH.Control.InfoWindowHeight,
+        width: RSH.Control.InfoWindowWidth,
+        panel: "panel",
+        searchType: [
+            BMAPLIB_TAB_TO_HERE,
+            BMAPLIB_TAB_FROM_HERE,
+            BMAPLIB_TAB_SEARCH
+        ]
+    });
+    marker.addEventListener("click", function () {
+        searchInfoWindow.open(marker);
+    });
     map.addOverlay(marker);
     HeatMap.Marker.push(marker);
-    var infoWindow = new BMap.InfoWindow(mapPoint.Description, { width: RSH.Control.InfoWindowWidth, height: RSH.Control.InfoWindowHeight, title: mapPoint.Title });
-    marker.addEventListener("click", function () {
-        this.openInfoWindow(infoWindow);
-    });
     marker.addEventListener("mousedown", function () {
         $("#" + mapPoint.Id).css("background-color", "#eee8aa");
     });
@@ -176,6 +199,9 @@ function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
                 var apoint = { "lng": data[i].Longitude, "lat": data[i].Latitude, "count": data[i].HeatMapCount };
                 HeatMap.Count.push(apoint);
             }
+            //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+            var markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker, maxZoom: 11 });
+            
         } else {
             $.messager.show({
                 title: RSH.Common.AlertTitle,
@@ -226,6 +252,8 @@ function doSearchFromDBInSameCity(map, url, searchText) {
                         var apoint = { "lng": data[i].Longitude, "lat": data[i].Latitude, "count": data[i].HeatMapCount };
                         HeatMap.Count.push(apoint);
                     }
+                    //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+                    var markerClusterer = new BMapLib.MarkerClusterer(map, { markers: HeatMap.Marker ,maxZoom:11});
                 } else {
                     $.messager.show({
                         title: RSH.Common.AlertTitle,
