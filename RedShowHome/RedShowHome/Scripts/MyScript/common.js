@@ -199,6 +199,7 @@ function newMarkerClusterer() {
 }
 
 function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
+    isOpenHeat = false;
     $("#r-result").empty();
     map.clearOverlays();
     if (markerClusterer)
@@ -249,6 +250,7 @@ function doSearchFromDBByPosition(map, url, currentPoint, searchText) {
 
 //同城市搜索
 function doSearchFromDBInSameCity(map, url, searchText) {
+    isOpenHeat = false;
     $("#r-result").empty();
     map.clearOverlays();
     if (markerClusterer)

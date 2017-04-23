@@ -227,7 +227,7 @@ namespace RedShowHome.Controllers
                                                      from rshu in rshEntities.RSH_User
                                                      where du.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
                                                      select du;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -241,7 +241,7 @@ namespace RedShowHome.Controllers
                                                           from rshu in rshEntities.RSH_User
                                                           where dcu.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
                                                           select dcu;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -255,7 +255,7 @@ namespace RedShowHome.Controllers
                                                    from rshu in rshEntities.RSH_User
                                                    where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
                                                    select su;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -277,7 +277,7 @@ namespace RedShowHome.Controllers
                                                      && du.Address == ap.Address
                                                      orderby SqlFunctions.Square(ap.Longitute - longitude) + SqlFunctions.Square(ap.Latitude - latitude)
                                                      select du;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -294,7 +294,7 @@ namespace RedShowHome.Controllers
                                                           where dcu.UserID == rshu.UserID && rshu.UserName.Contains(searchText) && dcu.Address == ap.Address
                                                           orderby SqlFunctions.Square(ap.Longitute - longitude) + SqlFunctions.Square(ap.Latitude - latitude)
                                                           select dcu;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -311,7 +311,7 @@ namespace RedShowHome.Controllers
                                                    where su.UserID == rshu.UserID && rshu.UserName.Contains(searchText)&&su.Address==ap.Address
                                                    orderby SqlFunctions.Square(ap.Longitute - longitude) + SqlFunctions.Square(ap.Latitude - latitude)
                                                    select su;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -329,7 +329,7 @@ namespace RedShowHome.Controllers
                                                      where du.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
                                                      orderby du.FansQuantity descending
                                                      select du;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -344,7 +344,7 @@ namespace RedShowHome.Controllers
                                                           where du.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
                                                           orderby du.FansQuantity descending
                                                           select du;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city
@@ -359,7 +359,7 @@ namespace RedShowHome.Controllers
                                                    where du.UserID == rshu.UserID && rshu.UserName.Contains(searchText)
                                                    orderby du.FansQuantity descending
                                                    select du;
-            if (city != "未知" || city != "")
+            if (city != "未知" && city != "")
                 queryObjects = from q in queryObjects
                                from ap in rshEntities.AddressPoint
                                where q.Address == ap.Address && ap.City == city

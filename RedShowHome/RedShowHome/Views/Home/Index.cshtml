@@ -56,6 +56,7 @@
     var currentPosition;
     //当前位置
     var heatmapOverlay;
+    isOpenHeat = false;
     $(function () {
         map = new BMap.Map("allmap");
         point = new BMap.Point(RSH.Common.NEFU_Longitude, RSH.Common.NEFU_Latitude);
@@ -70,6 +71,9 @@
         //********************
         
         $('#openHeat').bind('click', function () {
+            if(isOpenHeat)
+                return;
+            isOpenHeat=true;
             var points = HeatMap.Count;
             var markers = HeatMap.Marker;
             if (points instanceof Array && points.length > 0) {
@@ -85,7 +89,6 @@
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({ data: points, max: 100 });
                 heatmapOverlay.show();
-
                 function setGradient() {
                     var gradient = {};
                     var colors = document.querySelectorAll("input[type='color']");
@@ -100,7 +103,10 @@
             }
         });
 
-        $("#closeHeat").bind('click', function () {
+        $("#closeHeat").bind('click', function () {            
+            if(!isOpenHeat)
+                return;
+            isOpenHeat=false;
             var markers = HeatMap.Marker;
             newMarkerClusterer();
             for (var marker in markers) {
